@@ -36,7 +36,7 @@ class SurpriseSVDRecommender:
 
     def fit(self, train_df: pd.DataFrame):
         """Huấn luyện mô hình SVD trên tập Train."""
-        print(f"[SurpriseSVD] Đang huấn luyện SVD (n_factors={self.n_factors}, epochs={self.n_epochs})...")
+        print(f"[SurpriseSVD] Training SVD (n_factors={self.n_factors}, epochs={self.n_epochs})...")
         
         reader = Reader(rating_scale=(0.5, 5.0))
         data = Dataset.load_from_df(train_df[['userId', 'movieId', 'rating']], reader)
@@ -46,7 +46,7 @@ class SurpriseSVDRecommender:
         # Model mới → xoá các user đã cập nhật online ở model cũ (bản thân chúng
         # đã được gộp vào train qua merge_interactions nếu tương tác thật)
         self.extra_users = {}
-        print("[SurpriseSVD] Huấn luyện hoàn tất.")
+        print("[SurpriseSVD] Training completed.")
         return self
 
     def predict(self, user_id: int, movie_id: int) -> float:
@@ -194,7 +194,7 @@ class SurpriseSVDRecommender:
         filepath.parent.mkdir(parents=True, exist_ok=True)
         # Lưu cả đối tượng SurpriseSVDRecommender
         joblib.dump(self, filepath)
-        print(f"[SurpriseSVD] Đã lưu mô hình vào: {filepath}")
+        print(f"[SurpriseSVD] Saved model to: {filepath}")
 
     @staticmethod
     def load(filepath: Path):
@@ -204,5 +204,5 @@ class SurpriseSVDRecommender:
         # không có extra_users → khởi tạo lại để không crash
         if not hasattr(model, "extra_users"):
             model.extra_users = {}
-        print(f"[SurpriseSVD] Đã tải mô hình từ: {filepath}")
+        print(f"[SurpriseSVD] Loaded model from: {filepath}")
         return model

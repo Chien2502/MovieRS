@@ -144,7 +144,11 @@ class RecommenderService:
                 
         # 2. Xử lý Cold-Start User
         # Nếu user chưa từng xuất hiện trong tập Train, gợi ý các phim phổ biến nhất (Popularity)
-        is_cold = user_id not in self.known_users
+        has_online_profile = (
+            self.model is not None
+            and user_id in getattr(self.model, "extra_users", {})
+        )
+        is_cold = user_id not in self.known_users and not has_online_profile
 
         # Phim đã tương tác gần đây (log) — loại khỏi gợi ý ngay, không chờ retrain
         recent_watched = self._get_recent_activity(user_id)

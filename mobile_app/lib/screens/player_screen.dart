@@ -31,6 +31,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
   int _position = 0;
   bool _isPlaying = true;
   bool _finished = false;
+  bool _isSeeking = false;
+  bool _wasPlayingBeforeSeek = false;
+  bool _progressChanged = false;
+  bool _isClosing = false;
 
   // Banner resume: hiện khi có vị trí xem dở trong khoảng 5% – 95%
   bool _showResumeBanner = false;
@@ -45,14 +49,17 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   void initState() {
     super.initState();
-    _totalDuration = widget.movie.runtimeMinutes * 60;
+    final runtimeMinutes = widget.movie.runtimeMinutes > 0 ? widget.movie.runtimeMinutes : 100;
+    _totalDuration = runtimeMinutes * 60;
     _loadResumePosition();
   }
 
   @override
   void dispose() {
     _tick?.cancel();
-    _flushProgress(); // lưu vị trí cuối trước khi rời màn hình
+    if (!_isClosing) {
+      _flushProgress(); // lưu vị trí cuối trước khi rời màn hình
+    }
     super.dispose();
   }
 
@@ -60,17 +67,24 @@ class _PlayerScreenState extends State<PlayerScreen> {
   /// và hiện banner "Tiếp tục xem".
   Future<void> _loadResumePosition() async {
     final saved = await _apiService.getWatchProgress(widget.userId, widget.movie.movieId);
-    if (saved == null) return;
-    final ratio = (saved['ratio'] ?? 0.0).toDouble();
-    final position = (saved['position_seconds'] ?? 0) as int;
-
     if (!mounted) return;
-    if (ratio >= 0.05 && ratio < _finishRatio) {
-      setState(() {
-        _position = position;
-        _resumePosition = position;
-        _showResumeBanner = true;
-      });
+
+    if (saved != null) {
+      final ratio = (saved['ratio'] ?? 0.0).toDouble();
+      final position = ((saved['position_seconds'] ?? 0) as num).toInt();
+      final savedDuration = ((saved['duration_seconds'] ?? 0) as num).toInt();
+
+      if (savedDuration > 0) {
+        _totalDuration = savedDuration;
+      }
+
+      if (ratio >= 0.05 && ratio < _finishRatio) {
+        setState(() {
+          _position = position.clamp(0, _totalDuration);
+          _resumePosition = _position;
+          _showResumeBanner = true;
+        });
+      }
     }
     _startTicking();
   }
@@ -81,9 +95,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   void _onTick() {
-    if (!_isPlaying || _finished) return;
+    if (!_isPlaying || _finished || _isSeeking) return;
     setState(() {
-      _position++;
+      _position = (_position + 1).clamp(0, _totalDuration);
     });
 
     // Heartbeat: gửi tiến độ mỗi 5 giây (fire-and-forget)
@@ -100,8 +114,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   /// Gửi tiến độ hiện tại lên server (không chặn UI).
-  void _sendProgress() {
-    _apiService.sendWatchProgress(
+  Future<bool> _sendProgress() {
+    _progressChanged = true;
+    return _apiService.sendWatchProgress(
       widget.userId,
       widget.movie.movieId,
       _position,
@@ -111,6 +126,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   void _flushProgress() {
     if (_position > 0 && !_finished) {
+      _progressChanged = true;
       _apiService.sendWatchProgress(
         widget.userId,
         widget.movie.movieId,
@@ -120,9 +136,57 @@ class _PlayerScreenState extends State<PlayerScreen> {
     }
   }
 
+  Future<void> _recordWatchHistory() async {
+    if (_position <= 0 || _totalDuration <= 0) return;
+    _progressChanged = true;
+    await _apiService.sendWatchHistory(
+      widget.userId,
+      widget.movie.movieId,
+      _position,
+      _totalDuration,
+    );
+  }
+
+  void _onSeekStart(double value) {
+    _wasPlayingBeforeSeek = _isPlaying;
+    setState(() {
+      _isSeeking = true;
+      _isPlaying = false;
+      _showResumeBanner = false;
+    });
+  }
+
+  void _onSeekChanged(double value) {
+    setState(() {
+      _position = value.round().clamp(0, _totalDuration);
+    });
+  }
+
+  Future<void> _onSeekEnd(double value) async {
+    final newPosition = value.round().clamp(0, _totalDuration);
+    setState(() {
+      _position = newPosition;
+      _isSeeking = false;
+    });
+
+    if (_position >= (_totalDuration * _finishRatio).round()) {
+      await _onFinished();
+      return;
+    }
+
+    await _sendProgress();
+    await _recordWatchHistory();
+
+    if (!mounted) return;
+    setState(() {
+      _isPlaying = _wasPlayingBeforeSeek;
+    });
+  }
+
   Future<void> _onFinished() async {
     _finished = true;
     _tick?.cancel();
+    _progressChanged = true;
     await _apiService.sendWatchProgress(
       widget.userId,
       widget.movie.movieId,
@@ -138,6 +202,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
     );
     // Trả true để Home biết cần refresh hàng "Tiếp tục xem"
     Navigator.pop(context, true);
+  }
+
+  void _closePlayer() {
+    _isClosing = true;
+    _flushProgress();
+    Navigator.pop(context, _progressChanged);
   }
 
   String _format(int seconds) {
@@ -164,9 +234,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Widget build(BuildContext context) {
     final progress = (_totalDuration == 0) ? 0.0 : (_position / _totalDuration).clamp(0.0, 1.0);
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        _closePlayer();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
         fit: StackFit.expand,
         children: [
           // Nền poster mờ
@@ -188,7 +264,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: _closePlayer,
                     ),
                     Expanded(
                       child: Text(
@@ -266,13 +342,25 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          minHeight: 6,
-                          backgroundColor: Colors.white24,
-                          color: AppColors.primary,
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackHeight: 6,
+                          activeTrackColor: AppColors.primary,
+                          inactiveTrackColor: Colors.white24,
+                          thumbColor: Colors.white,
+                          overlayColor: AppColors.primary.withValues(alpha: 0.18),
+                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 18),
+                        ),
+                        child: Slider(
+                          min: 0,
+                          max: _totalDuration.toDouble(),
+                          value: _position.clamp(0, _totalDuration).toDouble(),
+                          onChangeStart: _onSeekStart,
+                          onChanged: _onSeekChanged,
+                          onChangeEnd: (value) {
+                            _onSeekEnd(value);
+                          },
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -295,6 +383,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
             ),
           ),
         ],
+        ),
       ),
     );
   }

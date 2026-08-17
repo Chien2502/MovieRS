@@ -69,7 +69,7 @@ class PopularityRecommender:
         # Lưu dictionary điểm của từng phim để dự đoán
         self.movie_scores = dict(zip(movie_stats['movieId'], movie_stats['rating_mean']))
         
-        print(f"[PopularityRecommender] Fitted. Top 3 phim hot nhất: {self.popular_movies[:3]}")
+        print(f"[PopularityRecommender] Fitted. Top 3 popular movies: {self.popular_movies[:3]}")
         return self
 
     def predict(self, user_id: int, movie_id: int) -> float:
@@ -111,9 +111,9 @@ class SurpriseKNNRecommender:
         data = Dataset.load_from_df(train_df[['userId', 'movieId', 'rating']], reader)
         self.trainset = data.build_full_trainset()
         
-        print(f"[KNNRecommender] Đang huấn luyện KNN (user_based={self.user_based}, k={self.k})...")
+        print(f"[KNNRecommender] Training KNN (user_based={self.user_based}, k={self.k})...")
         self.model.fit(self.trainset)
-        print("[KNNRecommender] Huấn luyện hoàn tất.")
+        print("[KNNRecommender] Training completed.")
         return self
 
     def predict(self, user_id: int, movie_id: int) -> float:

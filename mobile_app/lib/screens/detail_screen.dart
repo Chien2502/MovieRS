@@ -70,6 +70,13 @@ class _DetailScreenState extends State<DetailScreen> {
       widget.movie.movieId,
       _isFavorite,
     );
+    final feedbackOk = ok
+        ? await _apiService.sendFavorite(
+            widget.userId,
+            widget.movie.movieId,
+            _isFavorite,
+          )
+        : false;
 
     if (!ok && mounted) {
       setState(() {
@@ -81,7 +88,9 @@ class _DetailScreenState extends State<DetailScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(ok
-              ? (_isFavorite ? 'Đã thêm vào Phim yêu thích ❤️' : 'Đã bỏ yêu thích 💔')
+              ? (feedbackOk
+                  ? (_isFavorite ? 'Đã thêm vào Phim yêu thích ❤️' : 'Đã bỏ yêu thích 💔')
+                  : 'Đã lưu yêu thích, nhưng chưa gửi được tín hiệu gợi ý')
               : 'Không thể đồng bộ yêu thích lên máy chủ'),
           backgroundColor: ok ? (_isFavorite ? Colors.pinkAccent : Colors.grey) : Colors.redAccent,
           duration: const Duration(seconds: 2),

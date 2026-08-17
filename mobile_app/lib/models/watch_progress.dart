@@ -6,6 +6,7 @@ class WatchProgress {
   final String posterPath;
   final int positionSeconds;
   final int durationSeconds;
+  final int runtimeMinutes;
   final double ratio;
 
   WatchProgress({
@@ -15,6 +16,7 @@ class WatchProgress {
     required this.posterPath,
     required this.positionSeconds,
     required this.durationSeconds,
+    required this.runtimeMinutes,
     required this.ratio,
   });
 
@@ -26,6 +28,7 @@ class WatchProgress {
       posterPath: json['poster_path'] ?? '',
       positionSeconds: (json['position_seconds'] ?? 0) as int,
       durationSeconds: (json['duration_seconds'] ?? 0) as int,
+      runtimeMinutes: (json['runtime_minutes'] ?? 100) as int,
       ratio: (json['ratio'] ?? 0.0).toDouble(),
     );
   }

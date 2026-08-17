@@ -70,8 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Mở chi tiết phim; khi quay về thì refresh riêng hàng "Tiếp tục xem"
-  /// (vì user có thể vừa xem xong một phim trong player).
+  /// Mở chi tiết phim; khi quay về thì refresh gợi ý và hàng "Tiếp tục xem"
+  /// vì user có thể vừa rating/thả tim/xem phim.
   Future<void> _openDetail(Movie movie) async {
     await Navigator.push(
       context,
@@ -80,9 +80,19 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
     if (!mounted) return;
-    final updated = await _apiService.getContinueWatching(widget.userId);
+
+    // User có thể vừa rating/thả tim/xem phim trong Detail/Player; tải lại
+    // recommendation để thấy hiệu ứng cá nhân hóa ngay khi quay về Home.
+    final recsFuture = _apiService.getRecommendations(widget.userId);
+    final continueFuture = _apiService.getContinueWatching(widget.userId);
+    final recommendations = await recsFuture;
+    final updated = await continueFuture;
+
     if (!mounted) return;
-    setState(() => _continueWatching = updated);
+    setState(() {
+      _recommendations = recommendations;
+      _continueWatching = updated;
+    });
   }
 
   @override
