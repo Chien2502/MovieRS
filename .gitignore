@@ -1,0 +1,63 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# ===== Environment =====
+.env
+.env.local
+.env.*.local
+
+# ===== Data (large files) =====
+data/raw/*
+!data/raw/.gitkeep
+data/enriched/*
+!data/enriched/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# ===== Models (large files) =====
+models/*.pkl
+models/*.joblib
+!models/.gitkeep
+!models/model_latest.json
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== Logs =====
+logs/*
+!logs/.gitkeep
+*.log
+
+# ===== IDE & Editor =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*.iml
+
+# ===== Flutter =====
+mobile_app/.dart_tool/
+mobile_app/.flutter-plugins
+mobile_app/.flutter-plugins-dependencies
+mobile_app/build/
+mobile_app/.packages
+mobile_app/.idea/
+mobile_app/*.iml
+mobile_app/android/app/debug/
+mobile_app/android/app/profile/
+mobile_app/android/app/release/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+

@@ -1,0 +1,19 @@
+{
+  "version": "model_v_20260804_092236",
+  "model_file": "model_v_20260804_092236.pkl",
+  "created_at": "2026-08-04T09:22:36",
+  "metrics": {
+    "RMSE": 0.9498930928625082,
+    "MAE": 0.7234373140897281,
+    "val_rmse": 0.9498930928625082
+  },
+  "params": {
+    "n_factors": 50,
+    "lr_all": 0.005,
+    "reg_all": 0.05,
+    "n_epochs": 20
+  },
+  "train_rows": 80668,
+  "promoted": true,
+  "prev_version": null
+}
