@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 12),
                           SizedBox(
-                            height: 210,
+                            height: 245,
                             child: ListView.builder(
                               padding: const EdgeInsets.only(left: 16),
                               scrollDirection: Axis.horizontal,
@@ -313,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// Thẻ phim trong hàng "Tiếp tục xem" — poster + vị trí dừng + nút xóa.
+  /// Thẻ phim trong hàng "Tiếp tục xem" — poster + vị trí dừng + thanh tiến độ + nút xóa.
   Widget _buildContinueCard(WatchProgress item) {
     return SizedBox(
       width: 140,
@@ -321,6 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.only(right: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             GestureDetector(
               onTap: () => _openDetail(
@@ -331,6 +332,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   posterPath: item.posterPath,
                   overview: '',
                   voteAverage: 0,
+                  runtimeMinutes: item.runtimeMinutes,
                 ),
               ),
               child: Stack(
@@ -340,42 +342,85 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CachedNetworkImage(
                       imageUrl: item.posterPath,
                       width: 140,
-                      height: 160,
+                      height: 175,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(color: Colors.grey[300]),
+                      placeholder: (context, url) => Container(
+                        width: 140,
+                        height: 175,
+                        color: AppColors.cardBackground,
+                      ),
                       errorWidget: (context, url, error) => Container(
                         width: 140,
-                        height: 160,
-                        color: Colors.grey[300],
+                        height: 175,
+                        color: AppColors.cardBackground,
                         child: const Icon(Icons.movie_outlined, size: 40, color: Colors.grey),
                       ),
                     ),
                   ),
+                  // Nút xóa nhanh ở góc trên phải
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child: GestureDetector(
+                      onTap: () async {
+                        await _apiService.removeContinueWatching(widget.userId, item.movieId);
+                        if (!mounted) return;
+                        setState(() {
+                          _continueWatching = _continueWatching
+                              .where((e) => e.movieId != item.movieId)
+                              .toList();
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.65),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.close, size: 14, color: Colors.white70),
+                      ),
+                    ),
+                  ),
+                  // Progress badge & bar ở đáy poster
                   Positioned(
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.7),
-                        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.play_circle_fill, color: AppColors.primary, size: 16),
-                          const SizedBox(width: 4),
-                          Text(
-                            item.positionLabel,
-                            style: const TextStyle(color: Colors.white, fontSize: 12),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.75),
+                            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
                           ),
-                          const Spacer(),
-                          Text(
-                            '${(item.ratio * 100).round()}%',
-                            style: const TextStyle(color: Colors.white70, fontSize: 12),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.play_circle_fill, color: AppColors.primary, size: 14),
+                              const SizedBox(width: 4),
+                              Text(
+                                item.positionLabel,
+                                style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
+                              ),
+                              const Spacer(),
+                              Text(
+                                '${(item.ratio * 100).round()}%',
+                                style: const TextStyle(color: AppColors.primary, fontSize: 11, fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        ClipRRect(
+                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
+                          child: LinearProgressIndicator(
+                            value: item.ratio.clamp(0.0, 1.0),
+                            backgroundColor: Colors.grey[800],
+                            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                            minHeight: 3,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -384,29 +429,22 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 6),
             Text(
               item.title,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
               ),
             ),
-            TextButton.icon(
-              onPressed: () async {
-                await _apiService.removeContinueWatching(widget.userId, item.movieId);
-                if (!mounted) return;
-                setState(() {
-                  _continueWatching = _continueWatching
-                      .where((e) => e.movieId != item.movieId)
-                      .toList();
-                });
-              },
-              icon: const Icon(Icons.close, size: 14, color: AppColors.textSecondary),
-              label: const Text('Xóa khỏi danh sách', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
-              style: TextButton.styleFrom(
-                minimumSize: const Size(0, 24),
-                padding: const EdgeInsets.symmetric(horizontal: 4),
+            const SizedBox(height: 2),
+            Text(
+              item.genres.isNotEmpty ? item.genres.split(RegExp(r'[|,/]+')).first.trim() : 'Phim',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textSecondary,
               ),
             ),
           ],
