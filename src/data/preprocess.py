@@ -184,6 +184,16 @@ def main():
         print("    Vui lòng chạy script làm giàu dữ liệu trước: python src/data/fetch_tmdb.py")
         sys.exit(1)
 
+    def _sync_movies_to_sqlite(df):
+        print(f"    [SQLite Sync] Đang đồng bộ danh mục phim ({len(df)} dòng) vào SQLite...")
+        try:
+            from src.utils.migrate_to_sqlite import migrate_csv
+            def proc_movies(d):
+                return d[['movieId', 'title', 'genres', 'release_year', 'overview', 'poster_path', 'runtime_minutes', 'release_date']].values.tolist()
+            migrate_csv("movies_processed.csv", "movies", proc_movies)
+        except ImportError:
+            print("    [⚠] Không tìm thấy migrate_to_sqlite.py, bỏ qua đồng bộ SQLite.")
+
     # Chế độ --movies-only: chỉ tái sinh movies_processed.csv, ratings giữ nguyên
     if args.movies_only:
         print("[🎬] Chế độ --movies-only: chỉ xử lý phim (ratings không bị thay đổi)...")
@@ -191,6 +201,7 @@ def main():
         movies_out = PROCESSED_DIR / "movies_processed.csv"
         processed_movies_df.to_csv(movies_out, index=False, encoding="utf-8")
         print(f"\n[✓] Đã lưu thông tin phim: {movies_out} ({len(processed_movies_df):,} phim)")
+        _sync_movies_to_sqlite(processed_movies_df)
         print("    Ratings giữ nguyên — không cần retrain lại mô hình.")
         return
         
@@ -217,6 +228,7 @@ def main():
     
     print(f"\n[✓] Tiền xử lý hoàn tất!")
     print(f"    - Đã lưu thông tin phim: {movies_out}")
+    _sync_movies_to_sqlite(processed_movies_df)
     print(f"    - Đã lưu ratings: {ratings_out}")
     print("    Bước tiếp theo: python src/data/split.py")
 

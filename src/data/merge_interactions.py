@@ -54,8 +54,15 @@ def merge_and_split(verbose: bool = True) -> dict:
     n_base = len(base_df)
 
     log_df = pd.DataFrame(columns=['userId', 'movieId', 'rating', 'timestamp'])
-    if INTERACTIONS_LOG_CSV.exists():
-        log_df = pd.read_csv(INTERACTIONS_LOG_CSV)
+    
+    try:
+        from api.services.database import get_db
+        conn = get_db()
+        # column names in SQLite: user_id, movie_id, rating, timestamp
+        log_df = pd.read_sql("SELECT user_id AS userId, movie_id AS movieId, rating, timestamp FROM interactions", conn)
+    except Exception as e:
+        print(f"[⚠] Không đọc được interactions từ DB: {e}")
+        
     n_log = len(log_df)
 
     if verbose:
