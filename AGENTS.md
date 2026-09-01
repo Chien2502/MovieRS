@@ -42,3 +42,15 @@
 ## Verification expectations
 - There is no wired Python pytest suite; use focused scripts plus API smoke checks for backend/ML changes.
 - The only Flutter test is `mobile_app/test/widget_test.dart`, a smoke test expecting Splash -> Login after mocked empty SharedPreferences.
+
+<!-- dely:begin -->
+## Dely
+
+Bounded or Architectural work invokes `dely:delivery`; Spike starts no
+delivery run.
+
+| Phase | Harness | Model | Effort |
+| --- | --- | --- | --- |
+| `implement` | agy | gemini 3.7 flash | high |
+| `review` | agy | gemini 3.1 pro | high |
+<!-- dely:end -->
