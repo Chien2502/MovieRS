@@ -70,7 +70,7 @@ def _write_interaction(user_id: int, movie_id: int, rating: float):
 
 
 @router.post("/interactions/rating")
-async def record_rating(interaction: RatingInteraction):
+def record_rating(interaction: RatingInteraction):
     """Ghi nhận đánh giá sao tường minh (Explicit Feedback).
 
     Rating mới được lưu vào interactions_log.csv, chu kỳ retrain tiếp theo sẽ
@@ -94,7 +94,7 @@ async def record_rating(interaction: RatingInteraction):
 
 
 @router.post("/interactions/favorite")
-async def record_favorite(interaction: FavoriteInteraction):
+def record_favorite(interaction: FavoriteInteraction):
     """Ghi nhận hành động nhấn Yêu thích/Bỏ thích (Implicit Feedback).
 
     Quy đổi hành vi:
@@ -109,11 +109,11 @@ async def record_favorite(interaction: FavoriteInteraction):
         movieId=interaction.movie_id,
         rating=mapped_rating
     )
-    return await record_rating(rating_payload)
+    return record_rating(rating_payload)
 
 
 @router.post("/interactions/watch")
-async def record_watch_history(interaction: WatchInteraction):
+def record_watch_history(interaction: WatchInteraction):
     """Ghi nhận lịch sử xem phim và tính toán Implicit Feedback dựa trên thời lượng xem.
 
     Công thức quy đổi Confidence Score sang Rating:
@@ -143,4 +143,4 @@ async def record_watch_history(interaction: WatchInteraction):
         movieId=interaction.movie_id,
         rating=mapped_rating
     )
-    return await record_rating(rating_payload)
+    return record_rating(rating_payload)

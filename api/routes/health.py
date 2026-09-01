@@ -12,7 +12,7 @@ START_TIME = time.time()
 
 
 @router.get("/health")
-async def health_check():
+def health_check():
     """Kiểm tra sức khỏe của API và trạng thái tải mô hình."""
     # Kiểm tra xem file model đã tồn tại chưa
     model_path = Path("models/model_latest.pkl")

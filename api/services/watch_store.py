@@ -32,6 +32,14 @@ def upsert_progress(user_id: int, movie_id: int, position_seconds: int,
 
     conn = get_db()
     c = conn.cursor()
+    
+    # Check old status to prevent SGD thrashing on heartbeats
+    c.execute("SELECT status FROM watch_progress WHERE user_id = ? AND movie_id = ?", (user_id, movie_id))
+    row = c.fetchone()
+    old_status = row[0] if row else "not_started"
+    
+    is_newly_finished = (status == "finished" and old_status != "finished")
+    
     c.execute(
         """
         INSERT OR REPLACE INTO watch_progress (user_id, movie_id, position_seconds, duration_seconds, ratio, status, updated_at)
@@ -41,7 +49,7 @@ def upsert_progress(user_id: int, movie_id: int, position_seconds: int,
     )
     conn.commit()
 
-    return {"ratio": ratio, "status": status, "finished": status == "finished"}
+    return {"ratio": ratio, "status": status, "finished": is_newly_finished}
 
 
 def get_progress(user_id: int) -> list[dict]:

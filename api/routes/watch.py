@@ -83,7 +83,7 @@ def _enrich(rows: list[dict]) -> list[dict]:
 
 
 @router.put("/watch/progress")
-async def save_watch_progress(req: WatchProgressRequest):
+def save_watch_progress(req: WatchProgressRequest):
     """Ghi nhận tiến độ xem (heartbeat từ player).
 
     - ratio >= 95% → đánh dấu finished + quy đổi thành rating 5.0 vào vòng
@@ -119,7 +119,7 @@ async def save_watch_progress(req: WatchProgressRequest):
 
 
 @router.get("/watch/progress/{user_id}")
-async def get_continue_watching(user_id: int, limit: int = 20):
+def get_continue_watching(user_id: int, limit: int = 20):
     """Danh sách phim đang xem dở của user (hàng "Tiếp tục xem").
 
     Chỉ gồm phim có 5% <= ratio < 95% (đang dở), sắp xếp theo thời gian
@@ -131,7 +131,7 @@ async def get_continue_watching(user_id: int, limit: int = 20):
 
 
 @router.get("/watch/progress/{user_id}/{movie_id}")
-async def get_movie_progress(user_id: int, movie_id: int):
+def get_movie_progress(user_id: int, movie_id: int):
     """Tiến độ xem của 1 phim (để player seek đúng vị trí khi mở lại)."""
     _require_user(user_id)
     row = watch_store.get_progress_for_movie(user_id, movie_id)
@@ -147,7 +147,7 @@ async def get_movie_progress(user_id: int, movie_id: int):
 
 
 @router.delete("/watch/progress/{user_id}/{movie_id}")
-async def remove_continue_watching(user_id: int, movie_id: int):
+def remove_continue_watching(user_id: int, movie_id: int):
     """Xoá phim khỏi danh sách "Tiếp tục xem" của user."""
     _require_user(user_id)
     removed = watch_store.remove_progress(user_id, movie_id)

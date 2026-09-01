@@ -50,7 +50,7 @@ def _load_ratings(user_id: int) -> list[dict]:
 
 
 @router.get("/users/{user_id}/profile")
-async def get_profile(user_id: int):
+def get_profile(user_id: int):
     """Thông tin hồ sơ người dùng (hiển thị trên màn hình Profile)."""
     user = _require_user(user_id)
     return {
@@ -63,7 +63,7 @@ async def get_profile(user_id: int):
 
 
 @router.get("/users/{user_id}/favorites")
-async def get_favorites(user_id: int):
+def get_favorites(user_id: int):
     """Danh sách phim yêu thích (đã enrich tên, poster, ...)."""
     _require_user(user_id)
     favs = _load_favorites(user_id)
@@ -76,7 +76,7 @@ class FavoriteRequest(BaseModel):
 
 
 @router.post("/users/{user_id}/favorites")
-async def set_favorite(user_id: int, req: FavoriteRequest):
+def set_favorite(user_id: int, req: FavoriteRequest):
     """Thêm/bỏ phim yêu thích của user (upsert)."""
     _require_user(user_id)
     
@@ -86,7 +86,7 @@ async def set_favorite(user_id: int, req: FavoriteRequest):
     if req.isFavorite:
         added_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         c.execute(
-            "INSERT OR REPLACE INTO favorites (user_id, movie_id, added_at) VALUES (?, ?, ?)",
+            "INSERT OR IGNORE INTO favorites (user_id, movie_id, added_at) VALUES (?, ?, ?)",
             (user_id, req.movieId, added_at)
         )
     else:
@@ -100,7 +100,7 @@ async def set_favorite(user_id: int, req: FavoriteRequest):
 
 
 @router.get("/users/{user_id}/ratings")
-async def get_ratings_history(user_id: int):
+def get_ratings_history(user_id: int):
     """Lịch sử đánh giá của user (từ interactions, mỗi phim giữ bản mới nhất)."""
     _require_user(user_id)
     ratings = _load_ratings(user_id)
@@ -128,7 +128,7 @@ class PreferencesRequest(BaseModel):
 
 
 @router.put("/users/{user_id}/preferences")
-async def update_preferences(user_id: int, req: PreferencesRequest):
+def update_preferences(user_id: int, req: PreferencesRequest):
     """Cập nhật thể loại yêu thích (dùng cho Cold-Start theo genres)."""
     _require_user(user_id)
     updated = update_user_genres(user_id, req.genres)

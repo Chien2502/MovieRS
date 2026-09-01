@@ -13,7 +13,7 @@ recommender_service = RecommenderService()
 
 
 @router.get("/recommendations/{user_id}")
-async def get_recommendations(
+def get_recommendations(
     user_id: int,
     limit: int = Query(10, ge=1, le=50, description="Số lượng phim cần gợi ý")
 ):
@@ -46,9 +46,11 @@ async def get_recommendations(
 
 
 @router.post("/recommendations/reload")
-async def reload_recommender_model():
+def reload_recommender_model():
     """Endpoint yêu cầu nạp lại mô hình từ đĩa (dành cho Retraining Pipeline)."""
     try:
+        from api.routes.movies import reload_movies_df
+        reload_movies_df()
         recommender_service.reload_model()
         return {"status": "success", "message": "Model reloaded successfully."}
     except Exception as e:

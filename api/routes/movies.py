@@ -33,9 +33,14 @@ def get_movies_df():
             )
     return movies_df
 
+def reload_movies_df():
+    """Xóa cache để ép get_movies_df() tải lại dữ liệu từ DB ở request tiếp theo."""
+    global movies_df
+    movies_df = None
+
 
 @router.get("/movies/search")
-async def search_movies(
+def search_movies(
     q: str = Query(..., description="Từ khóa tìm kiếm tiêu đề hoặc thể loại"),
     limit: int = Query(20, ge=1, le=100)
 ):
@@ -53,7 +58,7 @@ async def search_movies(
 
 
 @router.get("/movies/{movie_id}")
-async def get_movie_detail(movie_id: int):
+def get_movie_detail(movie_id: int):
     """Lấy thông tin chi tiết của một bộ phim cụ thể."""
     df = get_movies_df()
     movie = df[df['movieId'] == movie_id]
@@ -65,7 +70,7 @@ async def get_movie_detail(movie_id: int):
 
 
 @router.get("/movies")
-async def get_movies(
+def get_movies(
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0)
 ):

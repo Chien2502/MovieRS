@@ -28,7 +28,7 @@ class LoginRequest(BaseModel):
 
 
 @router.post("/auth/register", status_code=201)
-async def register(req: RegisterRequest):
+def register(req: RegisterRequest):
     """Đăng ký tài khoản mới; trả về user_id dùng cho mọi API call sau đó."""
     try:
         user = register_user(req.username, req.password, req.genres)
@@ -43,7 +43,7 @@ async def register(req: RegisterRequest):
 
 
 @router.post("/auth/login")
-async def login(req: LoginRequest):
+def login(req: LoginRequest):
     """Đăng nhập; trả về user_id nếu tên đăng nhập + mật khẩu đúng."""
     user = authenticate(req.username, req.password)
     if user is None:

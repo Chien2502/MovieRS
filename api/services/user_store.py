@@ -62,18 +62,19 @@ def register_user(username: str, password: str, genres: list[str] | None = None)
     genres_json = json.dumps(genres or [], ensure_ascii=False)
     created_at = datetime.now().isoformat(timespec="seconds")
 
-    # Get max ID or start from USER_ID_START
-    max_id_row = db.execute("SELECT MAX(user_id) FROM users").fetchone()
-    next_id = (max_id_row[0] or (USER_ID_START - 1)) + 1
-
     try:
-        db.execute(
+        cursor = db.cursor()
+        cursor.execute("BEGIN IMMEDIATE")
+        max_id_row = cursor.execute("SELECT MAX(user_id) FROM users").fetchone()
+        next_id = (max_id_row[0] or (USER_ID_START - 1)) + 1
+        cursor.execute(
             """INSERT INTO users (user_id, username, password_hash, salt, genres, created_at)
                VALUES (?, ?, ?, ?, ?, ?)""",
             (next_id, username, digest, salt, genres_json, created_at)
         )
         db.commit()
     except sqlite3.IntegrityError:
+        db.rollback()
         # Fallback if there's a concurrent insert with same username (UNIQUE constraint)
         raise ValueError("Tên người dùng đã tồn tại")
 
