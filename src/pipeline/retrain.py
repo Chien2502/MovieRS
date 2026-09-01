@@ -26,6 +26,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.models.svd_surprise import SurpriseSVDRecommender
+from src.models.item_similarity import build_index, load_index
 from src.data.merge_interactions import merge_and_split
 from src.pipeline.registry import (
     write_metadata,
@@ -36,6 +37,7 @@ from src.pipeline.registry import (
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 MODEL_DIR = PROJECT_ROOT / "models"
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
+MOVIES_CSV = PROJECT_ROOT / "data" / "processed" / "movies_processed.csv"
 
 # Siêu tham số SVD — lấy từ .env (fallback về giá trị mặc định đã tuning)
 SVD_N_FACTORS = int(os.getenv("SVD_N_FACTORS", "50"))
@@ -183,6 +185,17 @@ def run_retrain() -> dict:
             print("    Mẹo: Chạy 'python api/main.py' rồi thử lại script này.")
         except Exception as e:
             print(f"[⚠] Có lỗi xảy ra khi trigger reload: {e}")
+
+        # 7. Precompute Item-Item Similarity index cho candidate retrieval
+        print("[🔍] Đang precompute item-item similarity index...")
+        try:
+            sim_index = build_index(new_model, pd.read_csv(MOVIES_CSV).fillna(""))
+            from src.models.item_similarity import save_index
+            save_index(sim_index)
+            print("[✓] Item-similarity index đã được cập nhật.")
+        except Exception as e:
+            print(f"[⚠] Lỗi precompute item-similarity: {e}")
+            logger.warning("[ItemSim] Precompute thất bại: %s", e)
     else:
         print(f"[⛔] KHÔNG promote: giữ nguyên {latest_path.name}. "
               f"Model mới lưu tại {versioned_filename} (có thể rollback thủ công).")

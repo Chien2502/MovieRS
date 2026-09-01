@@ -21,7 +21,7 @@ class SurpriseSVDRecommender:
         self.lr_all = lr_all
         self.reg_all = reg_all
         self.n_epochs = n_epochs
-        
+
         self.model = SVD(
             n_factors=self.n_factors,
             lr_all=self.lr_all,
@@ -33,19 +33,20 @@ class SurpriseSVDRecommender:
         # {user_id: (p_u: np.ndarray, b_u: float)} — giúp cá nhân hóa tức thời
         # mà không cần retrain toàn bộ mô hình.
         self.extra_users = {}
+        # Số lần mỗi user đã được update online (dùng cho adaptive LR).
+        self.extra_update_counts: dict[int, int] = {}
 
     def fit(self, train_df: pd.DataFrame):
         """Huấn luyện mô hình SVD trên tập Train."""
         print(f"[SurpriseSVD] Training SVD (n_factors={self.n_factors}, epochs={self.n_epochs})...")
-        
+
         reader = Reader(rating_scale=(0.5, 5.0))
         data = Dataset.load_from_df(train_df[['userId', 'movieId', 'rating']], reader)
         self.trainset = data.build_full_trainset()
-        
+
         self.model.fit(self.trainset)
-        # Model mới → xoá các user đã cập nhật online ở model cũ (bản thân chúng
-        # đã được gộp vào train qua merge_interactions nếu tương tác thật)
         self.extra_users = {}
+        self.extra_update_counts = {}
         print("[SurpriseSVD] Training completed.")
         return self
 
@@ -77,9 +78,27 @@ class SurpriseSVDRecommender:
         - User mới (cold-start): lưu vào extra_users — vector p_u khởi tạo 0 (đẳng cấp
           với bản khởi tạo SVD), tích lũy dần qua từng tương tác.
         - Trả về False nếu phim không tồn tại trong mô hình (không cập nhật được).
+
+        Cải tiến: adaptive LR (giảm khi user có nhiều lần update) + L2 norm clamp để tránh drift.
         """
         lr = lr if lr is not None else self.lr_all
         reg = reg if reg is not None else self.reg_all
+
+        # --- Adaptive Learning Rate cho extra_users ---
+        try:
+            is_known_user = trainset = self.model.trainset and user_id in self.model.trainset.all_users()
+        except:
+            is_known_user = False
+            
+        if not is_known_user:
+            # Tăng tốc độ học (Learning Rate) ban đầu lên cực cao để User mới
+            # nhanh chóng vượt qua "Item Bias" của các phim phổ biến.
+            base_extra_lr = 0.15 
+            n_updates = self.extra_update_counts.get(user_id, 0)
+            decay_factor = 0.1
+            lr_eff = base_extra_lr / (1 + decay_factor * n_updates)
+        else:
+            lr_eff = lr
 
         try:
             trainset = self.model.trainset
@@ -99,14 +118,26 @@ class SurpriseSVDRecommender:
             bu = self.model.bu[inner_uid]
             pu = self.model.pu[inner_uid]
             err = rating - (global_mean + bu + bi + float(pu @ qi))
-            self.model.bu[inner_uid] = bu + lr * (err - reg * bu)
-            self.model.pu[inner_uid] = pu + lr * (err * qi - reg * pu)
+            self.model.bu[inner_uid] = bu + lr_eff * (err - reg * bu)
+            self.model.pu[inner_uid] = pu + lr_eff * (err * qi - reg * pu)
         else:
             pu, bu = self.extra_users.get(user_id, (np.zeros(self.n_factors), 0.0))
             err = rating - (global_mean + bu + bi + float(pu @ qi))
-            bu = bu + lr * (err - reg * bu)
-            pu = pu + lr * (err * qi - reg * pu)
+            bu = bu + lr_eff * (err - reg * bu)
+            delta_pu = lr_eff * (err * qi - reg * pu)
+            pu = pu + delta_pu
+
+            # Clamp L2 norm của delta_pu để tránh drift quá xa
+            max_norm_delta = 2.0
+            delta_norm = np.linalg.norm(delta_pu)
+            if delta_norm > max_norm_delta:
+                scale = max_norm_delta / delta_norm
+                delta_pu = delta_pu * scale
+                pu = pu + delta_pu
+
             self.extra_users[user_id] = (pu, bu)
+            self.extra_update_counts[user_id] = self.extra_update_counts.get(user_id, 0) + 1
+
         return True
 
     def recommend(self, user_id: int, all_movie_ids: list, rated_movie_ids: list = None, n=10) -> list:
@@ -192,7 +223,6 @@ class SurpriseSVDRecommender:
     def save(self, filepath: Path):
         """Lưu trữ mô hình."""
         filepath.parent.mkdir(parents=True, exist_ok=True)
-        # Lưu cả đối tượng SurpriseSVDRecommender
         joblib.dump(self, filepath)
         print(f"[SurpriseSVD] Saved model to: {filepath}")
 
@@ -200,9 +230,9 @@ class SurpriseSVDRecommender:
     def load(filepath: Path):
         """Tải mô hình đã lưu."""
         model = joblib.load(filepath)
-        # Backward compatibility: model cũ (pickle trước khi có online update)
-        # không có extra_users → khởi tạo lại để không crash
         if not hasattr(model, "extra_users"):
             model.extra_users = {}
+        if not hasattr(model, "extra_update_counts"):
+            model.extra_update_counts = {}
         print(f"[SurpriseSVD] Loaded model from: {filepath}")
         return model

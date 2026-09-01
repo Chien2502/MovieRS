@@ -104,11 +104,19 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         title: Row(
           children: [
-            const Icon(Icons.movie_filter_rounded, color: AppColors.primary, size: 24),
+            const Icon(
+              Icons.movie_filter_rounded,
+              color: AppColors.primary,
+              size: 24,
+            ),
             const SizedBox(width: 8),
             Text(
               'MovieRS (${widget.username})',
-              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16),
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
           ],
         ),
@@ -120,206 +128,237 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+          ? const Center(
+              child: CircularProgressIndicator(color: AppColors.primary),
+            )
           : _errorMessage != null
-              ? ErrorStateWidget(errorMessage: _errorMessage!, onRetry: _loadData)
-              : RefreshIndicator(
-                  color: AppColors.primary,
-                  backgroundColor: AppColors.cardBackground,
-                  onRefresh: _loadData,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // SECTION 0: Tiếp Tục Xem (Continue Watching)
-                        if (_continueWatching.isNotEmpty) ...[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  '▶ Tiếp Tục Xem',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                                const Flexible(
-                                  child: Text(
-                                    'Continue Watching',
-                                    style: TextStyle(fontSize: 12, color: AppColors.primary),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          SizedBox(
-                            height: 245,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.only(left: 16),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _continueWatching.length,
-                              itemBuilder: (context, index) {
-                                final item = _continueWatching[index];
-                                return _buildContinueCard(item);
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                        ],
-
-                        // SECTION 1: Phim Phổ Biến (Popularity Recommender)
-                        if (_popularMovies.isNotEmpty) ...[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  '🔥 Phim Phổ Biến Nhất',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                                const Flexible(
-                                  child: Text(
-                                    'Popularity',
-                                    style: TextStyle(fontSize: 12, color: AppColors.primary),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          SizedBox(
-                            height: 250,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.only(left: 16),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _popularMovies.length,
-                              itemBuilder: (context, index) {
-                                final movie = _popularMovies[index];
-                                return MovieCard(
-                                  movie: movie,
-                                  onTap: () => _openDetail(movie),
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                        ],
-
-                        // SECTION 2: Thể loại yêu thích (Onboarding Chips)
-                        if (_userGenres.isNotEmpty) ...[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  '🎭 Thể loại bạn quan tâm',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: _userGenres.map((g) {
-                                      return Container(
-                                        margin: const EdgeInsets.only(right: 8),
-                                        child: Chip(
-                                          label: Text(g, style: const TextStyle(fontSize: 12, color: Colors.black)),
-                                          backgroundColor: AppColors.primary,
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                        ],
-
-                        // SECTION 3: Gợi ý Cá Nhân Hóa (AI SVD Model)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Flexible(
-                                child: Text(
-                                  '🤖 Gợi Ý Cho Bạn (AI SVD)',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
+          ? ErrorStateWidget(errorMessage: _errorMessage!, onRetry: _loadData)
+          : RefreshIndicator(
+              color: AppColors.primary,
+              backgroundColor: AppColors.cardBackground,
+              onRefresh: _loadData,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SECTION 0: Tiếp Tục Xem (Continue Watching)
+                    if (_continueWatching.isNotEmpty) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              '▶ Tiếp Tục Xem',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary,
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.info_outline, size: 20, color: AppColors.textSecondary),
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      backgroundColor: AppColors.cardBackground,
-                                      title: const Text('Về Thuật Toán Gợi Ý', style: TextStyle(color: AppColors.primary)),
-                                      content: const Text(
-                                        'Danh sách phim này được tính toán bởi thuật toán SVD (Matrix Factorization) dựa trên tương tác của bạn và các người dùng tương tự.',
-                                        style: TextStyle(color: AppColors.textSecondary),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context),
-                                          child: const Text('Đã hiểu', style: TextStyle(color: AppColors.primary)),
+                            ),
+                            const Flexible(
+                              child: Text(
+                                'Continue Watching',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.primary,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        height: 245,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.only(left: 16),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _continueWatching.length,
+                          itemBuilder: (context, index) {
+                            final item = _continueWatching[index];
+                            return _buildContinueCard(item);
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+
+                    // SECTION 1: Phim Phổ Biến (Popularity Recommender)
+                    if (_popularMovies.isNotEmpty) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              '🔥 Phim Phổ Biến Nhất',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            const Flexible(
+                              child: Text(
+                                'Popularity',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.primary,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        height: 250,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.only(left: 16),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _popularMovies.length,
+                          itemBuilder: (context, index) {
+                            final movie = _popularMovies[index];
+                            return MovieCard(
+                              movie: movie,
+                              onTap: () => _openDetail(movie),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+
+                    // SECTION 2: Thể loại yêu thích (Onboarding Chips)
+                    if (_userGenres.isNotEmpty) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              '🎭 Thể loại bạn quan tâm',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: _userGenres.map((g) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(right: 8),
+                                    child: Chip(
+                                      label: Text(
+                                        g,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: AppColors.background,
                                         ),
-                                      ],
+                                      ),
+                                      backgroundColor: AppColors.primary,
                                     ),
                                   );
-                                },
+                                }).toList(),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
 
-                        const SizedBox(height: 8),
-
-                        _recommendations.isEmpty
-                            ? const EmptyStateWidget(
-                                icon: Icons.movie_outlined,
-                                title: 'Chưa có gợi ý cá nhân hóa',
-                                subtitle: 'Hãy đánh giá vài bộ phim để mô hình AI SVD học sở thích của bạn!',
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                itemCount: _recommendations.length,
-                                itemBuilder: (context, index) {
-                                  final movie = _recommendations[index];
-                                  return _buildMovieTile(movie, rank: index + 1);
-                                },
+                    // SECTION 3: Gợi ý Cá Nhân Hóa (AI SVD Model)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Flexible(
+                            child: Text(
+                              '🤖 Gợi Ý Cho Bạn (AI SVD)',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary,
                               ),
-                      ],
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.info_outline,
+                              size: 20,
+                              color: AppColors.textSecondary,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  backgroundColor: AppColors.cardBackground,
+                                  title: const Text(
+                                    'Về Thuật Toán Gợi Ý',
+                                    style: TextStyle(color: AppColors.primary),
+                                  ),
+                                  content: const Text(
+                                    'Danh sách phim này được tính toán bởi thuật toán SVD (Matrix Factorization) dựa trên tương tác của bạn và các người dùng tương tự.',
+                                    style: TextStyle(
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text(
+                                        'Đã hiểu',
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+
+                    const SizedBox(height: 8),
+
+                    _recommendations.isEmpty
+                        ? const EmptyStateWidget(
+                            icon: Icons.movie_outlined,
+                            title: 'Chưa có gợi ý cá nhân hóa',
+                            subtitle:
+                                'Hãy đánh giá vài bộ phim để mô hình AI SVD học sở thích của bạn!',
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            itemCount: _recommendations.length,
+                            itemBuilder: (context, index) {
+                              final movie = _recommendations[index];
+                              return _buildMovieTile(movie, rank: index + 1);
+                            },
+                          ),
+                  ],
                 ),
+              ),
+            ),
     );
   }
 
@@ -363,7 +402,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 140,
                         height: 175,
                         color: AppColors.cardBackground,
-                        child: const Icon(Icons.movie_outlined, size: 40, color: Colors.grey),
+                        child: const Icon(
+                          Icons.movie_outlined,
+                          size: 40,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   ),
@@ -373,7 +416,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     right: 6,
                     child: GestureDetector(
                       onTap: () async {
-                        await _apiService.removeContinueWatching(widget.userId, item.movieId);
+                        await _apiService.removeContinueWatching(
+                          widget.userId,
+                          item.movieId,
+                        );
                         if (!mounted) return;
                         setState(() {
                           _continueWatching = _continueWatching
@@ -387,7 +433,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.black.withValues(alpha: 0.65),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.close, size: 14, color: Colors.white70),
+                        child: const Icon(
+                          Icons.close,
+                          size: 14,
+                          color: Colors.white70,
+                        ),
                       ),
                     ),
                   ),
@@ -400,33 +450,54 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 8,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.75),
-                            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
+                            borderRadius: const BorderRadius.vertical(
+                              bottom: Radius.circular(10),
+                            ),
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.play_circle_fill, color: AppColors.primary, size: 14),
+                              const Icon(
+                                Icons.play_circle_fill,
+                                color: AppColors.primary,
+                                size: 14,
+                              ),
                               const SizedBox(width: 4),
                               Text(
                                 item.positionLabel,
-                                style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                               const Spacer(),
                               Text(
                                 '${(item.ratio * 100).round()}%',
-                                style: const TextStyle(color: AppColors.primary, fontSize: 11, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),
                         ),
                         ClipRRect(
-                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(10),
+                          ),
                           child: LinearProgressIndicator(
                             value: item.ratio.clamp(0.0, 1.0),
                             backgroundColor: Colors.grey[800],
-                            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              AppColors.primary,
+                            ),
                             minHeight: 3,
                           ),
                         ),
@@ -449,7 +520,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 2),
             Text(
-              item.genres.isNotEmpty ? item.genres.split(RegExp(r'[|,/]+')).first.trim() : 'Phim',
+              item.genres.isNotEmpty
+                  ? item.genres.split(RegExp(r'[|,/]+')).first.trim()
+                  : 'Phim',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -483,7 +556,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     '#$rank',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: rank <= 3 ? AppColors.ratingStar : AppColors.textSecondary,
+                      color: rank <= 3
+                          ? AppColors.ratingStar
+                          : AppColors.textSecondary,
                     ),
                   ),
                 ),
@@ -496,7 +571,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 60,
                   height: 90,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(color: Colors.grey[300]),
+                  placeholder: (context, url) =>
+                      Container(color: Colors.grey[300]),
                   errorWidget: (context, url, error) => Image.network(
                     'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500',
                     width: 60,
@@ -525,16 +601,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       movie.genres,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 12, color: AppColors.primary),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.primary,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(Icons.star, color: AppColors.ratingStar, size: 16),
+                        const Icon(
+                          Icons.star,
+                          color: AppColors.ratingStar,
+                          size: 16,
+                        ),
                         const SizedBox(width: 4),
                         Text(
-                          movie.voteAverage > 0 ? movie.voteAverage.toStringAsFixed(1) : '7.0',
-                          style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                          movie.voteAverage > 0
+                              ? movie.voteAverage.toStringAsFixed(1)
+                              : '7.0',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ],
                     ),

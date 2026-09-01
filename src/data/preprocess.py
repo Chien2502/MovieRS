@@ -74,8 +74,15 @@ def preprocess_movies(movies_path: Path) -> pd.DataFrame:
 
 def preprocess_ratings(ratings_path: Path, max_ratings: int | None = None,
                        min_user_ratings: int | None = None,
-                       min_movie_ratings: int | None = None) -> pd.DataFrame:
-    """Tiền xử lý dữ liệu ratings (có thể giới hạn số rating để cân đối thời gian train)."""
+                       min_movie_ratings: int | None = None,
+                       max_movie_ratings: int | None = None) -> pd.DataFrame:
+    """Tiền xử lý dữ liệu ratings (có thể giới hạn số rating để cân đối thời gian train).
+
+    Tham số mới --max-movie-ratings:
+      Áp dụng stratified sampling: với mỗi phim có > N ratings, chỉ giữ ngẫu nhiên N
+      rating (random_state cố định); phim có <= N ratings giữ nguyên. Điều này giúp
+      giữ coverage đầy đủ (~59K movies) mà vẫn kiểm soát kích thước dataset.
+    """
     print("[⭐] Đang tiền xử lý dữ liệu ratings...")
     df = pd.read_csv(ratings_path)
     initial_len = len(df)
@@ -98,6 +105,26 @@ def preprocess_ratings(ratings_path: Path, max_ratings: int | None = None,
         df = df[df['movieId'].isin(keep_movies)]
         print(f"    ⚠ Chỉ giữ phim có >= {min_movie_ratings} ratings: "
               f"{len(df):,} ratings từ {len(keep_movies):,} phim.")
+
+    # 2b. Stratified sampling theo phim: giới hạn tối đa N rating/phim (mặc định 0 = không giới hạn).
+    #      Với phim có > max_movie_ratings ratings: lấy ngẫu nhiên đúng max_movie_ratings bản ghi
+    #      (random_state cố định). Phim có <= N ratings giữ nguyên toàn bộ.
+    #      Mục tiêu: giữ coverage ~59K movies nhưng kiểm soát tổng số rating ~1.5M.
+    if max_movie_ratings is not None and max_movie_ratings > 0:
+        movie_counts = df['movieId'].value_counts()
+        over_mask = movie_counts > max_movie_ratings
+        over_ids = movie_counts[over_mask].index.tolist()
+        if over_ids:
+            df_over = df[df['movieId'].isin(over_ids)]
+            df_under = df[~df['movieId'].isin(over_ids)]
+            df_over_sampled = (
+                df_over.groupby("movieId", sort=False)
+                .apply(lambda g: g.sample(n=min(len(g), max_movie_ratings), random_state=42), include_groups=False)
+                .reset_index(drop=True)
+            )
+            df = pd.concat([df_under, df_over_sampled], ignore_index=True)
+            print(f"    ⚠ Stratified sampling (cap {max_movie_ratings}/phim): "
+                  f"{len(df):,} ratings từ {df.movieId.nunique():,} phim.")
 
     # 3. Giới hạn số lượng ratings (ngẫu nhiên, tái lập được) — phục vụ dự án học thuật:
     #    dataset quá lớn (ml-25m = 25M rows) làm thời gian huấn luyện SVD không khả thi.
@@ -136,6 +163,10 @@ def main():
                         help="Chỉ giữ user có ít nhất N ratings (lọc đuôi dài, SVD học tốt hơn).")
     parser.add_argument("--min-movie-ratings", type=int, default=None,
                         help="Chỉ giữ ratings của phim có ít nhất N ratings (dữ liệu dày, RMSE ổn định).")
+    parser.add_argument("--max-movie-ratings", type=int, default=None,
+                        help="Giới hạn tối đa N ratings cho mỗi phim (stratified sampling). "
+                             "Phim có > N ratings chỉ giữ ngẫu nhiên N bản ghi; phim <= N giữ nguyên. "
+                             "Giúp giữ coverage đầy đủ (~59K movies) mà không bùng nổ kích thước.")
     parser.add_argument("--movies-only", action="store_true",
                         help="Chỉ tái tạo movies_processed.csv (KHÔNG đụng ratings) — dùng khi "
                              "thay đổi metadata phim mà không muốn re-sample ratings.")
@@ -174,6 +205,7 @@ def main():
         max_ratings=args.max_ratings,
         min_user_ratings=args.min_user_ratings,
         min_movie_ratings=args.min_movie_ratings,
+        max_movie_ratings=args.max_movie_ratings,
     )
     
     # Lưu kết quả

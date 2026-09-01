@@ -13,7 +13,7 @@ class AppColors {
   static const Color ratingStar = Colors.amber;
 
   // Text colors
-  static const Color textPrimary = Color(0xFF1F2937); // Đậm trên nền trắng
+  static const Color textPrimary = Color(0xFF000000); // Đậm trên nền trắng
   static const Color textSecondary = Color(0xFF6B7280);
   static const Color textMuted = Color(0xFF9CA3AF);
 

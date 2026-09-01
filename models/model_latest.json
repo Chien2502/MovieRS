@@ -1,11 +1,11 @@
 {
-  "version": "model_v_20260817_165712",
-  "model_file": "model_v_20260817_165712.pkl",
-  "created_at": "2026-08-17T16:57:34",
+  "version": "model_v_20260817_211247",
+  "model_file": "model_v_20260817_211247.pkl",
+  "created_at": "2026-08-17T21:13:01",
   "metrics": {
-    "RMSE": 0.9969082814030427,
-    "MAE": 0.7602519555828565,
-    "val_rmse": 0.9969082814030427
+    "RMSE": 0.9969614769848475,
+    "MAE": 0.7601837711737719,
+    "val_rmse": 0.9969614769848475
   },
   "params": {
     "n_factors": 50,
@@ -13,7 +13,7 @@
     "reg_all": 0.05,
     "n_epochs": 20
   },
-  "train_rows": 1600046,
+  "train_rows": 1600048,
   "promoted": true,
-  "prev_version": "model_v_20260817_164704"
+  "prev_version": "model_v_20260817_192521"
 }

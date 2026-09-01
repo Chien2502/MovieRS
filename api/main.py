@@ -140,6 +140,12 @@ def _auto_retrain_loop():
             rows_at_last_retrain = _count_interaction_rows()
             last_retrain_at = time.time()
             first_seen_new = None
+
+            if result.get("promoted"):
+                # Reload model để áp dụng phiên bản mới (Zero-downtime)
+                from api.services.recommender import RecommenderService
+                RecommenderService().reload_model()
+                logger.info("[Auto-Retrain] Đã reload mô hình từ file mới nhất.")
         except Exception as e:
             logger.exception(f"[Auto-Retrain] Retrain thất bại: {e}")
 
