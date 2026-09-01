@@ -2,7 +2,7 @@
 
 Decision record: `docs/decisions/adr-sqlite-migration.md`
 
-**Baseline:** (to be filled after commit)
+**Baseline:** 36ce243e6f28a67d3bf8830169947dee07226287
 
 ## Goal
 
