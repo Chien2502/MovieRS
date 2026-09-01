@@ -2,32 +2,34 @@
 movies.py — Các endpoints quản lý và tìm kiếm danh mục phim
 """
 
-import sys
-from pathlib import Path
 from fastapi import APIRouter, HTTPException, Query
 import pandas as pd
+from api.services.database import get_db
 
 router = APIRouter()
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-MOVIES_CSV = PROJECT_ROOT / "data" / "processed" / "movies_processed.csv"
 
 # Cache DataFrame trong bộ nhớ để truy vấn nhanh
 movies_df = None
 
 
 def get_movies_df():
-    """Tải movies_processed.csv vào bộ nhớ (singleton)."""
+    """Tải movies từ SQLite vào bộ nhớ (singleton)."""
     global movies_df
     if movies_df is None:
-        if not MOVIES_CSV.exists():
+        try:
+            conn = get_db()
+            movies_df = pd.read_sql("SELECT movie_id AS movieId, title, genres, release_year, overview, poster_path, runtime_minutes, release_date FROM movies", conn)
+            movies_df = movies_df.fillna("")
+        except Exception as e:
             raise HTTPException(
                 status_code=500,
-                detail="Movies database not initialized. Please run preprocessing first."
+                detail=f"Movies database error: {e}"
             )
-        movies_df = pd.read_csv(MOVIES_CSV)
-        # Điền null cho an toàn
-        movies_df = movies_df.fillna("")
+        if movies_df.empty:
+            raise HTTPException(
+                status_code=500,
+                detail="Movies database not initialized. Please run preprocessing with --sync-db first."
+            )
     return movies_df
 
 

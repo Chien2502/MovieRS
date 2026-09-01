@@ -51,24 +51,33 @@ def _require_user(user_id: int):
 
 def _enrich(rows: list[dict]) -> list[dict]:
     """Gắn thêm title/poster/genres cho từng phim trong danh sách tiến độ."""
-    if not rows or not MOVIES_CSV.exists():
+    if not rows:
         return rows
-    df = pd.read_csv(MOVIES_CSV).fillna("")
+    
+    from api.services.database import get_db
+    conn = get_db()
+    
     result = []
     for r in rows:
-        movie = df[df["movieId"] == r["movieId"]]
-        if movie.empty:
+        movie_id = r["movieId"]
+        c = conn.cursor()
+        c.execute("SELECT title, genres, poster_path, runtime_minutes FROM movies WHERE movie_id = ?", (movie_id,))
+        movie = c.fetchone()
+        
+        if movie is None:
             continue
+            
         row = dict(r)
-        row["title"] = movie.iloc[0]["title"]
-        row["genres"] = movie.iloc[0].get("genres", "")
-        row["poster_path"] = movie.iloc[0].get("poster_path", "")
-        # numpy scalar phải đổi sang kiểu native để FastAPI serialize được
-        runtime = movie.iloc[0].get("runtime_minutes", 100)
-        if pd.notna(runtime) and str(runtime).strip() != "":
+        row["title"] = movie["title"]
+        row["genres"] = movie["genres"] if movie["genres"] else ""
+        row["poster_path"] = movie["poster_path"] if movie["poster_path"] else ""
+        
+        runtime = movie["runtime_minutes"]
+        if runtime is not None and str(runtime).strip() != "":
             row["runtime_minutes"] = int(runtime)
         else:
             row["runtime_minutes"] = 100
+            
         result.append(row)
     return result
 

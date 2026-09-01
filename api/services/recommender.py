@@ -50,14 +50,19 @@ class RecommenderService:
         self._item_sim_index = None
 
         # Load movies catalog
-        if MOVIES_CSV.exists():
-            self.movies_df = pd.read_csv(MOVIES_CSV).fillna("")
+        from api.services.database import get_db
+        try:
+            conn = get_db()
+            self.movies_df = pd.read_sql("SELECT movie_id AS movieId, title, genres, release_year, overview, poster_path, runtime_minutes, release_date FROM movies", conn)
+            self.movies_df = self.movies_df.fillna("")
             self.all_movie_ids = self.movies_df['movieId'].tolist()
             self._movie_id_to_row = {
                 int(mid): i for i, mid in enumerate(self.movies_df['movieId'].astype(int))
             }
-        else:
-            raise FileNotFoundError(f"Không tìm thấy file danh mục phim: {MOVIES_CSV}")
+        except Exception as e:
+            raise FileNotFoundError(f"Lỗi tải danh mục phim từ DB: {e}")
+        if self.movies_df.empty:
+            raise FileNotFoundError("Không tìm thấy dữ liệu danh mục phim trong DB")
 
         # Load SVD model
         if MODEL_PATH.exists():
@@ -102,14 +107,16 @@ class RecommenderService:
 
         watched_set: set = set()
         watched_list: list = []
-        if INTERACTIONS_LOG_CSV.exists():
-            try:
-                df = pd.read_csv(INTERACTIONS_LOG_CSV)
-                user_df = df[df['userId'] == user_id]
-                watched_list = user_df['movieId'].dropna().astype(int).tolist()
-                watched_set = set(watched_list)
-            except Exception as e:
-                logger.warning(f"[⚠] Không đọc được interactions_log cho user {user_id}: {e}")
+        try:
+            from api.services.database import get_db
+            conn = get_db()
+            c = conn.cursor()
+            c.execute("SELECT movie_id FROM interactions WHERE user_id = ? ORDER BY timestamp ASC", (user_id,))
+            rows = c.fetchall()
+            watched_list = [r[0] for r in rows]
+            watched_set = set(watched_list)
+        except Exception as e:
+            logger.warning(f"[⚠] Không đọc được interactions cho user {user_id}: {e}")
         
         result = (watched_set, watched_list)
         self.recent_activity[user_id] = (now, result)

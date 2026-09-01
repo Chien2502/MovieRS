@@ -76,14 +76,15 @@ POLL_INTERVAL = 30  # chu kỳ kiểm tra log (giây)
 
 
 def _count_interaction_rows() -> int:
-    """Đếm số dòng trong interactions_log.csv (0 nếu chưa tồn tại)."""
-    if not INTERACTIONS_LOG_CSV.exists():
-        return 0
+    """Đếm số dòng trong interactions (0 nếu chưa có)."""
     try:
-        with open(INTERACTIONS_LOG_CSV, encoding="utf-8") as f:
-            return sum(1 for _ in csv.reader(f)) - 1  # trừ dòng header
+        from api.services.database import get_db
+        conn = get_db()
+        c = conn.cursor()
+        c.execute("SELECT COUNT(*) FROM interactions")
+        return c.fetchone()[0]
     except Exception as e:
-        logger.warning(f"[Auto-Retrain] Không đọc được interactions_log: {e}")
+        logger.warning(f"[Auto-Retrain] Không đọc được interactions: {e}")
         return 0
 
 
