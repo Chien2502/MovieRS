@@ -8,9 +8,9 @@ Output: JSON with page info, health status, and optional screenshot path
 Note: Requires playwright (pip install playwright && playwright install chromium)
 Screenshots: Saved to system temp directory (auto-cleaned by OS)
 """
-import sys
 import json
 import os
+import sys
 import tempfile
 from datetime import datetime
 

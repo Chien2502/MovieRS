@@ -9,6 +9,7 @@ Trang tổng quan trực quan dành cho kỹ sư AI để:
 """
 
 from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -44,7 +45,7 @@ st.markdown("---")
 
 try:
     movies_df, ratings_df, train_df, test_df = load_data()
-except Exception as e:
+except Exception:
     st.error("❌ Không tìm thấy dữ liệu đã tiền xử lý. Hãy chạy các script thu thập và tiền xử lý dữ liệu trước!")
     st.info("Các lệnh cần chạy: \n1. `python src/data/download_movielens.py` \n2. `python src/data/fetch_tmdb.py` \n3. `python src/data/preprocess.py` \n4. `python src/data/split.py`")
     st.stop()
@@ -250,9 +251,9 @@ elif menu == "⚡ Quản Lý MLOps Pipeline":
     # Nút bấm kích hoạt Retraining giả lập/thực tế
     if st.button("🚀 Kích hoạt Tái huấn luyện mô hình ngay lập tức (Trigger Retrain)"):
         with st.spinner("Đang chạy MLOps Retrain Pipeline..."):
+            import os
             import subprocess
             import sys
-            import os
             try:
                 # Use current python executable and propagate environment variables (including PYTHONIOENCODING)
                 env = os.environ.copy()

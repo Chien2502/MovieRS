@@ -89,11 +89,12 @@ Analyzes code for compliance with:
 Total: 80+ checks across all design principles
 """
 
-import sys
+import json
 import os
 import re
-import json
+import sys
 from pathlib import Path
+
 
 class UXAuditor:
     def __init__(self):

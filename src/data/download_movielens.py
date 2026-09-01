@@ -10,10 +10,9 @@ Sử dụng:
   python src/data/download_movielens.py --size 25m  # Tải ml-25m
 """
 
-import os
+import shutil
 import sys
 import zipfile
-import shutil
 from pathlib import Path
 
 # Thêm thư mục gốc dự án vào sys.path
@@ -138,9 +137,9 @@ def main():
     print("Xác minh dữ liệu:")
     if verify_dataset(RAW_DIR):
         print(f"\n[✓] Dataset sẵn sàng tại: {RAW_DIR}")
-        print(f"    Bước tiếp theo: python src/data/fetch_tmdb.py")
+        print("    Bước tiếp theo: python src/data/fetch_tmdb.py")
     else:
-        print(f"\n[✗] Có lỗi! Hãy thử tải lại.")
+        print("\n[✗] Có lỗi! Hãy thử tải lại.")
         sys.exit(1)
 
 

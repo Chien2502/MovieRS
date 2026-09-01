@@ -11,12 +11,14 @@ Các tính năng:
 import threading
 import time
 from pathlib import Path
+
 import numpy as np
 import pandas as pd
+
 from api.logging_config import get_logger
 from api.services.user_store import get_user
-from src.models.svd_surprise import SurpriseSVDRecommender
 from src.models.baseline import PopularityRecommender
+from src.models.svd_surprise import SurpriseSVDRecommender
 
 logger = get_logger(__name__)
 
@@ -35,7 +37,7 @@ class RecommenderService:
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
-            cls._instance = super(RecommenderService, cls).__new__(cls, *args, **kwargs)
+            cls._instance = super().__new__(cls, *args, **kwargs)
             cls._instance.initialized = False
         return cls._instance
 

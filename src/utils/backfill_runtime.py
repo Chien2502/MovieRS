@@ -13,9 +13,9 @@ Sử dụng:
   python src/utils/backfill_runtime.py --limit 300
 """
 
-import json
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 # Thêm thư mục gốc dự án vào sys.path
@@ -23,8 +23,15 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.data.fetch_tmdb import (
-    CACHE_PATH, ENRICHED_DIR, RAW_DIR, TMDB_API_KEY, USE_MOCK,
-    TmdbRateLimiter, fetch_movie_from_api, load_cache, save_cache,
+    CACHE_PATH,
+    ENRICHED_DIR,
+    RAW_DIR,
+    TMDB_API_KEY,
+    USE_MOCK,
+    TmdbRateLimiter,
+    fetch_movie_from_api,
+    load_cache,
+    save_cache,
 )
 
 

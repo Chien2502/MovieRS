@@ -16,6 +16,7 @@ Sử dụng:
 import re
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 # Thêm thư mục gốc dự án vào sys.path
@@ -226,7 +227,7 @@ def main():
     processed_movies_df.to_csv(movies_out, index=False, encoding="utf-8")
     processed_ratings_df.to_csv(ratings_out, index=False, encoding="utf-8")
     
-    print(f"\n[✓] Tiền xử lý hoàn tất!")
+    print("\n[✓] Tiền xử lý hoàn tất!")
     print(f"    - Đã lưu thông tin phim: {movies_out}")
     _sync_movies_to_sqlite(processed_movies_df)
     print(f"    - Đã lưu ratings: {ratings_out}")

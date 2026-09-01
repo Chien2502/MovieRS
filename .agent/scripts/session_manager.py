@@ -10,16 +10,17 @@ Usage:
     python .agent/scripts/session_manager.py info [path]
 """
 
-import os
-import json
 import argparse
+import json
+import os
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any
+
 
 def get_project_root(path: str) -> Path:
     return Path(path).resolve()
 
-def analyze_package_json(root: Path) -> Dict[str, Any]:
+def analyze_package_json(root: Path) -> dict[str, Any]:
     pkg_file = root / "package.json"
     if not pkg_file.exists():
         return {"type": "unknown", "dependencies": {}}
@@ -53,7 +54,7 @@ def analyze_package_json(root: Path) -> Dict[str, Any]:
     except Exception as e:
         return {"error": str(e)}
 
-def count_files(root: Path) -> Dict[str, int]:
+def count_files(root: Path) -> dict[str, int]:
     stats = {"created": 0, "modified": 0, "total": 0}
     # Simple count for now, comprehensive tracking would require git diff or extensive history
     exclude = {".git", "node_modules", ".next", "dist", "build", ".agent", ".gemini", "__pycache__"}
@@ -64,7 +65,7 @@ def count_files(root: Path) -> Dict[str, int]:
         
     return stats
 
-def detect_features(root: Path) -> List[str]:
+def detect_features(root: Path) -> list[str]:
     # Heuristic: look at folder names in src/
     features = []
     src = root / "src"
@@ -88,7 +89,7 @@ def print_status(root: Path):
     print(f"\n📁 Project: {info.get('name', root.name)}")
     print(f"📂 Path: {root}")
     print(f"🏷️  Type: {', '.join(info.get('stack', ['Generic']))}")
-    print(f"📊 Status: Active")
+    print("📊 Status: Active")
     
     print("\n🔧 Tech Stack:")
     for tech in info.get('stack', []):

@@ -22,12 +22,12 @@ Includes ALL checks:
     ✅ Mobile Audit (if applicable)
 """
 
-import sys
-import subprocess
 import argparse
-from pathlib import Path
-from typing import List, Dict, Optional
+import subprocess
+import sys
 from datetime import datetime
+from pathlib import Path
+
 
 # ANSI colors
 class Colors:
@@ -147,7 +147,7 @@ VERIFICATION_SUITE = [
     },
 ]
 
-def run_script(name: str, script_path: Path, project_path: str, url: Optional[str] = None) -> dict:
+def run_script(name: str, script_path: Path, project_path: str, url: str | None = None) -> dict:
     """Run validation script"""
     if not script_path.exists():
         print_warning(f"{name}: Script not found, skipping")
@@ -196,10 +196,10 @@ def run_script(name: str, script_path: Path, project_path: str, url: Optional[st
     
     except Exception as e:
         duration = (datetime.now() - start_time).total_seconds()
-        print_error(f"{name}: ERROR - {str(e)}")
+        print_error(f"{name}: ERROR - {e!s}")
         return {"name": name, "passed": False, "skipped": False, "duration": duration, "error": str(e)}
 
-def print_final_report(results: List[dict], start_time: datetime):
+def print_final_report(results: list[dict], start_time: datetime):
     """Print comprehensive final report"""
     total_duration = (datetime.now() - start_time).total_seconds()
     

@@ -3,8 +3,9 @@ health.py — Endpoint kiểm tra trạng thái hoạt động của hệ thốn
 """
 
 import time
-from fastapi import APIRouter
 from pathlib import Path
+
+from fastapi import APIRouter
 
 router = APIRouter()
 START_TIME = time.time()

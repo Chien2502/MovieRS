@@ -9,8 +9,7 @@ Bao gồm:
 
 import numpy as np
 import pandas as pd
-from surprise import Dataset, Reader, KNNBasic
-from surprise.prediction_algorithms.predictions import Prediction
+from surprise import Dataset, KNNBasic, Reader
 
 
 class MeanRecommender:

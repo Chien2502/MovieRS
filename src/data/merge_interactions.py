@@ -20,6 +20,7 @@ Lưu ý:
 
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 # Thêm thư mục gốc dự án vào sys.path
@@ -124,7 +125,7 @@ def merge_and_split(verbose: bool = True) -> dict:
     test_df.to_csv(PROCESSED_DIR / "ratings_test.csv", index=False)
 
     if verbose:
-        print(f"[✓] Đã ghi lại các tập split:")
+        print("[✓] Đã ghi lại các tập split:")
         print(f"    - TRAIN (80%): {len(train_df):,}")
         print(f"    - VAL   (10%): {len(val_df):,}")
         print(f"    - TEST  (10%): {len(test_df):,}")

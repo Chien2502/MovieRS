@@ -15,8 +15,9 @@ Lưu ý:
 
 import argparse
 import time
-import requests
+
 import numpy as np
+import requests
 
 API_BASE_URL = "http://localhost:8000/api"
 
@@ -38,7 +39,7 @@ def benchmark_latency(num_requests=50):
                 latencies.append(duration_ms)
             else:
                 failed_requests += 1
-        except Exception as e:
+        except Exception:
             failed_requests += 1
 
     if latencies:

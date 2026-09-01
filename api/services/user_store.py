@@ -21,7 +21,7 @@ USER_ID_START = 200000
 def _hash_password(password: str, salt: str | None = None) -> tuple[str, str]:
     """Băm mật khẩu SHA-256 với salt; trả về (digest, salt)."""
     salt = salt or secrets.token_hex(8)
-    digest = hashlib.sha256(f"{salt}:{password}".encode("utf-8")).hexdigest()
+    digest = hashlib.sha256(f"{salt}:{password}".encode()).hexdigest()
     return digest, salt
 
 

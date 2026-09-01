@@ -5,7 +5,7 @@ Dữ liệu nằm tại data/moviers.db bảng watch_progress.
 """
 
 from datetime import datetime
-from pathlib import Path
+
 from api.logging_config import get_logger
 from api.services.database import get_db
 

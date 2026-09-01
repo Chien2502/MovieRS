@@ -2,8 +2,9 @@
 movies.py — Các endpoints quản lý và tìm kiếm danh mục phim
 """
 
-from fastapi import APIRouter, HTTPException, Query
 import pandas as pd
+from fastapi import APIRouter, HTTPException, Query
+
 from api.services.database import get_db
 
 router = APIRouter()

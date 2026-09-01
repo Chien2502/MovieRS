@@ -18,6 +18,7 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
+
 import pandas as pd
 import requests
 
@@ -25,13 +26,13 @@ import requests
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.models.svd_surprise import SurpriseSVDRecommender
-from src.models.item_similarity import build_index, load_index
 from src.data.merge_interactions import merge_and_split
+from src.models.item_similarity import build_index
+from src.models.svd_surprise import SurpriseSVDRecommender
 from src.pipeline.registry import (
-    write_metadata,
-    read_metadata,
     latest_metadata_path,
+    read_metadata,
+    write_metadata,
 )
 
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
@@ -109,7 +110,7 @@ def run_retrain() -> dict:
     duration = time.time() - start_time
     print(f"    ✓ Huấn luyện xong trong {duration:.2f} giây.")
     result["duration_s"] = round(duration, 2)
-    result["train_rows"] = int(len(train_df))
+    result["train_rows"] = len(train_df)
 
     # 3. Model Gate: đánh giá trên val set và so sánh với model đang deploy
     new_metrics = _evaluate_on_val(new_model)
@@ -152,7 +153,7 @@ def run_retrain() -> dict:
         params=params_for_meta,
         promoted=promoted,
         prev_version=(old_meta or {}).get("version"),
-        train_rows=int(len(train_df)),
+        train_rows=len(train_df),
     )
     print(f"[✓] Đã tạo phiên bản: {versioned_filename}")
     result["version"] = versioned_filename
@@ -166,7 +167,7 @@ def run_retrain() -> dict:
             params=params_for_meta,
             promoted=True,
             prev_version=(old_meta or {}).get("version"),
-            train_rows=int(len(train_df)),
+            train_rows=len(train_df),
             save_path=latest_metadata_path(),
         )
         print(f"[✓] Đã cập nhật: {latest_path}")

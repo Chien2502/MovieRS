@@ -13,15 +13,15 @@ online update để khuyến nghị cá nhân hóa ngay lập tức.
 """
 
 from pathlib import Path
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-import pandas as pd
 
 from api.logging_config import get_logger
+from api.routes.interactions import _invalidate_recommendation_cache, _write_interaction
 from api.services import watch_store
-from api.services.user_store import get_user
 from api.services.recommender import RecommenderService
-from api.routes.interactions import _write_interaction, _invalidate_recommendation_cache
+from api.services.user_store import get_user
 
 logger = get_logger(__name__)
 

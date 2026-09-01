@@ -65,11 +65,12 @@ Analyzes React Native / Flutter code for compliance with:
 Total: 50+ mobile-specific checks
 """
 
-import sys
+import json
 import os
 import re
-import json
+import sys
 from pathlib import Path
+
 
 class MobileAuditor:
     def __init__(self):
@@ -613,7 +614,7 @@ class MobileAuditor:
     def audit_directory(self, directory: str) -> None:
         extensions = {'.tsx', '.ts', '.jsx', '.js', '.dart'}
         for root, dirs, files in os.walk(directory):
-            dirs[:] = [d for d in dirs if d not in {'node_modules', '.git', 'dist', 'build', '.next', 'ios', 'android', 'build', '.idea'}]
+            dirs[:] = [d for d in dirs if d not in {'node_modules', '.git', 'dist', 'build', '.next', 'ios', 'android', '.idea'}]
             for file in files:
                 if Path(file).suffix in extensions:
                     self.audit_file(os.path.join(root, file))

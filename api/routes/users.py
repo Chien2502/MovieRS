@@ -5,19 +5,15 @@ Favorites và Interactions (Ratings) được đọc từ SQLite (bảng favorit
 """
 
 from datetime import datetime
-from pathlib import Path
+
+import pandas as pd
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-import pandas as pd
 
-from api.services.user_store import get_user, update_user_genres
 from api.services.database import get_db
+from api.services.user_store import get_user, update_user_genres
 
 router = APIRouter()
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-MOVIES_CSV = PROJECT_ROOT / "data" / "processed" / "movies_processed.csv"
-
 
 def _require_user(user_id: int) -> dict:
     user = get_user(user_id)
@@ -26,20 +22,14 @@ def _require_user(user_id: int) -> dict:
     return user
 
 
-def _movies_df() -> pd.DataFrame:
-    if not MOVIES_CSV.exists():
-        raise HTTPException(status_code=500, detail="Movies database not initialized")
-    return pd.read_csv(MOVIES_CSV).fillna("")
-
-
 def _enrich_movies(movie_ids: list[int]) -> list[dict]:
-    df = _movies_df()
-    rows = []
-    for mid in movie_ids:
-        movie = df[df["movieId"] == mid]
-        if not movie.empty:
-            rows.append(movie.iloc[0].to_dict())
-    return rows
+    if not movie_ids:
+        return []
+        
+    conn = get_db()
+    placeholders = ",".join(["?"] * len(movie_ids))
+    df = pd.read_sql(f"SELECT movie_id AS movieId, title, genres, release_year, overview, poster_path, runtime_minutes, release_date FROM movies WHERE movie_id IN ({placeholders})", conn, params=movie_ids)
+    return df.fillna("").to_dict(orient="records")
 
 
 def _load_favorites(user_id: int) -> list[dict]:
@@ -114,13 +104,21 @@ async def get_ratings_history(user_id: int):
     """Lịch sử đánh giá của user (từ interactions, mỗi phim giữ bản mới nhất)."""
     _require_user(user_id)
     ratings = _load_ratings(user_id)
-    df = _movies_df()
+    
+    if not ratings:
+        return []
+        
+    movie_ids = [r["movieId"] for r in ratings]
+    enriched_movies = _enrich_movies(movie_ids)
+    
+    # Tạo map movieId -> title để tra cứu nhanh
+    title_map = {m["movieId"]: m["title"] for m in enriched_movies if "title" in m}
+    
     result = []
     for r in ratings:
         row = {"movieId": r["movieId"], "rating": r["rating"], "timestamp": r["timestamp"]}
-        movie = df[df["movieId"] == r["movieId"]]
-        if not movie.empty:
-            row["title"] = movie.iloc[0]["title"]
+        if r["movieId"] in title_map:
+            row["title"] = title_map[r["movieId"]]
         result.append(row)
     return result
 

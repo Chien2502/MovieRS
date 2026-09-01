@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from api.logging_config import get_logger
-from api.services.user_store import register_user, authenticate
+from api.services.user_store import authenticate, register_user
 
 logger = get_logger(__name__)
 

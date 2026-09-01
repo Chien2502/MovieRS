@@ -14,6 +14,7 @@ Sử dụng:
 
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 # Thêm thư mục gốc dự án vào sys.path
@@ -54,7 +55,7 @@ def main():
     val_df = df.iloc[train_end:val_end]
     test_df = df.iloc[val_end:]
     
-    print(f"[📊] Kết quả phân chia:")
+    print("[📊] Kết quả phân chia:")
     print(f"    - Tập TRAIN (80%): {len(train_df):,} dòng (Từ {train_df['timestamp'].min()} đến {train_df['timestamp'].max()})")
     print(f"    - Tập VAL   (10%): {len(val_df):,} dòng (Từ {val_df['timestamp'].min()} đến {val_df['timestamp'].max()})")
     print(f"    - Tập TEST  (10%): {len(test_df):,} dòng (Từ {test_df['timestamp'].min()} đến {test_df['timestamp'].max()})")
@@ -65,7 +66,7 @@ def main():
     test_users = set(test_df['userId'])
     
     test_cold_users = test_users - train_users
-    print(f"\n[ℹ] Phân tích người dùng mới (Cold-Start Users) ở tập TEST:")
+    print("\n[ℹ] Phân tích người dùng mới (Cold-Start Users) ở tập TEST:")
     print(f"    - Số user ở tập TEST: {len(test_users):,}")
     print(f"    - Số user mới xuất hiện ở TEST (không có trong TRAIN): {len(test_cold_users):,} ({len(test_cold_users)/len(test_users)*100:.1f}%)")
     print("      → Đây chính là đối tượng dùng để kiểm nghiệm bài toán Cold-Start.")

@@ -20,11 +20,11 @@ Priority Order:
     P6: Performance (lighthouse - requires URL)
 """
 
-import sys
-import subprocess
 import argparse
+import subprocess
+import sys
 from pathlib import Path
-from typing import List, Tuple, Optional
+
 
 # ANSI colors for terminal output
 class Colors:
@@ -73,7 +73,7 @@ def check_script_exists(script_path: Path) -> bool:
     """Check if script file exists"""
     return script_path.exists() and script_path.is_file()
 
-def run_script(name: str, script_path: Path, project_path: str, url: Optional[str] = None) -> dict:
+def run_script(name: str, script_path: Path, project_path: str, url: str | None = None) -> dict:
     """
     Run a validation script and capture results
     
@@ -122,10 +122,10 @@ def run_script(name: str, script_path: Path, project_path: str, url: Optional[st
         return {"name": name, "passed": False, "output": "", "error": "Timeout", "skipped": False}
     
     except Exception as e:
-        print_error(f"{name}: ERROR - {str(e)}")
+        print_error(f"{name}: ERROR - {e!s}")
         return {"name": name, "passed": False, "output": "", "error": str(e), "skipped": False}
 
-def print_summary(results: List[dict]):
+def print_summary(results: list[dict]):
     """Print final summary report"""
     print_header("📊 CHECKLIST SUMMARY")
     

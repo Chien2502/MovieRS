@@ -7,9 +7,9 @@ Feedback được lưu vào data/processed/interactions_log.csv (tách khỏi tr
 
 from datetime import datetime
 from pathlib import Path
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-import pandas as pd
 
 from api.logging_config import get_logger
 from api.services.recommender import RecommenderService
@@ -90,7 +90,7 @@ async def record_rating(interaction: RatingInteraction):
         )
         return {"status": "success", "message": "Đã ghi nhận đánh giá thành công."}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Lỗi hệ thống khi lưu rating: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Lỗi hệ thống khi lưu rating: {e!s}")
 
 
 @router.post("/interactions/favorite")

@@ -16,9 +16,9 @@ WHAT IT CHECKS:
 Usage:
     python geo_checker.py <project_path>
 """
-import sys
-import re
 import json
+import re
+import sys
 from pathlib import Path
 
 # Fix Windows console encoding
@@ -120,8 +120,8 @@ def check_page(file_path: Path) -> dict:
         issues.append("No JSON-LD structured data (AI engines prefer structured content)")
     
     # 2. Heading Structure
-    h1_count = len(re.findall(r'<h1[^>]*>', content, re.I))
-    h2_count = len(re.findall(r'<h2[^>]*>', content, re.I))
+    h1_count = len(re.findall(r'<h1[^>]*>', content, re.IGNORECASE))
+    h2_count = len(re.findall(r'<h2[^>]*>', content, re.IGNORECASE))
     
     if h1_count == 1:
         passed.append("Single H1 heading (clear topic)")
@@ -145,7 +145,7 @@ def check_page(file_path: Path) -> dict:
     
     # 4. Publication Date (Freshness signal)
     date_patterns = ['datePublished', 'dateModified', 'datetime=', 'pubdate', 'article:published']
-    has_date = any(re.search(p, content, re.I) for p in date_patterns)
+    has_date = any(re.search(p, content, re.IGNORECASE) for p in date_patterns)
     if has_date:
         passed.append("Publication date found")
     else:
@@ -153,17 +153,17 @@ def check_page(file_path: Path) -> dict:
     
     # 5. FAQ Section (Highly citable)
     faq_patterns = [r'<details', r'faq', r'frequently.?asked', r'"FAQPage"']
-    has_faq = any(re.search(p, content, re.I) for p in faq_patterns)
+    has_faq = any(re.search(p, content, re.IGNORECASE) for p in faq_patterns)
     if has_faq:
         passed.append("FAQ section detected (highly citable)")
     
     # 6. Lists (Structured content)
-    list_count = len(re.findall(r'<(ul|ol)[^>]*>', content, re.I))
+    list_count = len(re.findall(r'<(ul|ol)[^>]*>', content, re.IGNORECASE))
     if list_count >= 2:
         passed.append(f"{list_count} lists (structured content)")
     
     # 7. Tables (Comparison data)
-    table_count = len(re.findall(r'<table[^>]*>', content, re.I))
+    table_count = len(re.findall(r'<table[^>]*>', content, re.IGNORECASE))
     if table_count >= 1:
         passed.append(f"{table_count} table(s) (comparison data)")
     
@@ -175,7 +175,7 @@ def check_page(file_path: Path) -> dict:
         r'itemtype.*schema\.org/(Organization|Person|Brand)',
         r'rel="author"'
     ]
-    has_entity = any(re.search(p, content, re.I) for p in entity_patterns)
+    has_entity = any(re.search(p, content, re.IGNORECASE) for p in entity_patterns)
     if has_entity:
         passed.append("Entity/Brand recognition (E-E-A-T)")
     
@@ -189,7 +189,7 @@ def check_page(file_path: Path) -> dict:
         r'\d+x\s+(faster|better|more)', # Comparison stats
         r'(million|billion|trillion)', # Large numbers
     ]
-    stat_matches = sum(1 for p in stat_patterns if re.search(p, content, re.I))
+    stat_matches = sum(1 for p in stat_patterns if re.search(p, content, re.IGNORECASE))
     if stat_matches >= 2:
         passed.append("Original statistics/data (citation magnet)")
     
@@ -203,7 +203,7 @@ def check_page(file_path: Path) -> dict:
         r'simply put,',
         r'<dfn'
     ]
-    has_direct = any(re.search(p, content, re.I) for p in direct_answer_patterns)
+    has_direct = any(re.search(p, content, re.IGNORECASE) for p in direct_answer_patterns)
     if has_direct:
         passed.append("Direct answer patterns (LLM-friendly)")
     

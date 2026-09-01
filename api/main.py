@@ -7,14 +7,13 @@ và khởi động Auto-Retrain thread (retrain định kỳ khi có đủ tươ
 
 import os
 import sys
-import csv
 import threading
 import time
-from datetime import datetime
 from pathlib import Path
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
 # Thêm thư mục gốc vào path để import src
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -49,7 +48,7 @@ app.add_middleware(
 )
 
 # Đăng ký các router
-from api.routes import health, movies, recommendations, interactions, auth, users, watch
+from api.routes import auth, health, interactions, movies, recommendations, users, watch
 
 app.include_router(health.router, prefix="/api", tags=["System Status"])
 app.include_router(auth.router, prefix="/api", tags=["Authentication"])

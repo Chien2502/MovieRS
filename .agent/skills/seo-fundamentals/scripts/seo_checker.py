@@ -17,11 +17,11 @@ WHAT IT CHECKS:
 Usage:
     python seo_checker.py <project_path>
 """
-import sys
 import json
 import re
-from pathlib import Path
+import sys
 from datetime import datetime
+from pathlib import Path
 
 # Fix Windows console encoding
 try:
@@ -121,13 +121,13 @@ def check_page(file_path: Path) -> dict:
         issues.append("Missing Open Graph tags")
     
     # 4. Heading hierarchy - multiple H1s
-    h1_matches = re.findall(r'<h1[^>]*>', content, re.I)
+    h1_matches = re.findall(r'<h1[^>]*>', content, re.IGNORECASE)
     if len(h1_matches) > 1:
         issues.append(f"Multiple H1 tags ({len(h1_matches)})")
     
     # 5. Images without alt
     img_pattern = r'<img[^>]+>'
-    imgs = re.findall(img_pattern, content, re.I)
+    imgs = re.findall(img_pattern, content, re.IGNORECASE)
     for img in imgs:
         if 'alt=' not in img.lower():
             issues.append("Image missing alt attribute")
@@ -149,7 +149,7 @@ def main():
     project_path = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
     
     print(f"\n{'='*60}")
-    print(f"  SEO CHECKER - Search Engine Optimization Audit")
+    print("  SEO CHECKER - Search Engine Optimization Audit")
     print(f"{'='*60}")
     print(f"Project: {project_path}")
     print(f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

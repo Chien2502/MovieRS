@@ -3,7 +3,9 @@ recommendations.py — Endpoint chính cung cấp các gợi ý phim cá nhân h
 """
 
 import time
-from fastapi import APIRouter, Query, HTTPException
+
+from fastapi import APIRouter, HTTPException, Query
+
 from api.services.recommender import RecommenderService
 
 router = APIRouter()
@@ -40,7 +42,7 @@ async def get_recommendations(
     except FileNotFoundError as fnf:
         raise HTTPException(status_code=500, detail=str(fnf))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Lỗi hệ thống khi tạo gợi ý: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Lỗi hệ thống khi tạo gợi ý: {e!s}")
 
 
 @router.post("/recommendations/reload")
@@ -50,4 +52,4 @@ async def reload_recommender_model():
         recommender_service.reload_model()
         return {"status": "success", "message": "Model reloaded successfully."}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Lỗi nạp lại mô hình: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Lỗi nạp lại mô hình: {e!s}")

@@ -1,13 +1,14 @@
-import sys
 import json
+import sys
 from pathlib import Path
+
 import pandas as pd
-import sqlite3
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from api.services.database import get_db
+
 
 def migrate_users():
     users_path = PROJECT_ROOT / "data" / "processed" / "users.json"
@@ -22,7 +23,7 @@ def migrate_users():
     c = conn.cursor()
     count = 0
     for u in users:
-        genres_str = ",".join(u.get("genres", []))
+        genres_str = json.dumps(u.get("genres", []), ensure_ascii=False)
         try:
             c.execute(
                 "INSERT OR REPLACE INTO users (user_id, username, password_hash, salt, genres, created_at) VALUES (?, ?, ?, ?, ?, ?)",

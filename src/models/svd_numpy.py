@@ -34,7 +34,7 @@ class NumPyFunkSVD:
 
     def fit(self, train_df: pd.DataFrame, val_df: pd.DataFrame = None):
         """Huấn luyện mô hình sử dụng SGD."""
-        print(f"[NumPySVD] Bắt đầu chuẩn bị cấu trúc dữ liệu...")
+        print("[NumPySVD] Bắt đầu chuẩn bị cấu trúc dữ liệu...")
         
         # 1. Tạo mapping ID
         unique_users = train_df['userId'].unique()

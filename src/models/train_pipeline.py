@@ -16,16 +16,21 @@ Sử dụng:
 import os
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 # Thêm thư mục gốc dự án vào sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.models.baseline import MeanRecommender, PopularityRecommender, SurpriseKNNRecommender
+from src.models.baseline import (
+    MeanRecommender,
+    PopularityRecommender,
+    SurpriseKNNRecommender,
+)
+from src.models.evaluate import evaluate_model_pipeline
 from src.models.svd_numpy import NumPyFunkSVD
 from src.models.svd_surprise import SurpriseSVDRecommender
-from src.models.evaluate import evaluate_model_pipeline
 from src.pipeline.registry import write_metadata
 
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
@@ -58,7 +63,7 @@ def main():
     val_df = pd.read_csv(val_path) if val_path.exists() else None
     test_df = pd.read_csv(test_path)
     
-    print(f"[✓] Đã tải dữ liệu:")
+    print("[✓] Đã tải dữ liệu:")
     print(f"    - Train size: {len(train_df):,}")
     print(f"    - Test size: {len(test_df):,}")
     
@@ -159,10 +164,10 @@ def main():
             "n_epochs": SVD_N_EPOCHS,
         },
         promoted=True,
-        train_rows=int(len(train_df)),
+        train_rows=len(train_df),
         save_path=MODEL_DIR / "model_latest.json",
     )
-    print(f"[✓] Đã deploy mô hình thành công lên production!")
+    print("[✓] Đã deploy mô hình thành công lên production!")
     print("    Bước tiếp theo: Xây dựng FastAPI server phục vụ mô hình.")
 
 
