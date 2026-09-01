@@ -55,28 +55,18 @@ def _invalidate_recommendation_cache(user_id: int):
 
 
 def _write_interaction(user_id: int, movie_id: int, rating: float):
-    """Append/upsert một rating vào interactions_log.csv (không đụng vào train set)."""
-    new_row = {
-        "userId": user_id,
-        "movieId": movie_id,
-        "rating": rating,
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    }
-
-    if INTERACTIONS_LOG_CSV.exists():
-        df = pd.read_csv(INTERACTIONS_LOG_CSV)
-        mask = (df['userId'] == user_id) & (df['movieId'] == movie_id)
-        if mask.any():
-            df.loc[mask, 'rating'] = rating
-            df.loc[mask, 'timestamp'] = new_row['timestamp']
-            logger.info(f"Đã cập nhật interaction user {user_id} - movie {movie_id} (rating={rating})")
-        else:
-            df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-            logger.info(f"Đã thêm interaction mới user {user_id} - movie {movie_id} (rating={rating})")
-        df.to_csv(INTERACTIONS_LOG_CSV, index=False)
-    else:
-        pd.DataFrame([new_row]).to_csv(INTERACTIONS_LOG_CSV, index=False)
-        logger.info(f"Đã tạo interactions_log.csv và ghi interaction user {user_id} - movie {movie_id}")
+    """Append/upsert một rating vào interactions table (không đụng vào train set)."""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    from api.services.database import get_db
+    conn = get_db()
+    c = conn.cursor()
+    c.execute(
+        "INSERT OR REPLACE INTO interactions (user_id, movie_id, rating, timestamp) VALUES (?, ?, ?, ?)",
+        (user_id, movie_id, rating, timestamp)
+    )
+    conn.commit()
+    logger.info(f"Đã ghi interaction user {user_id} - movie {movie_id} (rating={rating})")
 
 
 @router.post("/interactions/rating")

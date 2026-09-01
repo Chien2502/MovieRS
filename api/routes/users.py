@@ -1,11 +1,9 @@
 """
 users.py — Endpoints dữ liệu người dùng: profile, favorites, lịch sử đánh giá, preferences
 
-Favorites lưu tại data/processed/user_favorites.csv (tất cả user trong 1 file).
-Lịch sử đánh giá đọc từ interactions_log.csv (nguồn duy nhất của vòng feedback MLOps).
+Favorites và Interactions (Ratings) được đọc từ SQLite (bảng favorites và interactions).
 """
 
-import threading
 from datetime import datetime
 from pathlib import Path
 from fastapi import APIRouter, HTTPException
@@ -13,15 +11,12 @@ from pydantic import BaseModel, Field
 import pandas as pd
 
 from api.services.user_store import get_user, update_user_genres
+from api.services.database import get_db
 
 router = APIRouter()
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 MOVIES_CSV = PROJECT_ROOT / "data" / "processed" / "movies_processed.csv"
-FAVORITES_CSV = PROJECT_ROOT / "data" / "processed" / "user_favorites.csv"
-INTERACTIONS_LOG_CSV = PROJECT_ROOT / "data" / "processed" / "interactions_log.csv"
-
-_fav_lock = threading.Lock()
 
 
 def _require_user(user_id: int) -> dict:
@@ -47,42 +42,21 @@ def _enrich_movies(movie_ids: list[int]) -> list[dict]:
     return rows
 
 
-def _read_csv_safe(path: Path) -> pd.DataFrame:
-    if not path.exists() or path.stat().st_size == 0:
-        return pd.DataFrame()
-    try:
-        return pd.read_csv(path)
-    except Exception:
-        return pd.DataFrame()
-
-
 def _load_favorites(user_id: int) -> list[dict]:
-    df = _read_csv_safe(FAVORITES_CSV)
-    if df.empty or 'userId' not in df.columns:
-        return []
-    df = df[df['userId'] == user_id]
-    return df.to_dict("records")
-
-
-def _save_favorites(user_id: int, rows: list[dict]):
-    """Ghi lại toàn bộ file favorites (user hiện tại được ghi, các user khác giữ nguyên)."""
-    others = _read_csv_safe(FAVORITES_CSV)
-    if not others.empty and 'userId' in others.columns:
-        others = others[others['userId'] != user_id]
-    combined = pd.concat([others, pd.DataFrame(rows)], ignore_index=True) if rows else others
-    FAVORITES_CSV.parent.mkdir(parents=True, exist_ok=True)
-    combined.to_csv(FAVORITES_CSV, index=False)
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT user_id, movie_id, added_at FROM favorites WHERE user_id = ?", (user_id,))
+    rows = c.fetchall()
+    return [{"userId": r[0], "movieId": r[1], "added_at": r[2]} for r in rows]
 
 
 def _load_ratings(user_id: int) -> list[dict]:
-    df = _read_csv_safe(INTERACTIONS_LOG_CSV)
-    if df.empty or 'userId' not in df.columns:
-        return []
-    df = df[df['userId'] == user_id]
-    if df.empty:
-        return []
-    df = df.sort_values('timestamp').drop_duplicates(subset=['movieId'], keep='last')
-    return df.to_dict("records")
+    conn = get_db()
+    c = conn.cursor()
+    # dedupe the latest rating per movie happens in SQLite since interactions table has UNIQUE(user_id, movie_id)
+    c.execute("SELECT movie_id, rating, timestamp FROM interactions WHERE user_id = ? ORDER BY timestamp DESC", (user_id,))
+    rows = c.fetchall()
+    return [{"movieId": r[0], "rating": r[1], "timestamp": r[2]} for r in rows]
 
 
 @router.get("/users/{user_id}/profile")
@@ -115,21 +89,29 @@ class FavoriteRequest(BaseModel):
 async def set_favorite(user_id: int, req: FavoriteRequest):
     """Thêm/bỏ phim yêu thích của user (upsert)."""
     _require_user(user_id)
-    with _fav_lock:
-        rows = [r for r in _load_favorites(user_id) if r["movieId"] != req.movieId]
-        if req.isFavorite:
-            rows.append({
-                "userId": user_id,
-                "movieId": req.movieId,
-                "added_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            })
-        _save_favorites(user_id, rows)
+    
+    conn = get_db()
+    c = conn.cursor()
+    
+    if req.isFavorite:
+        added_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        c.execute(
+            "INSERT OR REPLACE INTO favorites (user_id, movie_id, added_at) VALUES (?, ?, ?)",
+            (user_id, req.movieId, added_at)
+        )
+    else:
+        c.execute(
+            "DELETE FROM favorites WHERE user_id = ? AND movie_id = ?",
+            (user_id, req.movieId)
+        )
+        
+    conn.commit()
     return {"status": "success", "is_favorite": req.isFavorite}
 
 
 @router.get("/users/{user_id}/ratings")
 async def get_ratings_history(user_id: int):
-    """Lịch sử đánh giá của user (từ interactions_log, mỗi phim giữ bản mới nhất)."""
+    """Lịch sử đánh giá của user (từ interactions, mỗi phim giữ bản mới nhất)."""
     _require_user(user_id)
     ratings = _load_ratings(user_id)
     df = _movies_df()
