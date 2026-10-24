@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/app_colors.dart';
 import 'login_screen.dart';
 import 'main_navigation.dart';
+import '../services/api_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -45,12 +46,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     final prefs = await SharedPreferences.getInstance();
     final int? userId = prefs.getInt('userId');
     final String? username = prefs.getString('username');
+    final validSession = userId != null && username != null
+        ? await ApiService().hasValidSession()
+        : false;
 
     if (!mounted) return;
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => (userId != null && username != null)
+        builder: (context) => validSession
             ? MainNavigation(userId: userId, username: username)
             : const LoginScreen(),
       ),

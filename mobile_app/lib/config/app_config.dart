@@ -1,43 +1,24 @@
-library;
+import 'package:flutter/foundation.dart';
 
-/// app_config.dart — Cấu hình URL API cho ứng dụng MovieRS
-
+/// Cấu hình độc lập với .env backend; có thể truyền --dart-define=API_URL=...
 class AppConfig {
-  // ============================================================
-  //  CẤU HÌNH CHÍNH — CHỈ CẦN THAY ĐỔI URL NGROK Ở ĐÂY
-  // ============================================================
+  static const String ngrokUrl = '';
+  static const String _overrideUrl = String.fromEnvironment('API_URL');
 
-  /// URL Ngrok public (thay đổi mỗi phiên chạy ngrok).
-  /// Để trống '' nếu muốn kết nối localhost (emulator).
-  static const String ngrokUrl = 'https://arlette-irascible-containedly.ngrok-free.dev';
+  static String get _localUrl =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+      ? 'http://10.0.2.2:8000'
+      : 'http://127.0.0.1:8000';
 
-  // ============================================================
-  //  LOGIC TỰ ĐỘNG — KHÔNG CẦN SỬA
-  // ============================================================
-
-  /// URL cho Android Emulator kết nối localhost
-  static const String _emulatorUrl = 'http://10.0.2.2:8000';
-
-  /// Base URL API — tự động chọn Ngrok nếu đã cấu hình, ngược lại dùng emulator localhost
-  static String get baseUrl {
-    if (ngrokUrl.isNotEmpty) {
-      final url = ngrokUrl.endsWith('/')
-          ? ngrokUrl.substring(0, ngrokUrl.length - 1)
-          : ngrokUrl;
-      return '$url/api';
-    }
-    return '$_emulatorUrl/api';
-  }
-
-  /// Base URL không có prefix /api (dùng cho health check)
   static String get serverUrl {
-    if (ngrokUrl.isNotEmpty) {
-      return ngrokUrl.endsWith('/')
-          ? ngrokUrl.substring(0, ngrokUrl.length - 1)
-          : ngrokUrl;
-    }
-    return _emulatorUrl;
+    final value = _overrideUrl.isNotEmpty
+        ? _overrideUrl
+        : (ngrokUrl.isNotEmpty ? ngrokUrl : _localUrl);
+    return value
+        .replaceFirst(RegExp(r'/+$'), '')
+        .replaceFirst(RegExp(r'/api$'), '');
   }
 
-  static bool get isUsingNgrok => ngrokUrl.isNotEmpty;
+  static String get baseUrl => '$serverUrl/api';
+  static bool get isUsingNgrok => serverUrl.contains('.ngrok');
 }

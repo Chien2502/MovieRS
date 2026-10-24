@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/movie.dart';
 import '../services/api_service.dart';
 import '../constants/app_colors.dart';
+import '../widgets/error_state.dart';
 import 'detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -20,21 +22,34 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Movie> _searchResults = [];
   bool _isLoading = false;
   bool _hasSearched = false;
+  String? _error;
+  int _requestId = 0;
 
   void _performSearch(String query) async {
     if (query.trim().isEmpty) return;
+    final requestId = ++_requestId;
 
     setState(() {
       _isLoading = true;
       _hasSearched = true;
+      _error = null;
     });
 
-    final results = await _apiService.searchMovies(query.trim());
+    try {
+      final results = await _apiService.searchMovies(query.trim());
+      if (!mounted || requestId != _requestId) return;
 
-    setState(() {
-      _searchResults = results;
-      _isLoading = false;
-    });
+      setState(() {
+        _searchResults = results;
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (!mounted || requestId != _requestId) return;
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -49,7 +64,10 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.appBarBackground,
-        title: const Text('Tìm kiếm Phim', style: TextStyle(color: AppColors.textPrimary)),
+        title: const Text(
+          'Tìm kiếm Phim',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
       ),
       body: Column(
         children: [
@@ -66,9 +84,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   icon: const Icon(Icons.clear, color: AppColors.textSecondary),
                   onPressed: () {
                     _searchController.clear();
+                    _requestId++;
                     setState(() {
                       _searchResults = [];
                       _hasSearched = false;
+                      _isLoading = false;
+                      _error = null;
                     });
                   },
                 ),
@@ -84,79 +105,107 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+                ? const Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
+                  )
+                : _error != null
+                ? ErrorStateWidget(
+                    errorMessage: _error!,
+                    onRetry: () => _performSearch(_searchController.text),
+                  )
                 : !_hasSearched
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.movie_filter_outlined, size: 64, color: AppColors.textSecondary),
-                            SizedBox(height: 12),
-                            Text(
-                              'Nhập từ khóa để tìm kiếm trong kho phim',
-                              style: TextStyle(color: AppColors.textSecondary),
-                            ),
-                          ],
+                ? const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.movie_filter_outlined,
+                          size: 64,
+                          color: AppColors.textSecondary,
                         ),
-                      )
-                    : _searchResults.isEmpty
-                        ? Center(
-                            child: Text(
-                              'Không tìm thấy phim phù hợp với "${_searchController.text}"',
-                              style: const TextStyle(color: AppColors.textSecondary),
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: _searchResults.length,
-                            itemBuilder: (context, index) {
-                              final movie = _searchResults[index];
-                              return Card(
-                                color: AppColors.cardBackground,
-                                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ListTile(
-                                  leading: ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: movie.posterPath.isNotEmpty
-                                        ? Image.network(
-                                            movie.posterPath,
-                                            width: 45,
-                                            height: 65,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (context, error, stackTrace) =>
-                                                Container(width: 45, height: 65, color: Colors.grey[300]),
-                                          )
-                                        : Container(width: 45, height: 65, color: Colors.grey[300]),
-                                  ),
-                                  title: Text(
-                                    movie.title,
-                                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  subtitle: Text(
-                                    movie.genres,
-                                    style: const TextStyle(color: AppColors.primary, fontSize: 12),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DetailScreen(
-                                          movie: movie,
-                                          userId: widget.userId,
+                        SizedBox(height: 12),
+                        Text(
+                          'Nhập từ khóa để tìm kiếm trong kho phim',
+                          style: TextStyle(color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
+                  )
+                : _searchResults.isEmpty
+                ? Center(
+                    child: Text(
+                      'Không tìm thấy phim phù hợp với "${_searchController.text}"',
+                      style: const TextStyle(color: AppColors.textSecondary),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: _searchResults.length,
+                    itemBuilder: (context, index) {
+                      final movie = _searchResults[index];
+                      return Card(
+                        color: AppColors.cardBackground,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 6,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: movie.posterPath.isNotEmpty
+                                ? CachedNetworkImage(
+                                    imageUrl: movie.posterPath,
+                                    width: 45,
+                                    height: 65,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                          width: 45,
+                                          height: 65,
+                                          color: Colors.grey[300],
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
+                                  )
+                                : Container(
+                                    width: 45,
+                                    height: 65,
+                                    color: Colors.grey[300],
+                                  ),
                           ),
+                          title: Text(
+                            movie.title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            movie.genres,
+                            style: const TextStyle(
+                              color: AppColors.primary,
+                              fontSize: 12,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailScreen(
+                                  movie: movie,
+                                  userId: widget.userId,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
           ),
         ],
       ),

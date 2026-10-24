@@ -1,0 +1,16 @@
+{
+  "candidate": "AdaptiveHybrid",
+  "baseline": "MostPopular",
+  "metric": "ndcg",
+  "users": 900,
+  "delta": -0.1617695027578313,
+  "relative_delta": -0.5770098524798127,
+  "ci95": [
+    -0.1756548733669236,
+    -0.14779594920311928
+  ],
+  "improvement_supported": false,
+  "method": "paired_user_bootstrap_after_averaging_training_seeds",
+  "resamples": 2000,
+  "interpretation": "Có bằng chứng giảm chất lượng xếp hạng"
+}

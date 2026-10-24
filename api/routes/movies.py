@@ -3,6 +3,7 @@ movies.py — Các endpoints quản lý và tìm kiếm danh mục phim
 """
 
 import sys
+import os
 from pathlib import Path
 from fastapi import APIRouter, HTTPException, Query
 import pandas as pd
@@ -20,6 +21,11 @@ def get_movies_df():
     """Tải movies_processed.csv vào bộ nhớ (singleton)."""
     global movies_df
     if movies_df is None:
+        if os.getenv('MOVIERS_SERVING_POINTER','').strip():
+            from api.services.recommender import RecommenderService
+            service=RecommenderService();service.initialize()
+            movies_df=service.movies_df
+            return movies_df
         if not MOVIES_CSV.exists():
             raise HTTPException(
                 status_code=500,
@@ -41,12 +47,19 @@ async def search_movies(
     
     # Tìm kiếm không phân biệt chữ hoa chữ thường
     mask = (
-        df['title'].str.contains(q, case=False, na=False) | 
-        df['genres'].str.contains(q, case=False, na=False)
+        df['title'].str.contains(q, case=False, na=False, regex=False) |
+        df['genres'].str.contains(q, case=False, na=False, regex=False)
     )
     
     results = df[mask].head(limit)
     return results.to_dict(orient="records")
+
+
+@router.get('/movies/popular')
+def get_popular_movies(limit: int = Query(10, ge=1, le=100)):
+    """Phim có điểm Bayesian cao từ TRAIN; không lấy đầu danh mục theo movieId."""
+    from api.services.recommender import RecommenderService
+    return {'results': RecommenderService().get_popular_movies(limit)}
 
 
 @router.get("/movies/{movie_id}")

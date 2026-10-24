@@ -23,7 +23,7 @@ class WatchProgress {
   factory WatchProgress.fromJson(Map<String, dynamic> json) {
     return WatchProgress(
       movieId: json['movieId'] ?? 0,
-      title: json['title'] ?? 'Unknown Title',
+      title: json['title'] ?? 'Chưa có tên phim',
       genres: json['genres'] ?? '',
       posterPath: json['poster_path'] ?? '',
       positionSeconds: (json['position_seconds'] ?? 0) as int,

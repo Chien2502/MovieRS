@@ -1,0 +1,55 @@
+{
+  "created_at": "2026-10-16T04:12:02.351432+00:00",
+  "repeat_import": {
+    "status": "committed",
+    "target_counts": {
+      "app_users": 7,
+      "movies": 62423,
+      "feedback": 41,
+      "favorites": 13,
+      "watch_progress": 20
+    },
+    "quarantined_counts": {
+      "interactions_log.csv": 0,
+      "user_favorites.csv": 1,
+      "watch_progress.csv": 0
+    },
+    "legacy_timezone_rows_corrected": 0,
+    "backup": "artifacts\\migrations\\20261016T041103040081Z"
+  },
+  "temporary_test_accounts_remaining": 0,
+  "source_reconciliation": {
+    "users_ids_names_genres_timestamps": "matched",
+    "feedback_ids_ratings_sources_timestamps": "matched",
+    "favorite_pairs": "matched_excluding_one_quarantined_orphan",
+    "progress_positions_durations_status_timestamps": "matched",
+    "progress_ratio": "DB recomputes exact position/duration; legacy CSV rounds four decimals, tolerance 0.00005"
+  },
+  "file_rollback_rehearsal": {
+    "counts": {
+      "users": 7,
+      "interactions_log.csv": 41,
+      "user_favorites.csv": 13,
+      "watch_progress.csv": 20
+    },
+    "checksums_verified": true,
+    "file_adapters_read_successfully": true,
+    "sessions_exported": false,
+    "path": "artifacts\\rollback_export_2026-10-16T0412032249510000"
+  },
+  "serving_rollback_rehearsal": {
+    "from": "model_20261016T001319739301Z",
+    "to": "model_20261015T234742555588Z",
+    "actual_bundles_verified": true,
+    "live_pointer_unchanged": true
+  },
+  "status": "passed",
+  "original_source_files_unchanged": true,
+  "source_sha256": {
+    "data\\processed\\users.json": "2dd5d62c3ebda579596d8635f074b09cd443e20dac759fa0c0e9b14fe89add6d",
+    "data\\processed\\interactions_log.csv": "04b342981bf944e6cd93b297a54220e526328b3a81b92fa4d3ec5be05b7b1671",
+    "data\\processed\\user_favorites.csv": "a3a5a65b564067b09ba765f4cfc7590fda261dc70e81d42b13517dbbabd35c33",
+    "data\\processed\\watch_progress.csv": "4e66db1c495f11238e9e30c0fd4e0f3c587479361e48ff357a9a41bfd7738894",
+    "data\\processed\\movies_processed.csv": "a2fa0aa2538cb194e730aa5acd568718e3ade903c7b73072135c99de56ad082b"
+  }
+}

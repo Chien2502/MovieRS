@@ -16,17 +16,20 @@ from surprise import Dataset, Reader, SVD
 
 class SurpriseSVDRecommender:
     """Mô hình SVD sử dụng thư viện scikit-surprise."""
-    def __init__(self, n_factors=100, lr_all=0.005, reg_all=0.02, n_epochs=20):
+    supports_rating_prediction = True
+    def __init__(self, n_factors=100, lr_all=0.005, reg_all=0.02, n_epochs=20, random_state=42):
         self.n_factors = n_factors
         self.lr_all = lr_all
         self.reg_all = reg_all
         self.n_epochs = n_epochs
+        self.random_state = random_state
         
         self.model = SVD(
             n_factors=self.n_factors,
             lr_all=self.lr_all,
             reg_all=self.reg_all,
-            n_epochs=self.n_epochs
+            n_epochs=self.n_epochs,
+            random_state=random_state,
         )
         self.trainset = None
         # Users chưa có trong trainset nhưng đã được cập nhật online:
@@ -56,11 +59,13 @@ class SurpriseSVDRecommender:
         if user_id in self.extra_users:
             pu, bu = self.extra_users[user_id]
             trainset = self.model.trainset
-            inner_iid = trainset.to_inner_iid(movie_id)
-            return float(
+            try:
+                inner_iid = trainset.to_inner_iid(movie_id)
+            except ValueError:
+                return float(np.clip(trainset.global_mean + bu, 0.5, 5.0))
+            return float(np.clip(
                 trainset.global_mean + bu + self.model.bi[inner_iid]
-                + float(pu @ self.model.qi[inner_iid])
-            )
+                + float(pu @ self.model.qi[inner_iid]), 0.5, 5.0))
         pred = self.model.predict(user_id, movie_id)
         return float(pred.est)
 
@@ -115,22 +120,35 @@ class SurpriseSVDRecommender:
         Ưu tiên fast path vector hóa (tính điểm toàn bộ ứng viên bằng 1 phép toán
         NumPy trên latent factors); fallback về vòng lặp dự đoán từng phim.
         """
-        if rated_movie_ids is None:
-            rated_movie_ids = []
+        seen = set(rated_movie_ids or [])
+        candidates = np.array([mid for mid in all_movie_ids if mid not in seen], dtype=int)
+        scores = self.score_items(user_id, candidates)
+        order = np.lexsort((candidates, -scores))[:n]
+        return [(int(candidates[i]), float(scores[i])) for i in order]
 
-        vectorized = self._recommend_vectorized(user_id, all_movie_ids, rated_movie_ids, n)
-        if vectorized is not None:
-            return vectorized
-
-        # Fallback: dự đoán điểm cho từng ứng viên bằng vòng lặp (user cũ, nhưng thiếu latent factors)
-        candidates = [mid for mid in all_movie_ids if mid not in rated_movie_ids]
-        predictions = []
-        for mid in candidates:
-            pred_score = self.predict(user_id, mid)
-            predictions.append((mid, pred_score))
-
-        predictions.sort(key=lambda x: x[1], reverse=True)
-        return predictions[:n]
+    def score_items(self, user_id: int, movie_ids) -> np.ndarray:
+        """Điểm vector hóa khớp predict, kể cả user/phim chưa có trong train."""
+        trainset = self.model.trainset
+        if user_id in self.extra_users:
+            pu, bu = self.extra_users[user_id]
+        else:
+            try:
+                uid = trainset.to_inner_uid(user_id)
+                pu, bu = self.model.pu[uid], self.model.bu[uid]
+            except ValueError:
+                pu, bu = np.zeros(self.model.qi.shape[1]), 0.0
+        values = np.full(len(movie_ids), trainset.global_mean + bu, dtype=float)
+        positions, inner_ids = [], []
+        for position, mid in enumerate(movie_ids):
+            try:
+                inner_ids.append(trainset.to_inner_iid(int(mid)))
+                positions.append(position)
+            except ValueError:
+                continue
+        if inner_ids:
+            ids = np.asarray(inner_ids)
+            values[positions] += self.model.bi[ids] + self.model.qi[ids] @ pu
+        return np.clip(values, 0.5, 5.0)
 
     def _recommend_vectorized(self, user_id: int, all_movie_ids: list,
                               rated_movie_ids: list, n: int = 10):

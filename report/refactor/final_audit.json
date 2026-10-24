@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-10-16T04:17:55.984523+00:00",
+  "status": "passed",
+  "plan_phases": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7"
+  ],
+  "verified_current_source_hashes": 100,
+  "requirements_lock_verified": true,
+  "research_run_and_snapshot_checksums_verified": true,
+  "report_evidence_bundle_checksums_verified": true,
+  "runtime_reconciliation_and_rollback_passed": true,
+  "verification_receipt_sha256": "bc0972fc3aef7e95ff6cc28c73c69e5e9a7dc7eaefd06d9527b7ed52805110a1",
+  "acceptance_sha256": "018067541d1df5bb564156afc9e757df60dece5a948b1cc3ec5cfd8d723fa11b",
+  "limitations": [
+    "Player simulated",
+    "No physical Android/iOS device test",
+    "No A/B test; offline conditional inference only"
+  ]
+}

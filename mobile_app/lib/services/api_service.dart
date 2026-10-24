@@ -1,329 +1,276 @@
+import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import 'dart:math';
 import 'package:http/http.dart' as http;
-import '../models/movie.dart';
-import '../models/watch_progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 import '../config/app_config.dart';
+import '../models/movie.dart';
+import '../models/recommendation_result.dart';
+import '../models/watch_progress.dart';
 
-/// Kết quả đăng ký / đăng nhập: thành công có [userId]/[username], thất bại có [error].
+class ApiException implements Exception {
+  final String message;
+  const ApiException(this.message);
+  @override
+  String toString() => message;
+}
+
 class AuthResult {
   final int? userId;
   final String? username;
   final String? error;
-
   const AuthResult({this.userId, this.username, this.error});
-
   bool get isSuccess => userId != null;
 }
 
 class ApiService {
+  static final ValueNotifier<int> sessionExpired = ValueNotifier<int>(0);
+  static final Map<int, int> _dataVersions = {};
+  static int dataVersion(int userId) => _dataVersions[userId] ?? 0;
   static String get baseUrl => AppConfig.baseUrl;
+  static final http.Client _defaultClient = http.Client();
+  final http.Client _client;
+  ApiService({http.Client? client}) : _client = client ?? _defaultClient;
 
-  /// Đăng ký tài khoản mới (kèm thể loại yêu thích cho Cold-Start)
-  Future<AuthResult> register(String username, String password, List<String> genres) async {
-    final url = Uri.parse('$baseUrl/auth/register');
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'username': username,
-          'password': password,
-          'genres': genres,
-        }),
-      );
-      if (response.statusCode == 201) {
-        final data = json.decode(response.body) as Map<String, dynamic>;
-        return AuthResult(userId: data['user_id'], username: data['username']);
-      }
-      return AuthResult(error: _detailFrom(response));
-    } catch (e) {
-      debugPrint('Error registering: $e');
-      return const AuthResult(error: 'Không kết nối được máy chủ');
+  Future<bool> hasValidSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('accessToken');
+    final expiry = DateTime.tryParse(prefs.getString('sessionExpiresAt') ?? '');
+    if (token == null || expiry == null || !expiry.isAfter(DateTime.now())) {
+      return false;
     }
-  }
-
-  /// Đăng nhập bằng tên đăng nhập + mật khẩu
-  Future<AuthResult> login(String username, String password) async {
-    final url = Uri.parse('$baseUrl/auth/login');
     try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'username': username, 'password': password}),
-      );
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body) as Map<String, dynamic>;
-        return AuthResult(userId: data['user_id'], username: data['username']);
-      }
-      return AuthResult(error: _detailFrom(response));
-    } catch (e) {
-      debugPrint('Error logging in: $e');
-      return const AuthResult(error: 'Không kết nối được máy chủ');
-    }
-  }
-
-  /// Lấy hồ sơ người dùng (username, genres, số lượng tương tác)
-  Future<Map<String, dynamic>?> getProfile(int userId) async {
-    final url = Uri.parse('$baseUrl/users/$userId/profile');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        return json.decode(response.body) as Map<String, dynamic>;
-      }
-    } catch (e) {
-      debugPrint('Error fetching profile: $e');
-    }
-    return null;
-  }
-
-  /// Danh sách phim yêu thích từ server
-  Future<List<Movie>> getFavorites(int userId) async {
-    final url = Uri.parse('$baseUrl/users/$userId/favorites');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final List<dynamic> list = json.decode(response.body);
-        return list.map((json) => Movie.fromJson(json)).toList();
-      }
-    } catch (e) {
-      debugPrint('Error fetching favorites: $e');
-    }
-    return [];
-  }
-
-  /// Thêm/bỏ phim yêu thích trên server
-  Future<bool> setFavorite(int userId, int movieId, bool isFavorite) async {
-    final url = Uri.parse('$baseUrl/users/$userId/favorites');
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'movieId': movieId, 'isFavorite': isFavorite}),
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error setting favorite: $e');
+      await _request('GET', '/auth/me');
+      return true;
+    } on ApiException {
       return false;
     }
   }
 
-  /// Lịch sử đánh giá của user từ server (interactions_log)
-  Future<List<Map<String, dynamic>>> getRatingsHistory(int userId) async {
-    final url = Uri.parse('$baseUrl/users/$userId/ratings');
+  Future<void> logout() async {
     try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        return (json.decode(response.body) as List<dynamic>)
-            .cast<Map<String, dynamic>>();
-      }
-    } catch (e) {
-      debugPrint('Error fetching ratings history: $e');
+      await _request('POST', '/auth/logout', {});
+    } on ApiException {
+      // Máy chủ tự hết hạn phiên; xóa bản local kể cả khi mất mạng.
     }
-    return [];
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('accessToken');
+    await prefs.remove('sessionExpiresAt');
+    await prefs.remove('userId');
+    await prefs.remove('username');
   }
 
-  /// Cập nhật thể loại yêu thích (dùng cho Cold-Start theo genres)
-  Future<bool> savePreferences(int userId, List<String> genres) async {
-    final url = Uri.parse('$baseUrl/users/$userId/preferences');
+  Future<dynamic> _request(
+    String method,
+    String path, [
+    Map<String, dynamic>? body,
+    String? idempotencyKey,
+  ]) async {
+    final uri = Uri.parse('$baseUrl$path');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('accessToken');
+    final headers = {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true',
+      if (token != null) 'Authorization': 'Bearer $token',
+      if (idempotencyKey != null) 'Idempotency-Key': idempotencyKey,
+    };
     try {
-      final response = await http.put(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'genres': genres}),
+      final pending = switch (method) {
+        'POST' => _client.post(uri, headers: headers, body: json.encode(body)),
+        'PUT' => _client.put(uri, headers: headers, body: json.encode(body)),
+        'DELETE' => _client.delete(uri, headers: headers),
+        _ => _client.get(uri, headers: headers),
+      };
+      final response = await pending.timeout(const Duration(seconds: 20));
+      dynamic data;
+      try {
+        data = json.decode(utf8.decode(response.bodyBytes));
+      } on FormatException {
+        throw ApiException(
+          'Địa chỉ ${uri.host} không trả về API MovieRS '
+          '(HTTP ${response.statusCode}). Kiểm tra máy chủ và đường hầm Ngrok.',
+        );
+      }
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        if (response.statusCode == 401 && !path.startsWith('/auth/login')) {
+          await prefs.remove('accessToken');
+          await prefs.remove('sessionExpiresAt');
+          if (token != null) sessionExpired.value++;
+        }
+        if (response.statusCode == 422 && path == '/auth/register') {
+          throw const ApiException(
+            'Tên đăng nhập cần từ 3 đến 50 ký tự; mật khẩu cần từ 8 đến 100 ký tự.',
+          );
+        }
+        throw ApiException(
+          data is Map && data['detail'] is String
+              ? data['detail'] as String
+              : 'Máy chủ từ chối yêu cầu (${response.statusCode})',
+        );
+      }
+      return data;
+    } on ApiException {
+      rethrow;
+    } on TimeoutException {
+      throw const ApiException('Máy chủ phản hồi quá lâu. Vui lòng thử lại.');
+    } on FormatException {
+      throw const ApiException(
+        'Phản hồi máy chủ không hợp lệ. Kiểm tra địa chỉ API.',
       );
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error saving preferences: $e');
+    } catch (_) {
+      throw ApiException(
+        'Không kết nối được ${uri.host}. Kiểm tra mạng và địa chỉ API; '
+        'điện thoại thật cần URL Ngrok hoặc địa chỉ LAN của máy chủ.',
+      );
+    }
+  }
+
+  Future<bool> _write(
+    String method,
+    String path, [
+    Map<String, dynamic>? body,
+    int? userId,
+  ]) async {
+    try {
+      final key =
+          '${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 32)}';
+      await _request(method, path, body, key);
+      if (userId != null) {
+        _dataVersions[userId] = dataVersion(userId) + 1;
+      }
+      return true;
+    } on ApiException {
       return false;
     }
   }
 
-  /// Lấy chuỗi detail lỗi từ FastAPI response
-  String _detailFrom(http.Response response) {
+  Future<AuthResult> _auth(String path, Map<String, dynamic> body) async {
     try {
-      final data = json.decode(response.body);
-      if (data is Map && data['detail'] != null) {
-        return data['detail'].toString();
+      final data = await _request('POST', path, body);
+      if (data is! Map<String, dynamic> ||
+          data['user_id'] is! int ||
+          data['username'] is! String ||
+          data['access_token'] is! String ||
+          (data['access_token'] as String).isEmpty ||
+          data['expires_at'] is! String ||
+          !(DateTime.tryParse(
+                data['expires_at'] as String,
+              )?.isAfter(DateTime.now()) ??
+              false)) {
+        throw const ApiException(
+          'Máy chủ chưa cung cấp phiên đăng nhập hợp lệ.',
+        );
       }
-    } catch (_) {}
-    return 'Lỗi máy chủ (${response.statusCode})';
-  }
-
-  /// Lấy danh sách phim gợi ý cá nhân hóa cho user
-  Future<List<Movie>> getRecommendations(int userId, {int limit = 10}) async {
-    final url = Uri.parse('$baseUrl/recommendations/$userId?limit=$limit');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
-        final List<dynamic> list = data['recommendations'];
-        return list.map((json) => Movie.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load recommendations');
-      }
-    } catch (e) {
-      debugPrint('Error fetching recommendations: $e');
-      return [];
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('accessToken', data['access_token'] as String);
+      await prefs.setString('sessionExpiresAt', data['expires_at'] as String);
+      return AuthResult(
+        userId: (data['user_id'] as num).toInt(),
+        username: data['username'],
+      );
+    } on ApiException catch (e) {
+      return AuthResult(error: e.message);
     }
   }
 
-  /// Lấy danh sách phim phổ biến nhất (Popularity Recommender)
+  Future<AuthResult> register(
+    String username,
+    String password,
+    List<String> genres,
+  ) => _auth('/auth/register', {
+    'username': username,
+    'password': password,
+    'genres': genres,
+  });
+  Future<AuthResult> login(String username, String password) =>
+      _auth('/auth/login', {'username': username, 'password': password});
+
+  Future<Map<String, dynamic>?> getProfile(int userId) async =>
+      await _request('GET', '/users/$userId/profile') as Map<String, dynamic>;
+
+  Future<List<Movie>> getFavorites(int userId) async =>
+      (await _request('GET', '/users/$userId/favorites') as List)
+          .map((v) => Movie.fromJson(v))
+          .toList();
+  Future<bool> setFavorite(int userId, int movieId, bool isFavorite) => _write(
+    'POST',
+    '/users/$userId/favorites',
+    {'movieId': movieId, 'isFavorite': isFavorite},
+    userId,
+  );
+  Future<List<Map<String, dynamic>>> getRatingsHistory(int userId) async =>
+      (await _request('GET', '/users/$userId/ratings') as List)
+          .cast<Map<String, dynamic>>();
+  Future<bool> savePreferences(int userId, List<String> genres) =>
+      _write('PUT', '/users/$userId/preferences', {'genres': genres}, userId);
+
+  Future<RecommendationResult> getRecommendationResult(
+    int userId, {
+    int limit = 10,
+    bool explore = false,
+  }) async => RecommendationResult.fromJson(
+    await _request(
+      'GET',
+      '/recommendations/$userId?limit=$limit&explore=$explore',
+    ),
+  );
+  Future<List<Movie>> getRecommendations(int userId, {int limit = 10}) async =>
+      (await getRecommendationResult(userId, limit: limit)).movies;
   Future<List<Movie>> getPopularMovies({int limit = 10}) async {
-    final url = Uri.parse('$baseUrl/movies?limit=$limit');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
-        final List<dynamic> list = data['results'];
-        return list.map((json) => Movie.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load popular movies');
-      }
-    } catch (e) {
-      debugPrint('Error fetching popular movies: $e');
-      return [];
-    }
+    final data = await _request('GET', '/movies/popular?limit=$limit');
+    return (data['results'] as List).map((v) => Movie.fromJson(v)).toList();
   }
 
-  /// Tìm kiếm phim theo tiêu đề hoặc thể loại
-  Future<List<Movie>> searchMovies(String query) async {
-    final url = Uri.parse('$baseUrl/movies/search?q=${Uri.encodeComponent(query)}');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final List<dynamic> list = json.decode(response.body);
-        return list.map((json) => Movie.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to search movies');
-      }
-    } catch (e) {
-      debugPrint('Error searching movies: $e');
-      return [];
-    }
-  }
+  Future<Movie> getMovie(int movieId) async =>
+      Movie.fromJson(await _request('GET', '/movies/$movieId'));
+  Future<List<Movie>> searchMovies(String query) async =>
+      (await _request('GET', '/movies/search?q=${Uri.encodeComponent(query)}')
+              as List)
+          .map((v) => Movie.fromJson(v))
+          .toList();
 
-  /// Gửi đánh giá sao (Explicit Feedback)
-  Future<bool> sendRating(int userId, int movieId, double rating) async {
-    final url = Uri.parse('$baseUrl/interactions/rating');
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'userId': userId,
-          'movieId': movieId,
-          'rating': rating,
-        }),
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error sending rating: $e');
-      return false;
-    }
-  }
-
-  /// Gửi tương tác yêu thích (Implicit Feedback)
-  Future<bool> sendFavorite(int userId, int movieId, bool isFavorite) async {
-    final url = Uri.parse('$baseUrl/interactions/favorite');
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'userId': userId,
-          'movieId': movieId,
-          'isFavorite': isFavorite,
-        }),
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error sending favorite: $e');
-      return false;
-    }
-  }
-
-  /// Gửi lịch sử xem phim (Implicit Feedback)
-  Future<bool> sendWatchHistory(int userId, int movieId, int watchDuration, int totalDuration) async {
-    final url = Uri.parse('$baseUrl/interactions/watch');
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'userId': userId,
-          'movieId': movieId,
-          'watchDurationSeconds': watchDuration,
-          'totalDurationSeconds': totalDuration,
-        }),
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error sending watch history: $e');
-      return false;
-    }
-  }
-
-  /// Gửi heartbeat tiến độ xem (player gọi mỗi ~5 giây) — upsert trên server.
-  Future<bool> sendWatchProgress(int userId, int movieId, int positionSeconds, int durationSeconds) async {
-    final url = Uri.parse('$baseUrl/watch/progress');
-    try {
-      final response = await http.put(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'userId': userId,
-          'movieId': movieId,
-          'positionSeconds': positionSeconds,
-          'durationSeconds': durationSeconds,
-        }),
-      );
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error sending watch progress: $e');
-      return false;
-    }
-  }
-
-  /// Danh sách phim đang xem dở (hàng "Tiếp tục xem" trên Home).
-  Future<List<WatchProgress>> getContinueWatching(int userId) async {
-    final url = Uri.parse('$baseUrl/watch/progress/$userId');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final List<dynamic> list = json.decode(response.body);
-        return list.map((json) => WatchProgress.fromJson(json)).toList();
-      }
-    } catch (e) {
-      debugPrint('Error fetching continue watching: $e');
-    }
-    return [];
-  }
-
-  /// Tiến độ xem của 1 phim (để player seek đúng vị trí khi mở lại).
-  /// Trả về null nếu phim chưa từng xem.
-  Future<Map<String, dynamic>?> getWatchProgress(int userId, int movieId) async {
-    final url = Uri.parse('$baseUrl/watch/progress/$userId/$movieId');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        return json.decode(response.body) as Map<String, dynamic>;
-      }
-    } catch (e) {
-      debugPrint('Error fetching watch progress: $e');
-    }
-    return null;
-  }
-
-  /// Xoá phim khỏi hàng "Tiếp tục xem".
-  Future<bool> removeContinueWatching(int userId, int movieId) async {
-    final url = Uri.parse('$baseUrl/watch/progress/$userId/$movieId');
-    try {
-      final response = await http.delete(url);
-      return response.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error removing continue watching: $e');
-      return false;
-    }
-  }
+  Future<bool> sendRating(int userId, int movieId, double rating) => _write(
+    'POST',
+    '/interactions/rating',
+    {'userId': userId, 'movieId': movieId, 'rating': rating},
+    userId,
+  );
+  Future<bool> sendFavorite(int userId, int movieId, bool isFavorite) =>
+      setFavorite(userId, movieId, isFavorite);
+  Future<bool> sendWatchHistory(
+    int userId,
+    int movieId,
+    int position,
+    int duration,
+  ) => _write('POST', '/interactions/watch', {
+    'userId': userId,
+    'movieId': movieId,
+    'watchDurationSeconds': position,
+    'totalDurationSeconds': duration,
+  }, userId);
+  Future<bool> sendWatchProgress(
+    int userId,
+    int movieId,
+    int position,
+    int duration,
+  ) => _write('PUT', '/watch/progress', {
+    'userId': userId,
+    'movieId': movieId,
+    'positionSeconds': position,
+    'durationSeconds': duration,
+  }, userId);
+  Future<List<WatchProgress>> getContinueWatching(int userId) async =>
+      (await _request('GET', '/watch/progress/$userId') as List)
+          .map((v) => WatchProgress.fromJson(v))
+          .toList();
+  Future<Map<String, dynamic>?> getWatchProgress(
+    int userId,
+    int movieId,
+  ) async =>
+      await _request('GET', '/watch/progress/$userId/$movieId')
+          as Map<String, dynamic>;
+  Future<bool> removeContinueWatching(int userId, int movieId) =>
+      _write('DELETE', '/watch/progress/$userId/$movieId', null, userId);
 }

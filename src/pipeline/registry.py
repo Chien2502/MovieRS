@@ -58,7 +58,9 @@ def write_metadata(
     }
     path = save_path or metadata_path(version_file)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    temporary = path.with_suffix('.json.tmp')
+    temporary.write_text(json.dumps(meta, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
+    temporary.replace(path)
     return path
 
 

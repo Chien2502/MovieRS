@@ -1,0 +1,234 @@
+{
+  "spec_version": 1,
+  "status": "planned_not_consumed_by_current_runner",
+  "created_on": "2026-10-15",
+  "research_question": "Hybrid thích ứng theo lịch sử có cải thiện Top-K so với baseline được chọn trên validation trong ngân sách máy cá nhân không?",
+  "source": {
+    "dataset": "MovieLens ml-25m",
+    "ratings_sha256": "9c85525758597dca76e8d98cebb9c13e018c2317b09a0878b6d383179526e385",
+    "zip_md5": "6b51fb2759a8657d3bfcbfc42b592ada",
+    "audit_artifact": "source_audit.json"
+  },
+  "sampling": {
+    "unit": "user_cluster_full_history",
+    "seed": 20261015,
+    "ordering": "ascending SHA256 UTF8(seed:userId), tie by numeric userId",
+    "profiles": {
+      "smoke": {
+        "users": 1000,
+        "observed_ratings": 157183
+      },
+      "dev": {
+        "users": 4000,
+        "observed_ratings": 602364
+      },
+      "research": {
+        "users": 8000,
+        "observed_ratings": 1237592
+      },
+      "extended": {
+        "users": 12000,
+        "observed_ratings": 1874092,
+        "optional": true
+      }
+    },
+    "default_profile": "research",
+    "research_selected_user_ids_sha256": "f65d8312d0282d3570ba69369c82a5f42893582cf9ab82ead2b3e9538e18aa36",
+    "selected_ids_hash_encoding": "SHA256 of UTF8 IDs in hash order joined by newline, no trailing newline",
+    "global_popularity_filter": false,
+    "truncate_user_history": false
+  },
+  "protocol": {
+    "id": "global_temporal_refit_v2_proposed",
+    "task": "static_future_window_topk",
+    "t1_utc": "2016-07-25T17:31:14Z",
+    "t2_utc": "2018-01-23T19:51:49Z",
+    "all_profiles_share_cutoffs": true,
+    "train": "timestamp < T1",
+    "validation": "T1 <= timestamp < T2",
+    "test": "timestamp >= T2",
+    "final_fit": "train_plus_validation_after_config_freeze",
+    "training_seeds": [
+      42,
+      43,
+      44
+    ],
+    "ranking_user_seed": 42,
+    "max_ranking_users_research": 1000,
+    "user_sampling": "all_eligible_if_under_limit_else_uniform_without_replacement",
+    "shared_evaluation_users_across_models": true,
+    "candidate_policy": "all_items_in_fit_history_minus_user_prior_interactions",
+    "negative_item_sampling_for_evaluation": false,
+    "relevance_threshold": 3.5,
+    "k_primary": 10,
+    "k_secondary": [
+      5,
+      20
+    ],
+    "primary_metric": "macro_ndcg_at_10_all_positive_users_including_unavailable_positives",
+    "all_positives_outside_catalog_score": 0,
+    "no_positive_users": "exclude_from_primary_and_report_count",
+    "conditional_servable_metric": "separate_secondary_table",
+    "cohorts": {
+      "cold_0": [
+        0,
+        0
+      ],
+      "sparse_1_4": [
+        1,
+        4
+      ],
+      "warm_5_19": [
+        5,
+        19
+      ],
+      "heavy_20_plus": [
+        20,
+        null
+      ]
+    },
+    "online_updates_during_evaluation": false,
+    "onboarding_from_test_labels": false,
+    "historical_metadata": "original_MovieLens_genres_with_retrospective_snapshot_assumption",
+    "tmdb_current_votes_as_features": false
+  },
+  "statistics": {
+    "primary_comparator": "baseline_with_best_validation_primary_metric_chosen_before_test",
+    "comparison_unit": "user",
+    "seed_handling": "average_per_user_over_training_seeds_before_bootstrap",
+    "bootstrap": "paired_percentile",
+    "resamples": 2000,
+    "bootstrap_seed": 2026,
+    "confidence_level": 0.95,
+    "claim_improvement_only_if_delta_ci_lower_gt_zero": true,
+    "report_seed_variation_separately": true,
+    "secondary_comparisons": "exploratory_unless_preregistered_with_multiple_testing_correction",
+    "generalization": "conditional_on_fixed_source_sample_protocol_and_training_seeds"
+  },
+  "models": {
+    "rating_diagnostics": [
+      "GlobalMean",
+      "RegularizedUserItemBias"
+    ],
+    "ranking_baselines": [
+      "MostPopular",
+      "BayesianItemMean",
+      "GenreContent",
+      "SparseItemKNN",
+      "BiasedSVD"
+    ],
+    "proposal": "AdaptiveSVDGenrePopularity",
+    "ablations": [
+      "SVD_raw",
+      "SVD_shared_cold_fallback",
+      "FixedWeightHybrid",
+      "Adaptive_without_genre",
+      "Adaptive_full",
+      "Adaptive_MMR"
+    ],
+    "optional_extensions": [
+      "BPR_or_ImplicitALS_after_compatibility_and_resource_pilot"
+    ],
+    "svd_trials_factors_epochs_reg": [
+      [
+        32,
+        15,
+        0.02
+      ],
+      [
+        32,
+        20,
+        0.05
+      ],
+      [
+        64,
+        15,
+        0.05
+      ],
+      [
+        64,
+        20,
+        0.1
+      ]
+    ],
+    "knn_trials_neighbors_shrinkage": [
+      [
+        50,
+        10
+      ],
+      [
+        100,
+        10
+      ],
+      [
+        100,
+        50
+      ]
+    ],
+    "hybrid_tau": [
+      5,
+      20
+    ],
+    "hybrid_beta": [
+      0,
+      0.25,
+      0.5,
+      0.75
+    ],
+    "normalization": "per_user_candidate_rank_percentile_with_average_ties",
+    "cold_fallback": "declared_per_model_and_controlled_by_shared_fallback_ablation",
+    "mmr_weights": [
+      0,
+      0.05,
+      0.1,
+      0.2
+    ],
+    "mmr_pool_size": 200,
+    "ranking_only_models_rating_metrics": "not_applicable"
+  },
+  "resources": {
+    "read_chunk_rows": 250000,
+    "max_parallel_training_jobs": 1,
+    "initial_compute_threads": 4,
+    "process_tree_rss_target_gib": 2,
+    "minimum_available_ram_before_start_gib": 3,
+    "dense_user_item_or_full_item_item_matrix": false,
+    "planned_time_budgets_minutes": {
+      "smoke": 5,
+      "dev": 20,
+      "research": 120
+    },
+    "budgets_are_measured_results": false,
+    "on_budget_exhaustion": "checkpoint_and_mark_incomplete_do_not_silently_change_protocol"
+  },
+  "dashboard_comparison_key": [
+    "dataset_id",
+    "split_hashes",
+    "refit_policy",
+    "candidate_policy",
+    "evaluation_user_ids_hash",
+    "relevance_threshold",
+    "k",
+    "cohort_definition",
+    "metadata_hash_when_used"
+  ],
+  "implementation_order": [
+    "P1_foundation",
+    "P2_data",
+    "P3_evaluation",
+    "P4_experiments",
+    "P5_dashboard",
+    "P6_runtime_postgres",
+    "P7_acceptance"
+  ],
+  "limits": [
+    "Chưa triển khai runner đọc đặc tả này.",
+    "Chưa có kết quả benchmark mô hình trên mẫu đề xuất.",
+    "Kết quả hybrid không bắt buộc phải vượt baseline để quy trình được nghiệm thu.",
+    "Độ tin cậy toàn vẹn file khác với tính đại diện và tính đúng của nhãn sở thích."
+  ],
+  "implementation_status": "implemented_and_verified",
+  "implementation_config": "configs/research.toml",
+  "confirmed_run": "run_20261015T235317064101Z",
+  "note": "Đặc tả lập kế hoạch được giữ làm lịch sử; TOML và run manifest là cấu hình thực thi có thẩm quyền."
+}

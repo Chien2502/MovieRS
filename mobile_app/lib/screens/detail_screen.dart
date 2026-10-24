@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/movie.dart';
 import '../services/api_service.dart';
 import '../constants/app_colors.dart';
@@ -11,11 +9,13 @@ import 'player_screen.dart';
 class DetailScreen extends StatefulWidget {
   final Movie movie;
   final int userId;
+  final ApiService? apiService;
 
   const DetailScreen({
     super.key,
     required this.movie,
     required this.userId,
+    this.apiService,
   });
 
   @override
@@ -23,45 +23,58 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  final ApiService _apiService = ApiService();
+  late final ApiService _apiService;
   bool _isFavorite = false;
   double _userRating = 0.0;
   bool _isSubmitting = false;
+  bool _isSavingFavorite = false;
 
   @override
   void initState() {
     super.initState();
+    _apiService = widget.apiService ?? ApiService();
     _checkInitialState();
   }
 
   Future<void> _checkInitialState() async {
     // Đồng bộ trạng thái yêu thích + đánh giá đã vote từ server (theo tài khoản)
-    final results = await Future.wait([
-      _apiService.getFavorites(widget.userId),
-      _apiService.getRatingsHistory(widget.userId),
-    ]);
+    try {
+      final results = await Future.wait([
+        _apiService.getFavorites(widget.userId),
+        _apiService.getRatingsHistory(widget.userId),
+      ]);
 
-    final favs = results[0] as List<Movie>;
-    final ratings = results[1] as List<Map<String, dynamic>>;
+      final favs = results[0] as List<Movie>;
+      final ratings = results[1] as List<Map<String, dynamic>>;
 
-    double userRating = 0.0;
-    for (final r in ratings) {
-      if (r['movieId'] == widget.movie.movieId) {
-        userRating = (r['rating'] as num).toDouble();
-        break;
+      double userRating = 0.0;
+      for (final r in ratings) {
+        if (r['movieId'] == widget.movie.movieId) {
+          userRating = (r['rating'] as num).toDouble();
+          break;
+        }
       }
-    }
 
-    if (mounted) {
-      setState(() {
-        _isFavorite = favs.any((m) => m.movieId == widget.movie.movieId);
-        _userRating = userRating;
-      });
+      if (mounted) {
+        setState(() {
+          _isFavorite = favs.any((m) => m.movieId == widget.movie.movieId);
+          _userRating = userRating;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
     }
   }
 
   void _toggleFavorite() async {
+    if (_isSavingFavorite) return;
+    final previous = _isFavorite;
     setState(() {
+      _isSavingFavorite = true;
       _isFavorite = !_isFavorite;
     });
 
@@ -70,29 +83,23 @@ class _DetailScreenState extends State<DetailScreen> {
       widget.movie.movieId,
       _isFavorite,
     );
-    final feedbackOk = ok
-        ? await _apiService.sendFavorite(
-            widget.userId,
-            widget.movie.movieId,
-            _isFavorite,
-          )
-        : false;
-
-    if (!ok && mounted) {
-      setState(() {
-        _isFavorite = !_isFavorite;
-      });
-    }
+    if (!mounted) return;
+    setState(() {
+      _isSavingFavorite = false;
+      if (!ok) _isFavorite = previous;
+    });
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(ok
-              ? (feedbackOk
-                  ? (_isFavorite ? 'Đã thêm vào Phim yêu thích ❤️' : 'Đã bỏ yêu thích 💔')
-                  : 'Đã lưu yêu thích, nhưng chưa gửi được tín hiệu gợi ý')
-              : 'Không thể đồng bộ yêu thích lên máy chủ'),
-          backgroundColor: ok ? (_isFavorite ? Colors.pinkAccent : Colors.grey) : Colors.redAccent,
+          content: Text(
+            ok
+                ? (_isFavorite ? 'Đã lưu phim yêu thích' : 'Đã bỏ lưu phim')
+                : 'Không thể đồng bộ yêu thích lên máy chủ',
+          ),
+          backgroundColor: ok
+              ? (_isFavorite ? Colors.pinkAccent : Colors.grey)
+              : Colors.redAccent,
           duration: const Duration(seconds: 2),
         ),
       );
@@ -100,44 +107,31 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   void _submitRating(double rating) async {
+    if (_isSubmitting) return;
     setState(() {
-      _userRating = rating;
       _isSubmitting = true;
     });
-
-    final prefs = await SharedPreferences.getInstance();
-    List<String> ratings = prefs.getStringList('ratings_history_${widget.userId}') ?? [];
-    // Cập nhật thay vì thêm trùng: mỗi phim chỉ giữ 1 bản đánh giá mới nhất
-    ratings.removeWhere((s) {
-      try {
-        return json.decode(s)['movieId'] == widget.movie.movieId;
-      } catch (_) {
-        return false;
-      }
-    });
-    ratings.add(json.encode({
-      'movieId': widget.movie.movieId,
-      'title': widget.movie.title,
-      'rating': rating,
-      'timestamp': DateTime.now().toIso8601String(),
-    }));
-    await prefs.setStringList('ratings_history_${widget.userId}', ratings);
-
-    await _apiService.sendRating(
+    final ok = await _apiService.sendRating(
       widget.userId,
       widget.movie.movieId,
       rating,
     );
 
+    if (!mounted) return;
     setState(() {
+      if (ok) _userRating = rating;
       _isSubmitting = false;
     });
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Đã gửi đánh giá $rating sao ⭐ cho hệ thống MLOps!'),
-          backgroundColor: AppColors.success,
+          content: Text(
+            ok
+                ? 'Đã lưu đánh giá $rating sao. Gợi ý sẽ được cập nhật.'
+                : 'Chưa lưu được đánh giá. Vui lòng thử lại.',
+          ),
+          backgroundColor: ok ? AppColors.success : AppColors.error,
           duration: const Duration(seconds: 2),
         ),
       );
@@ -148,7 +142,11 @@ class _DetailScreenState extends State<DetailScreen> {
     final changed = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PlayerScreen(movie: widget.movie, userId: widget.userId),
+        builder: (context) => PlayerScreen(
+          movie: widget.movie,
+          userId: widget.userId,
+          apiService: _apiService,
+        ),
       ),
     );
     // Xem xong (hoặc xem dở rồi quay lại) → làm mới trạng thái đã đánh giá
@@ -182,9 +180,11 @@ class _DetailScreenState extends State<DetailScreen> {
                   CachedNetworkImage(
                     imageUrl: widget.movie.posterPath,
                     fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => Image.network(
-                      'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500',
-                      fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => const ColoredBox(
+                      color: AppColors.cardBackground,
+                      child: Center(
+                        child: Icon(Icons.movie_outlined, size: 64),
+                      ),
                     ),
                   ),
                   Container(
@@ -208,9 +208,11 @@ class _DetailScreenState extends State<DetailScreen> {
               IconButton(
                 icon: Icon(
                   _isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: _isFavorite ? AppColors.favorite : AppColors.textSecondary,
+                  color: _isFavorite
+                      ? AppColors.favorite
+                      : AppColors.textSecondary,
                 ),
-                onPressed: _toggleFavorite,
+                onPressed: _isSavingFavorite ? null : _toggleFavorite,
               ),
             ],
           ),
@@ -223,15 +225,32 @@ class _DetailScreenState extends State<DetailScreen> {
                   // Thể loại
                   Wrap(
                     spacing: 8,
-                    children: widget.movie.genres.split('|').map((genre) {
+                    children: widget.movie.genres.split(RegExp(r'[|,]')).map((
+                      genre,
+                    ) {
                       return Chip(
-                        label: Text(genre.trim(), style: const TextStyle(color: AppColors.primary, fontSize: 12)),
+                        label: Text(
+                          genre.trim(),
+                          style: const TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 12,
+                          ),
+                        ),
                         backgroundColor: AppColors.cardBackground,
                       );
                     }).toList(),
                   ),
 
                   const SizedBox(height: 16),
+                  if (widget.movie.reason.isNotEmpty) ...[
+                    const Text(
+                      'Vì sao gợi ý phim này?',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(widget.movie.reason),
+                    const SizedBox(height: 16),
+                  ],
 
                   // Nút Xem Phim — mở Player (mô phỏng) với cơ chế Resume
                   SizedBox(
@@ -240,12 +259,17 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                       icon: const Icon(Icons.play_arrow, color: Colors.white),
                       label: const Text(
-                        '▶ Xem Phim (Tiếp tục từ vị trí đã xem)',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        'Trải nghiệm trình phát mô phỏng',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       onPressed: _openPlayer,
                     ),
@@ -263,26 +287,44 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Column(
                       children: [
                         const Text(
-                          'Đánh giá của bạn (Explicit Feedback)',
-                          style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16),
+                          'Bạn đánh giá phim này thế nào?',
+                          style: TextStyle(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                         const SizedBox(height: 12),
-                        RatingBar.builder(
-                          initialRating: _userRating,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => const Icon(Icons.star, color: AppColors.ratingStar),
-                          onRatingUpdate: _submitRating,
+                        KeyedSubtree(
+                          key: ValueKey('$_userRating-$_isSubmitting'),
+                          child: IgnorePointer(
+                            ignoring: _isSubmitting,
+                            child: RatingBar.builder(
+                              initialRating: _userRating,
+                              minRating: 0.5,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemPadding: const EdgeInsets.symmetric(
+                                horizontal: 4.0,
+                              ),
+                              itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: AppColors.ratingStar,
+                              ),
+                              onRatingUpdate: _submitRating,
+                            ),
+                          ),
                         ),
                         if (_userRating > 0)
                           Padding(
                             padding: const EdgeInsets.only(top: 8),
                             child: Text(
                               'Bạn đã đánh giá $_userRating sao ⭐ (chạm để thay đổi)',
-                              style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                              style: const TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 13,
+                              ),
                             ),
                           ),
                         if (_isSubmitting)
@@ -291,7 +333,10 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors.primary,
+                              ),
                             ),
                           ),
                       ],
@@ -303,12 +348,20 @@ class _DetailScreenState extends State<DetailScreen> {
                   // Tóm tắt nội dung
                   const Text(
                     'Tóm Tắt Nội Dung',
-                    style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     widget.movie.overview,
-                    style: const TextStyle(color: AppColors.textSecondary, height: 1.5, fontSize: 14),
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      height: 1.5,
+                      fontSize: 14,
+                    ),
                   ),
 
                   const SizedBox(height: 40),

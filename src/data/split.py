@@ -19,6 +19,7 @@ import pandas as pd
 # Thêm thư mục gốc dự án vào sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
+from src.data.protocol import temporal_split
 
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 
@@ -37,22 +38,8 @@ def main():
         
     df = pd.read_csv(ratings_path)
     
-    # Chuyển timestamp về dạng DateTime nếu chưa có
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    
-    # 1. Sắp xếp ratings theo dòng thời gian (từ cũ đến mới)
-    print("[⏳] Đang sắp xếp dữ liệu theo dòng thời gian (timestamp)...")
-    df = df.sort_values(by='timestamp').reset_index(drop=True)
-    
-    # 2. Tính toán điểm phân chia
-    total_ratings = len(df)
-    train_end = int(total_ratings * 0.8)
-    val_end = int(total_ratings * 0.9)
-    
-    # 3. Phân tách
-    train_df = df.iloc[:train_end]
-    val_df = df.iloc[train_end:val_end]
-    test_df = df.iloc[val_end:]
+    # Dùng cùng giao thức với thực nghiệm; không tách các timestamp bằng nhau.
+    train_df, val_df, test_df = temporal_split(df)
     
     print(f"[📊] Kết quả phân chia:")
     print(f"    - Tập TRAIN (80%): {len(train_df):,} dòng (Từ {train_df['timestamp'].min()} đến {train_df['timestamp'].max()})")

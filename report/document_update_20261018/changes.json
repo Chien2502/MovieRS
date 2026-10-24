@@ -1,0 +1,572 @@
+[
+  {
+    "paragraph": 43,
+    "old": "Đồ án này được thực hiện tại Trường Đại học Công nghệ thông tin và Truyền thông Việt - Hàn, dưới sự hướng dẫn của TS. Trần Uyên Trang.",
+    "new": "Báo cáo thực tập được thực hiện tại Trường Đại học Công nghệ thông tin và Truyền thông Việt Hàn, dưới sự hướng dẫn của TS. Trần Uyên Trang."
+  },
+  {
+    "paragraph": 45,
+    "old": "Xin cảm ơn các Thầy/Cô trong trường đã tạo điều kiện cho chúng em học tập, tiếp thu và nghiên cứu các kiến thức để thực hiện đồ án cơ sở lần này và tiếp tục cho những lần tiếp theo.",
+    "new": "Em xin cảm ơn các Thầy, Cô trong trường đã tạo điều kiện học tập và cung cấp kiến thức nền tảng để em nghiên cứu, xây dựng và kiểm chứng đề tài trong kỳ thực tập."
+  },
+  {
+    "paragraph": 46,
+    "old": "Cuối cùng, xin gửi lời cảm ơn đến các bạn trong ngành Công nghệ thông tin đã ủng hộ, giúp đỡ, chia sẻ kiến thức, kinh nghiệm và tài liệu có được giúp đỡ tôi trong quá trình nghiên cứu và thực hiện đề tài. Và xin chân thành cảm ơn Công ty FPT Sofrware đã tạo ra môi trường để em có kì thực tập lần này với đề tài này.",
+    "new": "Em xin cảm ơn Công ty FPT Software đã tạo điều kiện thực tập; cảm ơn các bạn đã chia sẻ tài liệu và kinh nghiệm trong quá trình thực hiện đề tài."
+  },
+  {
+    "paragraph": 47,
+    "old": "Do giới hạn về thời gian và kinh nghiệm cùng kinh nghiệm thực tiễn nên kết quả của đề tài sẽ không tránh khỏi sai sót. Em rất mong nhận được sự thông cảm và cả phản hồi quý giá của thầy cô.",
+    "new": "Do thời gian và kinh nghiệm thực tiễn còn hạn chế, báo cáo có thể còn thiếu sót. Em mong nhận được góp ý của giảng viên và đơn vị thực tập để tiếp tục hoàn thiện."
+  },
+  {
+    "paragraph": 130,
+    "old": "Sự bùng nổ của các nền tảng phát trực tuyến đa phương tiện (OTT/Streaming) trong những năm gần đây đã tạo ra một nghịch lý: người dùng có quyền truy cập vào kho nội dung khổng lồ, nhưng khả năng khám phá và thời gian của họ lại cực kỳ hữu hạn. Theo nghiên cứu của Gomez-Uribe & Hunt (2015) về hệ thống của Netflix, hơn 80% thời lượng nội dung được tiêu thụ đến từ hệ thống khuyến nghị tự động (Recommendation System), thay vì từ hành vi tìm kiếm chủ động. Điều này khẳng định hệ thống khuyến nghị không chỉ là một tính năng phụ trợ, mà là \"trái tim\" định đoạt trải nghiệm người dùng và hiệu quả kinh doanh của các nền tảng số.",
+    "new": "Danh mục phim lớn làm tăng nhu cầu lựa chọn nội dung phù hợp cho từng người dùng. Hệ khuyến nghị hỗ trợ sắp xếp một danh sách ngắn từ tập ứng viên, nhưng chất lượng của danh sách phải được kiểm tra bằng dữ liệu, baseline và giao thức đánh giá rõ ràng. Đề tài MovieRS kết hợp nghiên cứu thuật toán với xây dựng nguyên mẫu ứng dụng để kiểm chứng luồng dữ liệu và cách phục vụ khuyến nghị."
+  },
+  {
+    "paragraph": 132,
+    "old": "Dữ liệu thưa thớt (Data Sparsity): Trong thực tế, mỗi người dùng chỉ tương tác với một phần rất nhỏ trong kho nội dung. Với bộ dữ liệu MovieLens 25M, tỷ lệ các cặp (người dùng, phim) có dữ liệu đánh giá chỉ chiếm 0.25%. Tức là ma trận tương tác trống đến 99.75%, khiến các phương pháp dựa trên độ tương đồng thuần túy (như User-based hay Item-based Collaborative Filtering) bị suy giảm hiệu suất nghiêm trọng (Koren et al., 2009).",
+    "new": "Dữ liệu thưa: người dùng chỉ đánh giá một phần nhỏ catalog. Độ thưa phải gắn với tập user và tập phim dùng làm mẫu số; không dùng một tỷ lệ chung cho mọi phiên bản dữ liệu. Mẫu V2 có 8.000 user, 27.498 phim được đánh giá và 1.237.592 rating, tương ứng độ thưa khoảng 99,4374% trên ma trận này."
+  },
+  {
+    "paragraph": 135,
+    "old": "Khoảng cách giữa nghiên cứu và môi trường sản xuất (Production Gap): Đa số các nghiên cứu học thuật chỉ dừng lại ở việc đánh giá mô hình ngoại tuyến (Offline Evaluation). Trong khi đó, một hệ thống thực tế đòi hỏi mô hình phải được phục vụ trực tuyến (Model Serving), có khả năng tiếp nhận luồng dữ liệu mới và tự động tái huấn luyện (Retraining) theo chuẩn MLOps (Machine Learning Operations) (Sculley et al., 2015).",
+    "new": "Khoảng cách giữa nghiên cứu và vận hành: điểm offline có thể bị lệch nếu trộn feedback mới vào holdout hoặc chọn model bằng TEST. MovieRS tách snapshot nghiên cứu bất biến khỏi PostgreSQL runtime; việc fit, đánh giá, đóng gói và rollback được lưu thành artifact có nguồn gốc."
+  },
+  {
+    "paragraph": 136,
+    "old": "Xuất phát từ các thách thức trên, đề tài \"Hệ thống Khuyến nghị Phim Cá Nhân Hóa theo chuẩn MLOps\" được thực hiện. Mục tiêu của đề tài là xây dựng một nguyên mẫu (Prototype) khép kín, mô phỏng lại kiến trúc đường ống dữ liệu (Data Pipeline) của các tập đoàn công nghệ lớn: từ khâu thu thập dữ liệu, huấn luyện thuật toán, cung cấp API, đến việc tích hợp trên thiết bị di động và thiết lập vòng lặp phản hồi tự động.",
+    "new": "Đề tài giữ tên “Tìm hiểu hệ thống khuyến nghị sử dụng phương pháp lai và xây dựng nguyên mẫu ứng dụng phim ảnh”. Trọng tâm sau refactor là đánh giá hybrid theo độ dài lịch sử trên mẫu ML-25M vừa sức máy, so sánh công bằng và xây dựng luồng ứng dụng nhất quán. Kết quả không mặc định hybrid tốt hơn baseline."
+  },
+  {
+    "paragraph": 139,
+    "old": "Về mặt thuật toán: Nghiên cứu, cài đặt và so sánh hiệu năng của các thuật toán khuyến nghị từ cơ bản đến nâng cao: mô hình cơ sở (Mean Predictor, Popularity), K-Nearest Neighbors (KNN), và thuật toán phân rã ma trận FunkSVD. Mục đích nhằm xác thực khả năng xử lý dữ liệu thưa thớt của phương pháp Matrix Factorization.",
+    "new": "Về thuật toán: triển khai GlobalMean, regularized bias, MostPopular, Bayesian item mean, genre content, ItemKNN sparse, BiasedSVD và các biến thể hybrid. Phân biệt dự đoán rating với xếp hạng Top-K; kiểm tra lợi ích của trọng số thích ứng, genre, cold fallback và MMR bằng đối chứng riêng."
+  },
+  {
+    "paragraph": 140,
+    "old": "Về mặt kỹ thuật phần mềm: Thiết kế và phát triển hệ thống hoàn chỉnh theo kiến trúc Client-Server, bao gồm: (1) Backend REST API (FastAPI) phục vụ dự đoán với độ trễ thấp và hỗ trợ nạp lại mô hình không gián đoạn (Zero-downtime Hot Reload); (2) Ứng dụng di động (Flutter) làm điểm chạm thu thập tương tác; (3) Dashboard quản trị (Streamlit) để phân tích dữ liệu và quản lý mô hình.",
+    "new": "Về phần mềm: xây dựng FastAPI, Flutter, dashboard nghiên cứu Streamlit và PostgreSQL trên Supabase. API quản lý phiên và quyền sở hữu; cache và model snapshot phục vụ suy luận. Trình phát giữ mô phỏng, không nối dịch vụ video thật."
+  },
+  {
+    "paragraph": 141,
+    "old": "Về mặt MLOps: Thiết kế và triển khai vòng lặp học máy khép kín (Closed-loop Pipeline) với quy trình: Data → Train → Evaluate (Model Gate) → Serve → App → Feedback → Merge & Retrain",
+    "new": "Về vòng đời mô hình: tổ chức luồng raw → audit → sample → split → fit TRAIN → chọn VAL → khóa cấu hình → refit TRAIN+VAL → TEST → artifact. Luồng serving dùng worker riêng, validation gate và con trỏ phiên bản; không chạy retrain nền trong API."
+  },
+  {
+    "paragraph": 142,
+    "old": "Hệ thống tích hợp \"Model Gate\" để tự động đánh giá mô hình mới sinh ra, đảm bảo hiệu năng không bị suy thoái trước khi đưa lên môi trường sản xuất.",
+    "new": "Cổng promotion chấm lại incumbent và candidate trên cùng validation, kiểm tra NDCG, cohort, latency và RMSE khi cả hai hỗ trợ dự đoán rating. Không dùng TEST để chọn model hoặc nới gate nhằm hợp thức hóa một phiên bản."
+  },
+  {
+    "paragraph": 143,
+    "old": "Về giải pháp Cold-Start: Đề xuất và cài đặt giải pháp lai: sử dụng luồng Onboarding (người dùng chọn sở thích ban đầu) kết hợp với thuật toán Popularity làm hệ thống dự phòng (Fallback Recommender) cho người dùng mới, trước khi họ có đủ tương tác để kích hoạt luồng SVD cá nhân hóa.",
+    "new": "Về cold-start: nghiên cứu fallback bằng thống kê dữ liệu đã biết; ứng dụng có onboarding thể loại và rerank. Không suy ra sở thích onboarding từ nhãn TEST. Model đang phục vụ được chọn từ VAL, hiện là MostPopular; không tự chuyển thành SVD sau một số tương tác cố định."
+  },
+  {
+    "paragraph": 147,
+    "old": "Toán học của thuật toán FunkSVD: Dựa trên nghiên cứu của Simon Funk (2006) và Yehuda Koren (2009), phân tích mô hình biểu diễn người dùng u và phim i qua các véc-tơ đặc trưng ẩn (Latent Factors) p_u, q_i thuộc R^k. Dự đoán điểm đánh giá dựa trên công thức:",
+    "new": "Mô hình BiasedSVD biểu diễn user và phim bằng vector ẩn và bias; công thức dự đoán được giữ dưới đây. Trong dự án, implementation chuẩn là Surprise SVD, học bằng SGD có regularization, không phải phép phân rã đại số trực tiếp của một ma trận đã điền đầy [4]."
+  },
+  {
+    "paragraph": 149,
+    "old": "Trong đó,  là trung bình toàn cục,  là độ lệch (bias). Quá trình tối ưu hóa sử dụng thuật toán Giảm chênh lệch ngẫu nhiên (SGD) tích hợp L2 Regularization để kiểm soát Overfitting.",
+    "new": "Trong công thức, μ là trung bình trên dữ liệu fit, b_u và b_i là bias, p_u và q_i là vector ẩn. Tất cả được ước lượng trên TRAIN khi chọn tham số và trên TRAIN+VAL khi chấm TEST; không fit bằng nhãn TEST."
+  },
+  {
+    "paragraph": 150,
+    "old": "Tiêu chuẩn MLOps: Tham khảo các khung chuẩn của Google (MLOps Maturity Model) và Microsoft để thiết kế vòng đời mô hình học máy an toàn, chú trọng vào Model Versioning và Continuous Training.",
+    "new": "Nguyên tắc quản lý vòng đời gồm versioning, lineage, validation gate và rollback. Đây là nguyên mẫu có kiểm thử, chưa có bằng chứng về khả năng chịu tải hoặc mức trưởng thành MLOps của một hệ thống sản xuất."
+  },
+  {
+    "paragraph": 152,
+    "old": "Đánh giá ngoại tuyến (Offline Evaluation): Áp dụng phương pháp phân chia dữ liệu theo thời gian thực (Temporal Split) với tỷ lệ 80/10/10 để mô phỏng chính xác bối cảnh dự đoán tương lai, ngăn chặn triệt để rò rỉ dữ liệu (Data Leakage). Hiệu năng được đối sánh qua các độ đo:",
+    "new": "Đánh giá offline dùng cutoff thời gian toàn cục, xấp xỉ 80/10/10, giữ timestamp bằng nhau ở cùng một phía. Chọn cấu hình trên VAL trước khi mở TEST. Giao thức giảm những dạng rò rỉ đã kiểm tra, không khẳng định loại bỏ mọi sai lệch của dữ liệu hồi cứu [6]."
+  },
+  {
+    "paragraph": 155,
+    "old": "Độ đa dạng: Catalog Coverage (Độ phủ danh mục).",
+    "new": "Thuộc tính danh sách: catalog coverage, genre diversity và novelty; các proxy này không thay cho mức hài lòng của người dùng."
+  },
+  {
+    "paragraph": 156,
+    "old": "Đánh giá trực tuyến (Live Benchmark): Sử dụng các công cụ tải thử nghiệm đo lường độ trễ (Latency) của API khi phản hồi dự đoán trên tập 62,316 bộ phim, tính toán các mốc trung bình, P50, P95, P99 để đảm bảo tiêu chuẩn thời gian thực.",
+    "new": "Kiểm tra vận hành tách latency scoring model, thời gian HTTP và cache. Báo cáo sử dụng số đo được lưu trong artifact và HTTP smoke; chưa coi đây là load test đa người dùng hoặc cam kết SLA."
+  },
+  {
+    "paragraph": 157,
+    "old": "Kiểm chứng luồng hệ thống (Integration Test): Thực nghiệm kịch bản End-to-End để chứng minh hệ thống nhận diện và cập nhật thành công sở thích của người dùng từ trạng thái Cold-Start sang trạng thái cá nhân hóa sau một chu kỳ tái huấn luyện.",
+    "new": "Kiểm thử luồng tích hợp gồm đăng ký/đăng nhập, ownership, đánh giá, favorite, watch progress, retry, rollback và hết phiên. Kiểm thử chứng minh các hợp đồng kỹ thuật; chưa chứng minh mức tăng hài lòng hoặc cá nhân hóa qua A/B test."
+  },
+  {
+    "paragraph": 159,
+    "old": "Quản lý dự án: Áp dụng phương pháp Agile/Scrum, chia nhỏ chu kỳ phát triển thành 4 Sprints (1: Hạ tầng; 2: Mô hình; 3: Frontend; 4: MLOps).",
+    "new": "Phát triển theo các pha có phụ thuộc: cấu hình/môi trường, dữ liệu, evaluator, model/runner, dashboard, database/ứng dụng và nghiệm thu. Không suy diễn rằng dự án đã thực hiện Scrum hoặc bốn sprint khi không có hồ sơ tương ứng."
+  },
+  {
+    "paragraph": 163,
+    "old": "Nghiên cứu sử dụng bộ dữ liệu chuẩn mực MovieLens 25M (Harper & Konstan, 2015), chứa 25 triệu đánh giá từ 162,541 người dùng trên 62,423 bộ phim.",
+    "new": "Nguồn nghiên cứu là ML-25M do GroupLens công bố: 25.000.095 rating từ 162.541 user; catalog có 62.423 phim, trong đó 59.047 phim có rating. Nguồn yêu cầu user có tối thiểu 20 rating và không cung cấp nhân khẩu học [2]."
+  },
+  {
+    "paragraph": 164,
+    "old": "Để tối ưu hóa tài nguyên phần cứng cá nhân nhưng vẫn đảm bảo tính đại diện thống kê, dữ liệu được tiền xử lý với bộ lọc: giới hạn 2 triệu lượt đánh giá mới nhất và loại bỏ các phim có dưới 50 lượt đánh giá. Tập huấn luyện thực tế đạt ~1.6 triệu bản ghi trên 13,176 phim. Tổng danh mục phim hiển thị trên ứng dụng vẫn giữ nguyên 62,316 phim.",
+    "new": "V2 quét toàn nguồn và chọn 8.000 user theo thứ tự SHA256 của “20261015:userId”, giữ toàn bộ lịch sử. Mẫu có 1.237.592 rating; không lấy 2 triệu rating mới nhất và không lọc phim dưới 50 rating. Catalog ứng dụng giữ 62.423 phim, kể cả phim thiếu enrichment TMDb."
+  },
+  {
+    "paragraph": 166,
+    "old": "Giới hạn trong khuôn khổ phương pháp Lọc cộng tác dựa trên mô hình (Model-based CF). Tập trung khai thác sâu thuật toán SVD.",
+    "new": "Phạm vi gồm baseline thống kê, content theo genre, ItemKNN sparse và factorization có bias; hybrid kết hợp điểm chuẩn hóa. Chưa triển khai BPR/ALS hoặc mô hình học sâu trong kết quả xác nhận."
+  },
+  {
+    "paragraph": 167,
+    "old": "Sử dụng thư viện scikit-surprise (Hug, 2020) với các siêu tham số đã tối ưu để triển khai thực tế trên Production. Đề tài không đi sâu vào các mô hình Deep Learning để tập trung nguồn lực thiết kế đường ống MLOps.",
+    "new": "Surprise được dùng với siêu tham số chọn trên VAL và ba seed huấn luyện. Kết quả là benchmark offline và nguyên mẫu serving, chưa được gọi là triển khai production đã kiểm chứng."
+  },
+  {
+    "paragraph": 169,
+    "old": "Backend: Khởi chạy cục bộ (Localhost) và phơi bày API qua Ngrok Tunnel để thiết bị thật có thể truy cập.",
+    "new": "Backend chạy local; tunnel Ngrok là tùy chọn khi cần truy cập từ thiết bị khác. URL mobile cấu hình bằng AppConfig hoặc --dart-define=API_URL, không lấy từ .env backend."
+  },
+  {
+    "paragraph": 173,
+    "old": "Toàn bộ dữ liệu được sử dụng trong đề tài có nguồn gốc minh bạch và tuân thủ các chính sách API công khai.",
+    "new": "Nguồn dữ liệu và giới hạn sử dụng được ghi riêng. ML-25M tuân theo điều kiện nghiên cứu của GroupLens; metadata TMDb phục vụ hiển thị và không đồng nghĩa quyền phân phối video [2]."
+  },
+  {
+    "paragraph": 179,
+    "old": "tags.csv, genome-scores.csv, genome-tags.csv: Dữ liệu phân tích ngữ nghĩa và thẻ gán.",
+    "new": "tags.csv và các file genome có trong nguồn nhưng không được dùng làm feature của benchmark V2; tránh mô tả chúng như thành phần đã huấn luyện."
+  },
+  {
+    "paragraph": 185,
+    "old": "ratings_processed.csv & movies_processed.csv: Phiên bản dữ liệu đã được làm sạch và hợp nhất.",
+    "new": "Snapshot nghiên cứu lưu ratings/train/validation/test/movies dạng Parquet cùng user IDs, manifest, quality và data card tại data/snapshots/<dataset_id>. CSV processed cũ được giữ cho đối chiếu V1 và metadata ứng dụng."
+  },
+  {
+    "paragraph": 186,
+    "old": "Tập dữ liệu chia tách (Temporal Split): ratings_train.csv (80%), ratings_val.csv (10%), ratings_test.csv (10%).",
+    "new": "Split V2 cố định T1=2016-07-25T17:31:14Z và T2=2018-01-23T19:51:49Z; tương ứng 990.073 TRAIN, 123.759 VAL và 123.760 TEST."
+  },
+  {
+    "paragraph": 187,
+    "old": "interactions_log.csv: Cơ sở dữ liệu ghi nhận phản hồi (feedback) mới theo thời gian thực từ ứng dụng di động.",
+    "new": "Dữ liệu vận hành nằm trong schema moviers của PostgreSQL. interactions_log.csv là nguồn prototype được backup/import; feedback ứng dụng chỉ tham gia fit serving, không tham gia holdout nghiên cứu."
+  },
+  {
+    "paragraph": 189,
+    "old": "models/model_latest.pkl: File nhị phân lưu trữ trọng số của mô hình SVD đang phục vụ.",
+    "new": "Run nghiên cứu nằm trong artifacts/runs/<run_id>; model phục vụ nằm trong artifacts/serving/<version>/model.joblib. current.json là con trỏ nguyên tử đến manifest đã kiểm checksum."
+  },
+  {
+    "paragraph": 190,
+    "old": "models/model_latest.json: File siêu dữ liệu chứa cấu hình, lịch sử siêu tham số và chỉ số RMSE/MAE của phiên bản mô hình hiện hành.",
+    "new": "Manifest lưu dataset/protocol/config/code/environment hashes, selection và resource budget; metrics/per-user/comparisons phục vụ kiểm chứng. models/model_latest.pkl và metadata V1 được giữ làm lịch sử, không là entrypoint serving V2."
+  },
+  {
+    "paragraph": 195,
+    "old": "Nội dung 3: Huấn luyện và Tối ưu Mô hình. Triển khai lập trình 5 thuật toán so sánh. Đánh giá toàn diện bằng các thang đo Toán học (RMSE) và Thang đo Trải nghiệm (Ranking/Coverage). Phân tích hiệu năng chéo giữa các nhóm người dùng.",
+    "new": "Nội dung 3: triển khai và đối chứng 12 họ mô hình/biến thể. Đo RMSE/MAE cho model rating và NDCG/Recall/Precision cùng coverage/diversity/novelty cho ranking; phân tích cohort và CI ghép cặp."
+  },
+  {
+    "paragraph": 197,
+    "old": "Nội dung 5: Triển khai Đường ống MLOps & Đánh giá luồng phản hồi. Cài đặt cơ chế biến đổi Implicit Feedback. Thiết lập pipeline tự động: Khử trùng lặp → Tái chia tập → Huấn luyện lại → Đánh giá Model Gate → Cập nhật Zero-downtime. Xác thực độ tin cậy của vòng lặp trên ứng dụng di động thực.",
+    "new": "Nội dung 5: PostgreSQL, xác thực, feedback có nguồn, idempotency, worker serving riêng, validation gate và rollback. Luồng research không bị ứng dụng sửa holdout; dữ liệu nhập được đối soát và nguồn cũ được bảo toàn."
+  },
+  {
+    "paragraph": 211,
+    "old": "Trải qua gần 4 thập kỷ, FPT đã vươn lên trở thành tập đoàn công nghệ, viễn thông và giáo dục hàng đầu Việt Nam thuộc khối doanh nghiệp tư nhân. Tính đến năm 2025, FPT sở hữu quy mô hơn 80.000 cán bộ nhân viên, hiện diện tại hơn 30 quốc gia trên toàn cầu. ",
+    "new": "FPT hoạt động trong các lĩnh vực công nghệ, viễn thông và giáo dục. Phần giới thiệu đơn vị cung cấp bối cảnh thực tập, còn số liệu thực nghiệm MovieRS được trình bày riêng trong chương cài đặt và kết quả [1]."
+  },
+  {
+    "paragraph": 221,
+    "old": "Chiến lược \"Cơn sóng thần công nghệ\" (2025 - 2026)",
+    "new": "Định hướng công nghệ trong bối cảnh đề tài"
+  },
+  {
+    "paragraph": 222,
+    "old": "Chủ tịch FPT Trương Gia Bình đã khẳng định: Từ năm 2026, FPT chính thức chuyển mình từ một công ty \"cung cấp dịch vụ\" sang \"doanh nghiệp sáng tạo công nghệ, làm chủ công nghệ chiến lược\". Tâm điểm của chiến lược này là Trí tuệ nhân tạo (AI), Bán dẫn (Semiconductor), và Điện toán đám mây (Cloud). Sự ra đời của tổ hợp hạ tầng AI Factory và đặc biệt là thỏa thuận hợp tác trở thành đối tác toàn cầu của OpenAI vào cuối năm 2026 đã đưa FPT vào hàng ngũ những doanh nghiệp đủ sức giải quyết các bài toán dữ liệu lớn và an ninh mạng quy mô toàn cầu. ",
+    "new": "Các lĩnh vực AI, dữ liệu và nền tảng đám mây tạo bối cảnh phù hợp cho đề tài. MovieRS vận dụng các kỹ thuật ở phạm vi nguyên mẫu, từ xử lý dữ liệu đến cung cấp API và kiểm chứng kết quả."
+  },
+  {
+    "paragraph": 226,
+    "old": "Nhân lực: Vượt mốc 30.000 nhân sự trên toàn cầu, FSoft sở hữu lực lượng lao động trẻ, khả năng học hỏi cao và linh hoạt. Theo thống kê nội bộ, công ty có hơn 6.300 nhân sự làm việc tại nước ngoài (Onsite), trong đó có hàng ngàn nhân sự bản địa đại diện cho hơn 70 quốc tịch khác nhau. ",
+    "new": "FPT Software tổ chức mạng lưới nhân sự và trung tâm phát triển tại nhiều thị trường, hỗ trợ phối hợp các nhóm kỹ thuật và khách hàng trong mô hình bàn giao toàn cầu [1]."
+  },
+  {
+    "paragraph": 242,
+    "old": "Trong quá trình thực tập tại FPT Software, việc tiếp cận với các bài toán dữ liệu quy mô lớn là một yêu cầu tất yếu. FSoft không chỉ đòi hỏi kỹ sư viết mã nguồn chạy được thuật toán, mà còn phải xây dựng được các hệ thống đáp ứng tiêu chuẩn sản xuất thực tế (Production-ready), chịu tải cao và có khả năng tự động hóa vòng đời học máy. ",
+    "new": "Trong phạm vi thực tập, MovieRS là bài tập nghiên cứu và xây dựng nguyên mẫu. Việc quản lý dữ liệu, đánh giá mô hình và kiểm thử phần mềm giúp rèn luyện kỹ năng liên quan đến kỹ thuật dữ liệu và AI."
+  },
+  {
+    "paragraph": 243,
+    "old": "Đề tài \"Tìm hiểu hệ thống khuyến nghị sử dụng phương pháp lai và xây dựng nguyên mẫu ứng dụng phim ảnh\" (định hướng MLOps) hoàn toàn tương thích với DNA công nghệ hiện tại của FSoft. Thông qua việc nghiên cứu thuật toán SVD để giải quyết bài toán dữ liệu thưa thớt, kết hợp với Content-Based cho vấn đề Cold-Start, và thiết lập luồng API/App khép kín, đề tài mô phỏng chính xác quy trình mà các Data Scientist và AI Engineer tại FPT Software đang thực hiện hàng ngày để gia tăng giá trị nghiệp vụ cho khách hàng toàn cầu.",
+    "new": "Đề tài gắn với các năng lực về dữ liệu và phát triển ứng dụng của môi trường thực tập. Tuy nhiên, pipeline của sinh viên không được mô tả như quy trình nội bộ hoặc hệ thống sản xuất của FPT Software."
+  },
+  {
+    "paragraph": 253,
+    "old": "Định hướng chiến lược \"AI-First\": Nhằm thích ứng với làn sóng trí tuệ nhân tạo toàn cầu, FPT Software đặt mục tiêu nhúng AI vào 100% quy trình sản xuất phần mềm và dịch vụ khách hàng. Thông qua việc hợp tác với các tập đoàn công nghệ hàng đầu (như OpenAI, Nvidia) và khai thác hạ tầng FPT AI Factory, công ty hướng tới việc tối ưu hóa từ 30% - 50% năng suất kỹ sư và tiên phong cung cấp các giải pháp AI thế hệ mới (Generative AI, AI Agents).",
+    "new": "AI và dữ liệu mở rộng khả năng xây dựng giải pháp phần mềm. Trong phạm vi thực tập, đề tài tiếp cận các năng lực này qua xử lý dữ liệu, mô hình khuyến nghị và kiểm thử tính nhất quán."
+  },
+  {
+    "paragraph": 259,
+    "old": "Xây dựng lực lượng lao động chuẩn toàn cầu: Thu hút và phát triển đội ngũ hơn 40.000 kỹ sư (mục tiêu hướng tới 100.000 nhân sự vào năm 2030), tạo điều kiện cho kỹ sư Việt Nam làm việc trong môi trường đa văn hóa với các chuyên gia đến từ hơn 70 quốc tịch.",
+    "new": "Phát triển nguồn nhân lực công nghệ và đào tạo liên tục tạo điều kiện để sinh viên tiếp cận kỹ năng mới, rèn luyện phối hợp công việc và tư duy giải quyết vấn đề."
+  },
+  {
+    "paragraph": 282,
+    "old": "Quy trình Agile/Scrum: Hơn 80% các dự án tại FPT Software hiện nay áp dụng mô hình phát triển linh hoạt Agile. Trong môi trường này, kỹ sư làm việc theo các vòng lặp ngắn (Sprints), liên tục tương tác với khách hàng, tích hợp và triển khai liên tục (CI/CD) nhằm ra mắt sản phẩm nhanh chóng.",
+    "new": "Phát triển linh hoạt tổ chức công việc theo vòng lặp ngắn, tiếp nhận phản hồi và điều chỉnh theo kết quả kiểm tra. Trong đề tài, các pha kỹ thuật được triển khai theo phụ thuộc và có tiêu chí nghiệm thu."
+  },
+  {
+    "paragraph": 314,
+    "old": "FPT AI CodeVista & AI Agents: Bắt nhịp làn sóng Generative AI và thông qua hợp tác với OpenAI, FPT Software đã phát triển các trợ lý lập trình (AI Coding Assistants) và hệ sinh thái AI Agents. Các sản phẩm này hỗ trợ kỹ sư tự động sinh mã nguồn, viết kịch bản kiểm thử (test cases) và rà soát lỗi bảo mật, giúp tăng từ 30% đến 50% năng suất sản xuất phần mềm.",
+    "new": "Các công cụ hỗ trợ lập trình bằng AI có thể hỗ trợ viết mã, tạo kiểm thử và rà soát. Chất lượng đầu ra vẫn cần được kiểm tra bằng quy tắc kỹ thuật và các trường hợp thực tế của dự án."
+  },
+  {
+    "paragraph": 332,
+    "old": "Vai trò sinh tử của Hệ thống khuyến nghị (Recommendation System): Hệ thống gợi ý không còn là một tính năng \"có thì tốt\" mà đã trở thành công cụ kinh doanh lõi. Các báo cáo ngành cho thấy, phần lớn thời lượng xem trên các nền tảng hàng đầu không xuất phát từ thanh tìm kiếm, mà đến từ các danh sách đề xuất tự động. Chất lượng của hệ thống khuyến nghị tỷ lệ thuận trực tiếp với tỷ lệ giữ chân khách hàng và doanh thu của doanh nghiệp.",
+    "new": "Khuyến nghị là một thành phần hỗ trợ khám phá nội dung. Đề tài chỉ đo chất lượng offline và hợp đồng phần mềm; chưa đo retention, doanh thu hay quan hệ nhân quả với hành vi sử dụng."
+  },
+  {
+    "paragraph": 337,
+    "old": "Thiếu hụt luồng phản hồi thời gian thực (Real-time Feedback Loop): Nhiều hệ thống hiện nay vẫn vận hành mô hình học máy theo mẻ (Batch Processing) định kỳ hàng ngày hoặc hàng tuần. Sự chậm trễ này khiến hệ thống không nắm bắt được sự thay đổi sở thích tức thời của người dùng (Ví dụ: Một người dùng thường xem phim hành động, nhưng hôm nay lại muốn tìm phim hoạt hình cho con).",
+    "new": "Độ trễ giữa feedback và model batch là một đánh đổi thiết kế. MovieRS ghi dữ liệu và làm mới cache sau commit; việc huấn luyện lại chạy bằng worker thủ công để kiểm soát tài nguyên, không cam kết model học ngay mọi thay đổi sở thích."
+  },
+  {
+    "paragraph": 341,
+    "old": "Bản chất của hiệu ứng \"Đuôi dài\" (Long-tail Effect): Trong bất kỳ kho nội dung nào, lượt xem luôn phân bổ không đồng đều. Một số ít các tác phẩm bom tấn chiếm trọn sự chú ý và lượng tương tác, trong khi phần lớn nội dung khác (phần đuôi dài) hiếm khi được động tới. Điều này gây ra hiện tượng thiên lệch dữ liệu (Data Bias), khiến thuật toán có xu hướng phớt lờ các nội dung ngách, làm trầm trọng thêm bài toán thưa thớt dữ liệu.",
+    "new": "Hiệu ứng đuôi dài thể hiện sự không đồng đều của số tương tác giữa phim. Phân phối này được kiểm tra trên rating đã có; không gọi số rating là số lượt xem thực tế."
+  },
+  {
+    "paragraph": 344,
+    "old": "Khoảng trống trong quy trình MLOps: Sự chậm trễ trong việc phản hồi sở thích người dùng xuất phát từ sự thiếu đồng bộ giữa bộ phận khoa học dữ liệu (phát triển mô hình offline) và bộ phận kỹ thuật phần mềm (vận hành online). Việc thiếu vắng một quy trình MLOps tự động hóa chuẩn mực khiến việc tái huấn luyện (Retrain) và triển khai (Deployment) mô hình mới gặp nhiều rủi ro và tốn kém thời gian.",
+    "new": "Thiếu versioning và đối soát có thể làm kết quả khó tái lập. V2 dùng snapshot/manifest, selection khóa trước TEST, source archive, gate và rollback; chưa có hệ thống giám sát drift hoặc CI/CD production."
+  },
+  {
+    "paragraph": 352,
+    "old": "Giải pháp này thay đổi hoàn toàn mô hình tương tác: chuyển từ việc người dùng phải chủ động tìm kiếm nội dung sang việc hệ thống tự động thấu hiểu và \"đẩy\" nội dung phù hợp lên màn hình chính. ",
+    "new": "Giải pháp sắp xếp phim chưa tương tác dựa trên model được chọn và sở thích ứng dụng. Mức phù hợp là giả thuyết cần đo, không đồng nghĩa hệ thống tự hiểu chính xác sở thích của người dùng."
+  },
+  {
+    "paragraph": 354,
+    "old": "Việc tích hợp hệ thống khuyến nghị không chỉ là một tiện ích bổ sung, mà là yêu cầu sống còn để giải quyết các bài toán thực tiễn sau đây:",
+    "new": "Giải pháp được lựa chọn để kiểm chứng các bài toán sau ở quy mô nguyên mẫu:"
+  },
+  {
+    "paragraph": 355,
+    "old": "Giải quyết tình trạng \"Quá tải thông tin\": Trên các nền tảng phát trực tuyến như Netflix hay FPT Play, người dùng thường bị choáng ngợp trước hàng chục nghìn lựa chọn. Hệ thống gợi ý đóng vai trò trung tâm giúp cá nhân hóa nội dung, từ đó tăng tỷ lệ giữ chân người dùng (Retention Rate). ",
+    "new": "Hỗ trợ khám phá nội dung: rút gọn catalog thành danh sách Top-K có lý do hiển thị. Lợi ích về mức hài lòng hoặc giữ chân người dùng cần đánh giá trực tuyến riêng."
+  },
+  {
+    "paragraph": 364,
+    "old": "Để chống lại hiện tượng học vẹt (Overfitting) khi dữ liệu quá ít, mô hình được tích hợp hàm mất mát với L2 Regularization, giúp hệ thống gợi ý chính xác những bộ phim ngách phù hợp với \"khẩu vị\" ngầm của người dùng. ",
+    "new": "Regularization hạn chế độ lớn tham số và hỗ trợ kiểm soát overfitting. Khả năng khuyến nghị phim ít phổ biến phải được đo bằng baseline, cohort và coverage, không suy ra chỉ từ việc dùng factorization."
+  },
+  {
+    "paragraph": 366,
+    "old": "Để giải quyết triệt để bài toán Cold-Start, hệ thống áp dụng luồng định tuyến thông minh theo vòng đời người dùng:",
+    "new": "Hybrid nghiên cứu dùng trọng số theo lịch sử; cold user dùng fallback từ dữ liệu fit. Luồng onboarding của ứng dụng là chức năng riêng, chưa có nhãn onboarding trong MovieLens."
+  },
+  {
+    "paragraph": 367,
+    "old": "Khi vừa đăng ký tài khoản, người dùng buộc phải chọn một số thể loại yêu thích. Hệ thống sẽ kết hợp mô hình Lọc theo độ phổ biến (Popularity) và Lọc theo thể loại để đưa ra gợi ý tức thì. ",
+    "new": "Khi đăng ký, giao diện cho chọn genre; API lưu sở thích và rerank danh sách phục vụ. Không dùng nhãn TEST để giả lập sở thích này."
+  },
+  {
+    "paragraph": 368,
+    "old": "Ngay khi hệ thống thu thập đủ số lượng tương tác, luồng tính toán sẽ tự động chuyển đổi sang thuật toán SVD để cung cấp các gợi ý cá nhân hóa sâu sắc hơn. ",
+    "new": "Số tương tác không tự quyết định chuyển sang SVD. Bundle serving hiện chọn MostPopular từ VAL; worker mới có quyền fit và promote phiên bản khác sau khi vượt gate."
+  },
+  {
+    "paragraph": 370,
+    "old": "Quy đổi toán học: Ứng dụng theo dõi tiến độ xem phim (Watch Progress) và tự động quy đổi thành điểm đánh giá. Ví dụ: Xem trên 80% thời lượng được quy đổi thành 5.0 điểm; xem dưới 20% bị phạt và quy đổi thành 1.5 điểm. Hành vi thả tim được quy đổi thành 4.5 điểm. ",
+    "new": "Favorite tạo proxy 4,5; xem hoàn tất từ 95% tạo watch_complete 4,0 nếu không có nguồn mạnh hơn. Xem dở không thành dislike. Explicit/legacy_unknown ưu tiên hơn favorite, và favorite ưu tiên hơn watch_complete; bỏ favorite rút proxy tương ứng."
+  },
+  {
+    "paragraph": 371,
+    "old": "Cá nhân hóa tức thời: Ngay khi nhận được một phản hồi (chấm sao hoặc xem xong), máy chủ không cần chờ đợi huấn luyện lại toàn bộ mô hình. Thay vào đó, hệ thống trích xuất ngay véc-tơ sở thích của người dùng đó và chạy một bước tính toán cập nhật (1 bước SGD) trong bộ nhớ. Kết quả là danh sách gợi ý thay đổi ngay lập tức trên màn hình ứng dụng. \t ",
+    "new": "Sau commit, cache của user được làm mất hiệu lực. Callback cập nhật online của nhánh SVD legacy chỉ có ý nghĩa khi nhánh đó được nạp; với bundle MostPopular V2 không khẳng định có bước SGD làm thay đổi vector người dùng tức thì."
+  },
+  {
+    "paragraph": 373,
+    "old": "Khác với các mô hình nghiên cứu chỉ chạy thử nghiệm ngoại tuyến (offline), hệ thống này được thiết kế với vòng lặp MLOps khép kín để tự động tiến hóa: ",
+    "new": "Vòng đời được tách thành nghiên cứu và serving để việc thu thập phản hồi không làm thay đổi benchmark đã khóa:"
+  },
+  {
+    "paragraph": 374,
+    "old": "Thu thập và điều hướng dữ liệu: Mọi phản hồi mới đều được lưu trữ riêng biệt và chủ động đưa vào tập dữ liệu huấn luyện (Train set) nhằm đảm bảo hệ thống học được các sở thích mới nhất. ",
+    "new": "Feedback runtime được đọc vào dữ liệu fit phục vụ riêng; snapshot nghiên cứu, validation và TEST không bị repartition hoặc bổ sung nhãn ứng dụng."
+  },
+  {
+    "paragraph": 375,
+    "old": "Tái huấn luyện tự động (Auto-Retrain): Một tiến trình chạy ngầm sẽ kích hoạt luồng huấn luyện SVD khi phát hiện có đủ số lượng tương tác mới được gửi về từ ứng dụng. ",
+    "new": "Worker thủ công ngoài API có khóa một job, ngân sách RAM/thời gian và trạng thái rõ ràng. API không có tiến trình auto-retrain chạy nền; scheduling là hướng mở rộng."
+  },
+  {
+    "paragraph": 376,
+    "old": "Cổng kiểm duyệt và Triển khai (Model Gate & Reload): Phiên bản AI mới chỉ được cấp phép hoạt động khi sai số dự đoán (RMSE) vượt qua Cổng kiểm soát chất lượng. Sau đó, máy chủ API sẽ tự động nạp mô hình mới (Zero-downtime) mà không làm gián đoạn trải nghiệm của người dùng đang sử dụng ứng dụng di động. ",
+    "new": "Gate dùng validation chung với NDCG và guardrail cohort/latency/rating phù hợp. Bundle được xác minh trước khi thay con trỏ; reload cần admin token. Cơ chế snapshot giảm rủi ro gián đoạn, không thay thế đo tải hoặc bảo đảm zero-downtime trong production."
+  },
+  {
+    "paragraph": 392,
+    "old": "Python hiện là một trong những ngôn ngữ phổ biến nhất thế giới (xếp hạng #1 trên TIOBE Index 2025) và là ngôn ngữ thống trị trong lĩnh vực Khoa học Dữ liệu (Data Science), Học máy (Machine Learning), và Trí tuệ Nhân tạo (AI) nhờ hệ sinh thái thư viện phong phú: NumPy (tính toán ma trận), Pandas (xử lý dữ liệu dạng bảng), scikit-learn (học máy), Matplotlib/Seaborn (trực quan hóa), và nhiều framework khác.",
+    "new": "Python được chọn nhờ thư viện xử lý dữ liệu, sparse matrix, mô hình và API. Phiên bản đã kiểm thử của dự án là Python 3.14.2 trên Windows, với dependency khóa; không suy ra tính tương thích mọi OS/Python từ lần chạy này."
+  },
+  {
+    "paragraph": 395,
+    "old": "Cơ chế thông dịch này mang lại tính linh hoạt rất cao, cho phép một tệp mã nguồn có thể chạy chéo trên nhiều nền tảng mà không cần chỉnh sửa lại mã. Đồng thời, Python hỗ trợ mạnh mẽ lập trình đa mô hình (multi-paradigm) bao gồm: lập trình hướng đối tượng (OOP), lập trình hàm (Functional Programming), và lập trình thủ tục (Procedural Programming). Trong dự án MovieRS, khi khởi chạy Backend, trình thông dịch sẽ tự động xử lý toàn bộ mã nguồn các module để khởi tạo máy chủ Uvicorn, sẵn sàng lắng nghe các yêu cầu HTTP.",
+    "new": "Mã nguồn Python có tính di động ở mức ngôn ngữ, nhưng phụ thuộc native như Surprise và driver có thể cần bản build phù hợp. Vì vậy lock hiện tại gắn với môi trường Windows đã được kiểm chứng."
+  },
+  {
+    "paragraph": 400,
+    "old": "Hiệu năng cao: Dựa trên Starlette (ASGI framework) và Pydantic (data validation), FastAPI đạt tốc độ tương đương Node.js và Go — nhanh hơn đáng kể so với Flask hay Django REST Framework.",
+    "new": "FastAPI dựa trên ASGI/Starlette và dùng Pydantic để kiểm tra dữ liệu; hiệu năng thực tế phụ thuộc workload, I/O và cách triển khai, không suy ra ưu thế tốc độ tuyệt đối từ tên framework [7]."
+  },
+  {
+    "paragraph": 403,
+    "old": "Hỗ trợ bất đồng bộ (Async/Await): Hỗ trợ xử lý bất đồng bộ gốc (native async), cho phép máy chủ xử lý hàng nghìn kết nối đồng thời mà không bị nghẽn cổ chai.",
+    "new": "Async/await hỗ trợ I/O bất đồng bộ; các tác vụ SQL và tính toán đồng bộ được tổ chức phù hợp. Khả năng chịu tải đồng thời cần một thí nghiệm tải riêng."
+  },
+  {
+    "paragraph": 405,
+    "old": "Quy trình xử lý một HTTP request trong FastAPI vận hành theo một luồng liền mạch và chặt chẽ. Khi phía Client (chẳng hạn như ứng dụng di động Flutter) gửi đi một yêu cầu HTTP, máy chủ Uvicorn (ASGI server) sẽ lập tức tiếp nhận yêu cầu này. Trước khi đến được hàm xử lý cốt lõi, yêu cầu sẽ phải đi qua một chuỗi các Middleware, điển hình như CORS Middleware, để rà soát các vấn đề về phân quyền và giao tiếp chéo miền.",
+    "new": "Request từ Flutter được Uvicorn tiếp nhận, qua middleware xác thực/ownership và định tuyến tới endpoint. CORS xử lý chính sách truy cập chéo nguồn của trình duyệt, không thay thế xác thực hoặc phân quyền."
+  },
+  {
+    "paragraph": 417,
+    "old": "Ngược lại, khi ứng dụng bước vào giai đoạn phát hành, Dart sẽ chuyển sang sử dụng trình biên dịch AOT. Lúc này, toàn bộ mã nguồn Dart sẽ được dịch thẳng thành mã máy gốc (native machine code) để đóng gói thành các tệp tin cài đặt độc lập (như APK cho Android hoặc IPA cho iOS). Việc loại bỏ máy ảo trung gian giúp ứng dụng đạt được tốc độ khởi động cực kỳ nhanh chóng và mang lại trải nghiệm tương tác đồ họa mượt mà nhất.",
+    "new": "Khi phát hành mobile, Dart có thể biên dịch AOT; trên web có pipeline biên dịch cho trình duyệt. Build web đã được kiểm chứng nhưng không thay cho thử nghiệm Android/iOS vật lý."
+  },
+  {
+    "paragraph": 423,
+    "old": "Skia/Impeller Engine: Flutter không phụ thuộc vào các thành phần giao diện gốc của hệ điều hành. Nó tự vẽ (render) mọi pixel trực tiếp lên màn hình thông qua engine đồ họa hiệu năng cao ở tốc độ 60–120 FPS.",
+    "new": "Flutter kết xuất giao diện bằng engine tương ứng nền tảng. Báo cáo không khẳng định 60–120 FPS vì chưa có phép đo hiệu năng khung hình."
+  },
+  {
+    "paragraph": 437,
+    "old": "Sự đặc biệt của cơ chế này thể hiện rõ nhất khi có sự tương tác. Ví dụ, khi quản trị viên thay đổi một thanh trượt thông số hoặc bấm vào nút \"Kích hoạt Retrain\", trình duyệt sẽ gửi sự kiện đó về máy chủ. Ngay lập tức, Streamlit ghi nhận trạng thái mới này và tiến hành chạy lại toàn bộ tệp mã nguồn từ đầu. Khi luồng thực thi đi qua khối lệnh chứa điều kiện nút bấm, hệ thống sẽ gọi các hàm nghiệp vụ tương ứng để cập nhật dữ liệu và vẽ lại giao diện mới trả về cho trình duyệt. Mô hình thiết kế \"top-down\" này giúp việc đồng bộ dữ liệu và giao diện trở nên vô cùng trực quan và dễ bảo trì.",
+    "new": "V2 đọc artifact đã hoàn tất khi script rerun, không fit model hoặc gọi retrain khi mở dashboard. Cache giao diện và dữ liệu không được dùng để che việc kiểm tra checksum và tính tương thích run."
+  },
+  {
+    "paragraph": 440,
+    "old": "SVD (Phân rã Giá trị Suy biến) trong ngữ cảnh hệ thống khuyến nghị là một kỹ thuật thuộc nhóm Collaborative Filtering dựa trên mô hình (Model-based). SVD áp dụng phương pháp Phân rã Ma trận để tìm ra các mẫu hình ẩn, từ đó dự đoán mức độ yêu thích của người dùng đối với các mục (item) chưa từng tương tác.",
+    "new": "SVD trong Surprise là matrix factorization có bias học bằng SGD, thường được gọi BiasedSVD. Cần phân biệt với phép phân rã UΣVᵀ của đại số tuyến tính; dữ liệu thiếu không được điền bằng nhãn TEST [4]."
+  },
+  {
+    "paragraph": 441,
+    "old": "Ý tưởng cốt lõi của giải pháp này là biến đổi ma trận tương tác thưa thớt (sparse matrix) khổng lồ thành tích của hai ma trận có kích thước nhỏ hơn rất nhiều. Qua đó, mỗi người dùng u và mỗi bộ phim i đều được biểu diễn thành các véc-tơ đặc trưng ẩn (Latent Factor Vector) trong một không gian toán học nhiều chiều (ví dụ k=50 chiều).",
+    "new": "Mỗi user và phim đã biết có vector ẩn. Khi một phía chưa xuất hiện trong dữ liệu fit, cách fallback của model ảnh hưởng kết quả; đây là lý do phải giữ cold user trong đánh giá."
+  },
+  {
+    "paragraph": 444,
+    "old": "Trong đó, là điểm đánh giá trung bình toàn cục,  lần lượt là độ lệch (bias) cá nhân của người dùng và của phim. Phần  là tích vô hướng giữa hai véc-tơ ẩn, phản ánh mức độ trùng khớp giữa sở thích nội tại của người dùng và đặc điểm của tác phẩm. Đây chính là nguyên lý của thuật toán FunkSVD danh tiếng, giúp lấp đầy các khoảng trống trong dữ liệu để mang lại những gợi ý mang tính cá nhân hóa sâu sắc.",
+    "new": "μ là trung bình dữ liệu fit; b_u, b_i là bias; tích vô hướng giữa hai vector biểu diễn phần tương tác. Sai số rating thấp không bảo đảm ranking tốt khi cạnh tranh với toàn catalog chưa tương tác."
+  },
+  {
+    "paragraph": 447,
+    "old": "Quy trình ứng dụng SVD thông qua thư viện Surprise trong dự án diễn ra theo một chuỗi các bước khép kín. Đầu tiên, toàn bộ tập dữ liệu huấn luyện (khoảng 1.6 triệu bản ghi) sẽ được nạp và định dạng lại cấu trúc theo yêu cầu của thư viện. Sau đó, mô hình học máy được khởi tạo cùng với các siêu tham số đã tinh chỉnh sẵn (như số vòng lặp, tốc độ học, và hệ số kiểm soát quá mức).",
+    "new": "Khi chọn siêu tham số, Surprise fit trên 990.073 rating TRAIN. Sau khi khóa selection, từng seed refit trên 1.113.832 rating TRAIN+VAL rồi chấm cùng TEST. VAL chọn 32 factors, 15 epochs và regularization 0,02."
+  },
+  {
+    "paragraph": 448,
+    "old": "Sau khi khởi tạo, mô hình bước vào giai đoạn huấn luyện cốt lõi sử dụng thuật toán Giảm chênh lệch ngẫu nhiên (SGD). Ở giai đoạn này, thuật toán liên tục quét qua tập dữ liệu nhiều vòng, tự động điều chỉnh các véc-tơ đặc trưng và độ lệch thông qua việc tính toán đạo hàm nhằm triệt tiêu tối đa sai số giữa mức đánh giá dự đoán và thực tế. Khi mô hình đã đạt đến trạng thái hội tụ tốt nhất, toàn bộ trọng số toán học sẽ được xuất ra và lưu trữ dưới dạng các tệp tin nhị phân. Các tệp tin này cuối cùng sẽ được tải lên bộ nhớ của máy chủ API, sẵn sàng thực hiện các phép nhân vô hướng phức tạp để lọc ra danh sách phim phù hợp nhất mỗi khi có yêu cầu gợi ý từ phía người dùng.",
+    "new": "Trọng số được học qua các epoch SGD đã cấu hình, không khẳng định hội tụ tối ưu toàn cục. Source archive, seed, môi trường và metric được lưu để tái lập; model nghiên cứu không tự được deploy dựa trên TEST."
+  },
+  {
+    "paragraph": 473,
+    "old": "Hệ thống MovieRS được định hình là một nền tảng khuyến nghị phim cá nhân hóa, vận hành toàn diện dựa trên các tiêu chuẩn của MLOps. Để đảm bảo tính phân tán và hiệu năng cao, kiến trúc hệ thống được chia thành ba thành phần cốt lõi:",
+    "new": "MovieRS gồm ứng dụng Flutter, API FastAPI, dashboard nghiên cứu và worker/pipeline riêng. PostgreSQL giữ dữ liệu ứng dụng; ML-25M, snapshot nghiên cứu và model lớn nằm ở artifact local."
+  },
+  {
+    "paragraph": 476,
+    "old": "Bảng điều khiển quản trị (Dashboard - Streamlit): Cung cấp giao diện trực quan dành riêng cho quản trị viên nhằm theo dõi, phân tích dữ liệu (EDA), giám sát vòng đời của các phiên bản AI và kích hoạt quy trình tái huấn luyện mô hình khi cần thiết.",
+    "new": "Dashboard Streamlit đọc dữ liệu nguồn gốc, so sánh model/CI, ablation và trạng thái vận hành. Nó không trực tiếp kích hoạt huấn luyện; người vận hành chạy CLI worker có khóa job."
+  },
+  {
+    "paragraph": 482,
+    "old": "Để kết nối Frontend và Backend, hệ thống thiết kế 15 cổng giao tiếp RESTful API tiêu chuẩn:",
+    "new": "Bảng sau liệt kê các nhóm endpoint thực tế của V2 và ranh giới truy cập. Các route tương thích cũ được giữ nhưng client dùng endpoint favorite thống nhất để tránh gửi hai lần."
+  },
+  {
+    "paragraph": 494,
+    "old": "Dù phiên bản nguyên mẫu (Prototype) sử dụng cấu trúc lưu trữ dựa trên tệp (CSV/JSON), các thực thể vẫn được quy hoạch nghiêm ngặt theo chuẩn hóa cơ sở dữ liệu quan hệ (RDBMS). Điều này đảm bảo khả năng mở rộng và dịch chuyển lên các hệ quản trị CSDL chuyên nghiệp (như PostgreSQL) trong tương lai.",
+    "new": "V2 đã tích hợp PostgreSQL trên Supabase trong schema riêng moviers. Dữ liệu tài khoản, phiên, phản hồi, favorite và watch progress có FK/unique/check; không upload toàn bộ ML-25M vào database ứng dụng."
+  },
+  {
+    "paragraph": 498,
+    "old": "Bảng Users",
+    "new": "Bảng app_users"
+  },
+  {
+    "paragraph": 501,
+    "old": "Kho siêu dữ liệu phim đã được làm sạch và hợp nhất thông tin từ TMDb API.",
+    "new": "Catalog giữ movie_id gốc, title/genre canonical và metadata TMDb khi có; thiếu enrichment không làm mất phim khỏi catalog. Điểm TMDb không là feature lịch sử của benchmark."
+  },
+  {
+    "paragraph": 502,
+    "old": "Bảng Interactions",
+    "new": "Bảng feedback"
+  },
+  {
+    "paragraph": 503,
+    "old": "Sổ cái ghi nhận toàn bộ lịch sử phản hồi quy đổi của người dùng. Đây là nguồn cung cấp dữ liệu chính cho quy trình tái huấn luyện thuật toán.",
+    "new": "Mỗi cặp user–movie có một phản hồi hiệu lực và source. Đây không phải event log lưu mọi thay đổi; explicit và proxy được phân biệt trước khi đưa vào fit serving."
+  },
+  {
+    "paragraph": 508,
+    "old": "Bảng Model Registry",
+    "new": "Registry model dạng artifact local"
+  },
+  {
+    "paragraph": 509,
+    "old": "Kho lưu trữ siêu dữ liệu phiên bản phục vụ quy trình MLOps và chức năng Rollback.",
+    "new": "Registry serving nằm trong thư mục bundle/manifest và current.json, không phải bảng SQL. Dataset, validation gate, spec, checksum và previous version xác định khả năng rollback."
+  },
+  {
+    "paragraph": 571,
+    "old": "File .env nằm tại thư mục gốc dự án, chứa toàn bộ cấu hình có thể thay đổi mà không cần sửa mã nguồn:",
+    "new": "Backend đọc .env gốc cho secrets và môi trường runtime; pipeline nghiên cứu đọc configs/research.toml. Flutter dùng AppConfig hoặc --dart-define=API_URL, không đọc .env. Không chèn URI có mật khẩu, API key hoặc bearer token thật vào báo cáo."
+  },
+  {
+    "paragraph": 589,
+    "old": "Đối với giao diện đăng nhập và đăng kí, chúng được thiết kế mức tối giản là đăng kí với tên làm khóa chính và mật khẩu tối thiểu 4 kí tự. Khi đăng kí tài khoản, người dùng được yêu cầu chọn ít nhất 1 thể loại phim yêu thích để có thể gợi ý những bộ phim đầu tiên đến với người dùng khi chưa có lịch sử tương tác.",
+    "new": "Ảnh là giao diện nguyên mẫu trước refactor và chỉ minh họa bố cục. V2 dùng user_id làm khóa chính, username duy nhất không phân biệt hoa thường; mật khẩu tối thiểu 8 ký tự, băm Argon2id. Login/register cấp bearer token có hạn 12 giờ; Splash xác minh phiên với API trước khi vào ứng dụng."
+  },
+  {
+    "paragraph": 593,
+    "old": "Với giao diện trang chủ, người dùng có thể được gợi ý những bộ phim phổ biến nhất với bộ lọc theo thể loại yêu thích họ đã chọn, và phần đề xuất này dành cho người dùng mới vì chưa có lịch sử tương tác của họ.",
+    "new": "Trang chủ phân biệt gợi ý theo onboarding và lịch sử đã biết. Ở V2, model đang phục vụ là MostPopular được chọn trên VAL, kết hợp rerank theo genre; lịch sử đã tương tác bị loại khỏi candidate."
+  },
+  {
+    "paragraph": 594,
+    "old": "Tiếp đó là phần gợi ý phim dựa trên thuật toán SVD. Sau khi đã tương tác với hệ thống đủ lâu, hệ khuyến nghị sẽ chạy mô hình và đưa ra các kết quả dự đoán những bộ phim mà những người dùng khác có tương tác tương tự cũng xem. Như ví dụ trong ảnh, vì tài khoản đang được lấy làm ví dụ có lịch sử tương tác với thể loại animation và action nhiều trong khoản thời gian gần nhất, những gợi ý cho thấy những bộ phim đình đám theo thể loại họ vừa xem nhiều đó.",
+    "new": "Nhãn “gợi ý SVD” trong ảnh nguyên mẫu là nhãn V1, không đại diện model V2. Client hiện nhận strategy, stage, history_count, candidate_count và reason từ API; ranking score không được tự hiển thị như xác suất thích hoặc số sao dự đoán khi model chỉ ranking."
+  },
+  {
+    "paragraph": 595,
+    "old": "Tuy nhiên, để tối ưu cho phần gợi ý, hệ thống có sử dụng cơ chế 2 chốt: ",
+    "new": "Khi sở thích hoặc feedback thay đổi, cache theo user/chế độ được invalidation sau commit. Cache tối đa 5 phút; lỗi API có trạng thái thử lại riêng, không bị đổi thành danh sách rỗng."
+  },
+  {
+    "paragraph": 596,
+    "old": "Chốt đầu tiên, khi người dùng mới tạo tài khoản, lịch sử xem trống vắng và vector yêu thích bằng 0 thì hệ khuyến nghị sẽ để lr của người đó ở mức cao nhất ( lr = 0.15) để có thể học nhanh nhất những thể loại mà người dùng đang xem ngay lúc này. \nTuy nhiên, sau khi tương tác đủ 5 lần, hệ thống sẽ chuyển sang chốt thứ hai. Khi này hệ thống sẽ chạy ngầm lại mô hình với tham số lr = 0.005, nhằm có thể ghi nhận mọi lịch sử từ quá khứ đến hiện tại để xây dựng vector sở thích đồng đều dựa trên lịch sử tương tác nhằm gợi ý những bộ phim hợp gu của người dùng. ",
+    "new": "Không còn quy tắc “đủ 5 tương tác thì retrain nền” hoặc hai learning rate 0,15/0,005 như mô tả cũ. Worker thủ công chọn model bằng validation và giữ nguồn research tách biệt khỏi dữ liệu ứng dụng."
+  },
+  {
+    "paragraph": 600,
+    "old": "Ở trang tìm kiếm này, người dùng sẽ gõ từ khóa bằng tên hoặc thể loại của bộ phim để tìm kiếm. Các kế quả được trả về dựa trên độ trùng khớp với từ khóa, và mỗi trang trả về bao gồm tối đa 20 bộ phim phù hợp nhất với từ khóa.",
+    "new": "Tìm kiếm hỗ trợ từ khóa tên phim và bộ lọc theo API; mỗi trang mặc định tối đa 20 kết quả. Lỗi mạng và trạng thái không tìm thấy được phân biệt. Ảnh giữ để minh họa giao diện nguyên mẫu."
+  },
+  {
+    "paragraph": 604,
+    "old": "Đây là trang lưu trữ những bộ phim được người dùng thả tim, và mục đích là để phục vụ việc xem lịch sử cũng như đánh giá hệ thống.",
+    "new": "Favorite phục vụ danh sách lưu và đồng thời tạo proxy theo quy tắc ưu tiên. Client chỉ gửi một request; database cập nhật favorite cùng feedback trong transaction. Bỏ tim rút proxy, không ghi rating âm."
+  },
+  {
+    "paragraph": 608,
+    "old": "Đây là trang lưu trữ thông tin tương tác của người dùng cũng như thể loại họ yêu thích. Người dùng có thể chọn lại thể loại yêu thích ở trang này.",
+    "new": "Hồ sơ hiển thị thông tin tài khoản, thể loại đã chọn và thống kê. Lịch sử đánh giá sao chỉ gồm explicit; watch_complete không được đếm như một đánh giá chủ động. Người dùng không truy cập hồ sơ của tài khoản khác."
+  },
+  {
+    "paragraph": 612,
+    "old": "Ở trang chi tiết phim này, người dùng có thể bình chọn số sao cho bộ phim mình đang xem, nhấn yêu thích và nhấn xem phim. Ở hệ thống này, việc xem ohim chỉ là phát một thanh player chạy nhưng không có phim thật được phát vì lí do bản quyền. Hệ thống chỉ phát player nền và thu thập thông tin số phút xem của người dùng trước khi họ thoát khỏi player. ở đây, hệ thống sẽ thu thập 3 loại thông tin dành cho việc huấn luyện mô hình. Trên một bộ phim xác đinh, hệ thống sẽ thu thập 2 loại phản hồi, đó là:",
+    "new": "Trang chi tiết cho phép đánh giá sao, thêm/bỏ favorite và mở player mô phỏng. Bộ đếm chạy 1 giây thực bằng 1 giây phim, gửi heartbeat mỗi 5 giây, hỗ trợ resume và xác nhận lưu khi thoát; không phát video thật."
+  },
+  {
+    "paragraph": 613,
+    "old": "Phản hồi tường minh: Thu thập số sao mà người dùng đánh giá cho bộ phim đó và việc người dùng có nhấn yêu thích bộ phim đó hay không.",
+    "new": "Phản hồi explicit là số sao người dùng chủ động chọn. Favorite là hành vi do người dùng thực hiện nhưng chỉ được mô hình hóa thành proxy, không là một rating explicit."
+  },
+  {
+    "paragraph": 614,
+    "old": "Phản hồi ngầm định: Thu thập số phút xem phim của  người dùng và quy đối sang số sao tương ứng.",
+    "new": "Tiến độ xem là tín hiệu vận hành mô phỏng. Chỉ tỷ lệ từ 95% mới tạo watch_complete 4,0 nếu không có nguồn mạnh hơn; dưới ngưỡng không ghi dislike. Watch/favorite không ghi đè sao chủ động."
+  },
+  {
+    "paragraph": 617,
+    "old": "Sau quá trình thực tập, nghiên cứu và trực tiếp phát triển đề tài \"Hệ thống Khuyến nghị Phim đa phương tiện MovieRS\", dự án đã hoàn thành các mục tiêu ban đầu đặt ra. Kết quả đạt được có thể được đúc kết trên ba phương diện chính:",
+    "new": "Đề tài đã xây dựng được quy trình nghiên cứu và nguyên mẫu ứng dụng có thể kiểm tra. Thành công của refactor được đánh giá bằng tính đúng đắn, truy vết dữ liệu và luồng vận hành; không lấy giả định hybrid phải thắng làm điều kiện kết luận."
+  },
+  {
+    "paragraph": 621,
+    "old": "Nắm bắt được quy trình vòng đời học máy tự động (MLOps), từ khâu thu thập dữ liệu, tái huấn luyện, đến bước nạp lại mô hình mà không làm gián đoạn dịch vụ.",
+    "new": "Tổ chức vòng đời model với worker riêng, validation gate, artifact version, checksum và rollback; không khẳng định tự động hóa production hoàn toàn."
+  },
+  {
+    "paragraph": 625,
+    "old": "Tìm hiểu được các thách thức thực tế trong việc xây dựng mô hình khuyến nghị, như vấn đề tối ưu các tham số như lr trong các giai đoạn học máy, chọn số chiều cho ma trận đặc trưng.",
+    "new": "Phân biệt mục tiêu tối ưu rating và ranking; kiểm tra cold fallback, genre và trọng số bằng ablation cùng giao thức thay vì chỉ so một chỉ số RMSE."
+  },
+  {
+    "paragraph": 626,
+    "old": "Xây dựng hệ thống Backend mạnh mẽ bằng FastAPI, cung cấp luồng API ổn định có khả năng phục vụ danh sách gợi ý với độ trễ thấp (trung bình dưới 800ms) cho danh mục hơn 62.000 bộ phim.",
+    "new": "API cung cấp catalog 62.423 phim và cache gợi ý. HTTP smoke xác nhận hợp đồng đọc và bảo toàn input; chưa có load test đủ để khẳng định latency trung bình dưới 800 ms hoặc SLA cho nhiều người dùng."
+  },
+  {
+    "paragraph": 627,
+    "old": "Triển khai thành công đường ống MLOps tự động hóa hoàn toàn. Hệ thống có khả năng tự động gộp dữ liệu phản hồi mới, huấn luyện lại thuật toán SVD, đối chiếu sai số RMSE qua Cổng kiểm duyệt (Model Gate) và nạp nóng mô hình mới vào bộ nhớ (Zero-downtime Reload).",
+    "new": "PostgreSQL đã được migration/đối soát; feedback transaction và idempotency được kiểm thử trên database thật. Worker thủ công ngoài API thực hiện fit serving, gate và reload có bảo vệ quản trị."
+  },
+  {
+    "paragraph": 628,
+    "old": "Xây dựng Dashboard quản trị trực quan bằng Streamlit, giúp đơn giản hóa việc giám sát dữ liệu và quản lý các phiên bản trí tuệ nhân tạo.",
+    "new": "Dashboard nghiên cứu bảy trang đọc artifact thật, từ chối delta giữa các run khác protocol/dataset/user và hiển thị CI, cohort, chi phí cùng kết quả âm."
+  },
+  {
+    "paragraph": 634,
+    "old": "Về cơ sở dữ liệu: Nguyên mẫu hiện tại vẫn đang sử dụng cấu trúc lưu trữ dựa trên tệp tin (CSV/JSON), chưa được tích hợp hệ quản trị cơ sở dữ liệu quan hệ hoàn chỉnh, làm giảm hiệu năng khi thực hiện các truy vấn phức tạp ở quy mô lớn.",
+    "new": "Giới hạn dữ liệu: mẫu user-cluster vẫn có thiên lệch MovieLens, thiếu exposure/demographic; genre là snapshot hồi cứu. Các tỷ lệ giống nguồn không chứng minh đại diện mọi khán giả."
+  },
+  {
+    "paragraph": 635,
+    "old": "Về thuật toán: Mô hình SVD hiện tại chủ yếu khai thác đặc trưng tương tác (hành vi). Việc bỏ qua các yếu tố về mặt ngữ nghĩa của bộ phim (như tóm tắt nội dung, dàn diễn viên) khiến hệ thống mất đi một phần thông tin quý giá.",
+    "new": "Giới hạn mô hình: hybrid chưa vượt MostPopular; phần lợi ích so SVD thuần chưa tách được khỏi cold fallback. Chưa có bằng chứng riêng cho genre và chưa có xác nhận trên nhiều cửa sổ hoặc mẫu độc lập."
+  },
+  {
+    "paragraph": 636,
+    "old": "Về cơ chế tự động hóa: Bộ đếm kích hoạt tính năng tái huấn luyện (Auto-Retrain) mới chỉ dựa trên số lượng bản ghi tương tác tĩnh, chưa có các cơ chế phát hiện độ trôi lệch dữ liệu (Data Drift) phức tạp.",
+    "new": "Giới hạn kiểm chứng: chưa có A/B test, khảo sát người dùng, thiết bị Android/iOS vật lý, drift monitor hay load test production. Player là mô phỏng; độ tin cậy proxy xem xong chưa được xác thực bằng hành vi xem thực."
+  },
+  {
+    "paragraph": 638,
+    "old": "Nhằm khắc phục các hạn chế nêu trên và đưa nguyên mẫu hệ thống MovieRS từ mức độ phòng thí nghiệm (Prototype) tiến tới môi trường triển khai thực tế (Production), báo cáo đề xuất các kiến nghị và phương án như sau:",
+    "new": "Các hướng sau là công việc tương lai, không được mô tả như kết quả đã triển khai. Ưu tiên mở rộng bằng thí nghiệm có nguồn dữ liệu và tiêu chí xác nhận rõ ràng."
+  },
+  {
+    "paragraph": 640,
+    "old": "Chuyển đổi hệ quản trị cơ sở dữ liệu: Cần chuyển đổi toàn bộ cấu trúc lưu trữ từ tệp tin CSV/JSON sang hệ quản trị cơ sở dữ liệu PostgreSQL để đảm bảo tính toàn vẹn dữ liệu (ACID) và tối ưu hóa tốc độ truy vấn.",
+    "new": "Duy trì PostgreSQL hiện có: theo dõi truy vấn/pool, kiểm thử restore từ backup và quản lý migration. Không cần lặp lại đề xuất chuyển từ CSV vì V2 đã hoàn tất cutover và diễn tập export."
+  },
+  {
+    "paragraph": 641,
+    "old": "Tích hợp bộ nhớ đệm tốc độ cao: Triển khai Redis Cache tại tầng Backend để lưu trữ tạm thời các danh sách gợi ý và kết quả tìm kiếm, giúp giảm thiểu tải tính toán cho máy chủ và đưa độ trễ API xuống dưới mốc 200ms.",
+    "new": "Chỉ cân nhắc Redis khi đo được bottleneck hoặc triển khai nhiều process; cache in-memory hiện đủ cho demo. Mốc latency mục tiêu phải gắn với workload, tỷ lệ cache hit và kết quả đo mới."
+  },
+  {
+    "paragraph": 642,
+    "old": "Triển khai trên nền tảng đám mây (Cloud): Đề xuất đóng gói toàn bộ hệ thống Backend, ML Pipeline và Dashboard bằng Docker, sau đó triển khai lên các dịch vụ đám mây (như AWS EC2 hoặc Google Cloud Platform) để đảm bảo khả năng chịu tải cao và tính sẵn sàng 24/7.",
+    "new": "Có thể bổ sung đóng gói/deployment và load test khi mở rộng. Các dịch vụ cloud, Docker/CI/CD và tính sẵn sàng 24/7 chưa thuộc bằng chứng của lần nghiệm thu này."
+  },
+  {
+    "paragraph": 644,
+    "old": "Phát triển mô hình Lai (Hybrid Recommender): Kết hợp thuật toán SVD hiện tại với các mô hình Học sâu xử lý ngôn ngữ tự nhiên (như BERT hoặc TF-IDF) để quét nội dung kịch bản phim. Giải pháp này sẽ giúp phân tích sâu hơn về sở thích nội dung, khắc phục triệt để hơn nữa bài toán Khởi động lạnh.",
+    "new": "Ưu tiên mục tiêu tối ưu ranking, đối chứng BPR/ALS và cửa sổ xác nhận mới. Hybrid genre đã triển khai nhưng chưa cho thấy ưu thế chính; thêm TF-IDF/embedding là giả thuyết nghiên cứu, không bảo đảm giải quyết triệt để cold-start."
+  },
+  {
+    "paragraph": 645,
+    "old": "Tối ưu hóa trọng số đánh giá ngầm: Thiết lập hệ thống học máy phụ trợ để tự động học hỏi và điều chỉnh các trọng số quy đổi điểm (ví dụ: tinh chỉnh tỷ lệ xem Watch Ratio hoặc thời gian dừng trên màn hình) thay vì cấu hình bằng quy tắc cứng (Hard-coded) như hiện tại.",
+    "new": "Thu thập nhãn để kiểm tra độ tin cậy proxy, mô hình hóa exposure và cân nhắc propensity/bias. Muốn tuyên bố nhiều so sánh cần đăng ký và hiệu chỉnh đa kiểm định; không điều chỉnh trọng số trên TEST hiện tại."
+  },
+  {
+    "paragraph": 134,
+    "old": "Khai thác phản hồi ngầm (Implicit Feedback): Phần lớn người dùng không chủ động để lại đánh giá (rating). Thay vào đó, sở thích của họ ẩn chứa qua các hành vi ngầm như: số phút xem phim, hành động \"thêm vào danh sách yêu thích\", hoặc bỏ ngang giữa chừng. Việc quy đổi các tín hiệu rời rạc này thành dữ liệu định lượng để huấn luyện mô hình là một bài toán phức tạp (Hu et al., 2008).",
+    "new": "Khai thác phản hồi ngầm (Implicit Feedback): Phần lớn người dùng không chủ động để lại đánh giá (rating). Thay vào đó, sở thích của họ ẩn chứa qua các hành vi ngầm như: số phút xem phim, hành động \"thêm vào danh sách yêu thích\", hoặc bỏ ngang giữa chừng. Việc quy đổi các tín hiệu rời rạc này thành dữ liệu định lượng để huấn luyện mô hình là một bài toán phức tạp."
+  },
+  {
+    "paragraph": 231,
+    "old": "Tổ hợp F-Town (TP.HCM): Đặt tại Khu Công nghệ cao Quận 9. Tiêu biểu là Campus F-Town 3 khánh thành quy mô 69.000 $m^2$ với sức chứa 7.500 nhân sự. Công trình mang đậm dấu ấn \"Sài Gòn thu nhỏ\" với các sảnh Mây, Mưa, Sóng, Băng, cung cấp hệ sinh thái tiện ích nội khu như khu thư giãn, nhà ăn, phòng y tế, và nhà trẻ, tạo môi trường làm việc thúc đẩy sự sáng tạo. ",
+    "new": "Tổ hợp F-Town (TP.HCM): Đặt tại Khu Công nghệ cao Quận 9. Tiêu biểu là Campus F-Town 3 khánh thành quy mô 69.000 m² với sức chứa 7.500 nhân sự. Công trình mang đậm dấu ấn \"Sài Gòn thu nhỏ\" với các sảnh Mây, Mưa, Sóng, Băng, cung cấp hệ sinh thái tiện ích nội khu như khu thư giãn, nhà ăn, phòng y tế, và nhà trẻ, tạo môi trường làm việc thúc đẩy sự sáng tạo. "
+  }
+]

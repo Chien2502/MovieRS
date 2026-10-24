@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-10-16T04:17:08.010668+00:00",
+  "services": {
+    "api": {
+      "http_status": 200,
+      "body": {
+        "status": "healthy",
+        "uptime_seconds": 35,
+        "model_status": "Loaded",
+        "api_version": "2.0.0",
+        "catalog_size": 62423,
+        "player_mode": "simulation",
+        "serving_model": "MostPopular",
+        "serving_version": "model_20261016T001319739301Z",
+        "training_mode": "external_worker_manual",
+        "recommendation_cache": {
+          "entries": 0,
+          "ttl_seconds": 300
+        }
+      }
+    },
+    "database": {
+      "http_status": 200,
+      "body": {
+        "configured": true,
+        "status": "connected",
+        "schema_ready": true
+      }
+    },
+    "dashboard": {
+      "http_status": 200,
+      "body": "ok"
+    }
+  }
+}

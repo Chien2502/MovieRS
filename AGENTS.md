@@ -1,44 +1,49 @@
-# MovieRS agent notes
+# MovieRS agent notes — V2
 
-## Boundaries and entrypoints
-- FastAPI backend entrypoint is `api/main.py`; all routers mount under `/api`, `.env` is loaded from the repo root, and `/api/health` checks `models/model_latest.pkl` relative to the current working directory, so run the API from repo root.
-- Flutter app entrypoint is `mobile_app/lib/main.dart`; the app uses `mobile_app/lib/config/app_config.dart` for the API URL, not `.env`.
-- ML/data scripts live under `src/` and are meant to run from the repo root; they manually inject the repo root into `sys.path`.
-- `.agent/` is a generic AG Kit toolkit, not MovieRS project config; ignore it unless explicitly asked.
-- Keep Python comments/docstrings and Flutter UI copy in Vietnamese to match the codebase.
+## Phạm vi và entrypoint
+- Không áp dụng Dely. `.agent/` là toolkit chung, không phải cấu hình MovieRS.
+- API: chạy từ root bằng `python api/main.py`; `.env` gốc giữ secrets, không commit. Router dưới `/api`.
+- Flutter: `mobile_app/lib/main.dart`; URL ở `mobile_app/lib/config/app_config.dart`, ưu tiên `--dart-define=API_URL=...`; không đọc `.env`.
+- Dashboard: `streamlit run dashboard/app.py`, đọc artifacts V2 hoàn tất; `dashboard/legacy.py` chỉ là phiên bản tham khảo V1.
+- Giữ Python comments/docstrings và Flutter UI copy bằng tiếng Việt. Player tiếp tục mô phỏng.
 
-## Commands agents usually guess wrong
-- Install Python deps: `python -m venv venv` then `pip install -r requirements.txt` (no pyproject/task runner/CI config in this checkout).
-- Start API on Windows: `$env:PYTHONIOENCODING="utf-8"; python api/main.py`; docs at `http://localhost:8000/docs`; `API_PORT`/`API_RELOAD` come from `.env`.
-- Dashboard: `streamlit run dashboard/app.py` (needs processed CSVs in `data/processed`).
-- Flutter: `cd mobile_app`; `flutter pub get`; `flutter analyze`; `flutter test`; `flutter run`.
-- Benchmark latency: `python src/pipeline/benchmark.py` requires the API running on `localhost:8000`; add `--e2e` only when you accept writing a temp user + interaction to `interactions_log.csv`.
+## Môi trường và kiểm thử
+- Môi trường sạch đã tạo: `.venv-refactor/Scripts/python.exe`; Windows/Python 3.14.2.
+- Cài: `pip install -r requirements.lock.txt`, `pip install --no-deps -e .`. Lock là dependency closure Windows; đổi OS/Python phải kiểm thử và tạo lock phù hợp.
+- `python -m pytest -q`: test mặc định dùng file tạm; conftest ép files, pool=0 và serving pointer trống để không tác động database thật.
+- Tích hợp opt-in: `$env:MOVIERS_RUN_DB_TESTS='1'; python -m pytest tests/test_postgres_integration.py -q`; chỉ tạo/xóa tài khoản fixture riêng.
+- Nghiệm thu: `python scripts/verify_refactor.py --database`; thêm `--flutter` để chạy analyzer/test/build web.
+- Flutter: chạy `flutter analyze`, `flutter test`, `flutter build web` trong `mobile_app`.
+- HTTP smoke chỉ đọc: `python -m src.pipeline.verify_runtime`, server localhost tạm, kiểm tra SHA-256 đầu vào trước/sau.
 
-## Data/model lifecycle
-- Current artifacts are built from MovieLens `ml-25m` but `download_movielens.py` defaults to `small`; use `python src/data/download_movielens.py --size 25m` to reproduce the current scale.
-- Rebuild order matters: `python src/data/download_movielens.py --size 25m` -> `python src/data/fetch_tmdb.py` -> `python src/data/preprocess.py --max-ratings 2000000 --min-movie-ratings 50` -> `python src/data/split.py` -> `python src/models/train_pipeline.py`.
-- `fetch_tmdb.py` needs `TMDB_API_KEY` in root `.env`; it caches to `data/enriched/tmdb_cache.json`, rate-limits 40 requests/10s, and supports `--prioritize-ratings`/`--limit` to spend quota on popular movies first.
-- `preprocess.py --movies-only` rebuilds `movies_processed.csv` without resampling ratings; after runtime metadata changes, run `python src/utils/backfill_runtime.py --limit N` then `python src/data/preprocess.py --movies-only`.
-- Initial training command is `python src/models/train_pipeline.py`; retrain/hot-reload command is `python src/pipeline/retrain.py`.
-- Only `api/main.py` and `fetch_tmdb.py` call `load_dotenv`; direct CLI runs of `train_pipeline.py`/`retrain.py` read OS env vars, not root `.env`, for `SVD_*` and `GATE_TOLERANCE`.
-- `data/processed/*.csv`, `data/enriched/*.csv`, `data/enriched/tmdb_cache.json`, `models/*.pkl`, `data/processed/users.json`, and `logs/` are local/generated artifacts; do not rewrite them unless the task is data/model/runtime-state work.
-- Retrain always calls `merge_interactions.py` first: feedback from `data/processed/interactions_log.csv` is deduped and moved into TRAIN, not TEST, so new app users become warm after retrain.
-- Model promotion is gated by validation RMSE in `models/model_latest.json`; do not compare RMSE across different dataset/preprocess settings without rebasing the gate (`GATE_TOLERANCE` normally stays `0.0`).
+## Dữ liệu và nghiên cứu
+- Cấu hình nguồn duy nhất: `configs/research.toml` (TOML + Pydantic, không chứa secrets).
+- `python -m src.experiments prepare --profile research` tạo snapshot từ toàn bộ `data/raw/ratings.csv` theo chunk.
+- Mẫu mặc định: 8.000 user theo thứ tự SHA256 `20261015:userId`, giữ toàn bộ lịch sử, 1.237.592 rating. Smoke/dev/extended là 1.000/4.000/12.000 user lồng nhau.
+- Cutoff mọi profile: T1=2016-07-25T17:31:14Z, T2=2018-01-23T19:51:49Z; không tự tính cutoff khác để dev nhìn vào TEST tương lai.
+- `python -m src.experiments run --profile research` chọn tham số trên VAL, khóa selection rồi refit TRAIN+VAL và chấm TEST. Watchdog chạy ở tiến trình riêng, một job tại một thời điểm; không bỏ mô hình thất bại khỏi leaderboard.
+- Candidate ranking là toàn catalog fit trừ lịch sử đã biết, không sample negative item. Headline giữ positive ngoài catalog; user chỉ có positive không phục vụ được vẫn tính điểm 0.
+- Threshold=3.5, K=10, ba seed 42/43/44; secondary K=5/20. Seed không được coi như user độc lập; CI chênh lệch là paired user bootstrap sau khi trung bình qua seed.
+- Snapshot ở `data/snapshots/<id>` và run ở `artifacts/runs/<id>` là bất biến. `source_code.zip` trong run giữ code nghiên cứu tại thời điểm chạy. Resume cần đúng code/config/dataset và checksum.
+- Kết quả V2 compact được lưu `report/experiments/v2`; xem `report/REFACTOR_ACCEPTANCE.md`. Không tính phần trăm cải tiến bằng cách so kết quả khác sample/protocol.
+- MostPopular tốt hơn hybrid trong run hiện tại. Không sửa giao thức/TEST để ép hybrid thắng. Đọc ablation cùng fallback trước khi quy lợi ích cho thành phần genre hoặc trọng số.
+- Nghiên cứu không đọc phản hồi app, TMDB votes hiện tại hoặc model serving. `src/models/train_pipeline.py` và pipeline preprocessing cũ giữ để tái lập V1, không phải entrypoint V2.
+- Không ghi đè raw, generated CSV/JSON hoặc model cũ nếu công việc không yêu cầu dữ liệu/runtime. Catalog thiếu metadata TMDB vẫn giữ title/genre gốc từ bundle; thời lượng mặc định là mô phỏng.
 
-## Runtime state and feedback loop
-- `RecommenderService` loads `data/processed/movies_processed.csv` and optionally `models/model_latest.pkl`; missing SVD model falls back to popularity recommendations but missing movies CSV is fatal.
-- Recommendations are cached in memory for 5 minutes per user; rating/watch-finished calls invalidate that user's cache, and `POST /api/recommendations/reload` clears all by reinitializing the service.
-- Explicit ratings and `/interactions/favorite`/`/interactions/watch` mappings write only to `data/processed/interactions_log.csv`; profile favorites use `data/processed/user_favorites.csv`; `/interactions/*` rejects unregistered users with 404.
-- User accounts are file-backed in `data/processed/users.json`; IDs start at `200000` to avoid MovieLens `ml-25m` user-ID collisions, passwords are SHA-256+salt prototype storage.
-- Watch progress is stored in `data/processed/watch_progress.csv` with atomic write + lock; 5%-95% appears in Continue Watching, and >=95% writes rating `5.0` plus one-step online SVD update.
-- Auto-retrain runs inside the API process by default, polls `interactions_log.csv` every 30s, and is controlled by `AUTO_RETRAIN*` env vars; set `AUTO_RETRAIN=0` when you do not want background training.
-
-## Mobile/API quirks
-- After every ngrok restart, sync both root `.env` and `mobile_app/lib/config/app_config.dart` with `python src/utils/update_ngrok.py https://xxxx.ngrok-free.dev`; Flutter ignores `.env`.
-- Android emulator local fallback is `http://10.0.2.2:8000`; any non-empty `AppConfig.ngrokUrl` overrides it.
-- `player_screen.dart` is a simulated player (Timer, 1s real = 1s movie, heartbeat every 5s); replacing it with `video_player` should preserve the heartbeat/resume contract.
-- When editing `watch_store.py`, assign DataFrame updates column-by-column; pandas 2.x can throw on `df.loc[mask] = dict`, and FastAPI responses must cast numpy scalars to native Python types.
-
-## Verification expectations
-- There is no wired Python pytest suite; use focused scripts plus API smoke checks for backend/ML changes.
-- The only Flutter test is `mobile_app/test/widget_test.dart`, a smoke test expecting Splash -> Login after mocked empty SharedPreferences.
+## PostgreSQL, xác thực và vận hành
+- PostgreSQL scaffolding/schema ở `api/database.py`, `supabase/schema.sql`; migrations tạo bằng Supabase CLI. MCP OAuth/API keys không thay mật khẩu SQL.
+- `MOVIERS_STORAGE` chọn đúng một nguồn files/postgres. Sau migration dự án chọn postgres; mất DB trả lỗi, không ghi fallback CSV.
+- `DATABASE_POOL_SIZE` tối đa 8, hiện cấu hình 4; SSL mặc định require, `prepare_threshold=None` cho transaction pooler. Bỏ tham số Prisma `pgbouncer=true` khỏi URI Psycopg.
+- Bootstrap: `python src/data/init_database.py`; kiểm tra chỉ đọc thêm `--check`. `/api/health/database` không tạo bảng.
+- Import: `python -m src.data.migrate_runtime` là dry-run, `--apply` backup và import trong một transaction. Catalog canonical raw bổ sung phim thiếu TMDB. Orphan được cách ly trong backup, không tạo tài khoản giả hoặc xóa source.
+- Timestamp legacy không có timezone dùng Asia/Ho_Chi_Minh, được ghi rõ trong biên bản; timestamp có offset giữ nguyên. Export rollback: `python -m src.data.migrate_runtime --export-to artifacts/<new-folder>`; không bật lại CSV cũ sau khi PostgreSQL đã có ghi mới.
+- Schema moviers riêng, RLS bật và thu hồi quyền anon/authenticated. Backend SQL owner bypass RLS: middleware/API ownership là ranh giới bảo vệ, không tuyên bố RLS tự xác thực token FastAPI.
+- Auth: Argon2id; hash SHA-256 cũ nâng sau login hợp lệ. Bearer opaque 12h, server lưu digest và hỗ trợ logout. User ID không phải token xác thực.
+- User app ID >=200000, route user/watch/interactions và recommendations app kiểm tra quyền sở hữu; MovieLens ID lịch sử là dữ liệu demo công khai.
+- Reload model cần `X-Admin-Token` khớp `ADMIN_API_TOKEN` backend. Không đưa token quản trị, secret Supabase hoặc DATABASE_URL vào Flutter.
+- Feedback explicit/legacy_unknown > favorite > watch_complete. Favorite+feedback và watch+feedback cùng transaction; retry không lặp SGD. Bỏ favorite rút proxy; xem dở không phải dislike. >=95% là proxy 4.0, không phải sao chủ động.
+- `Idempotency-Key` ràng buộc payload trong 24 giờ; replay cũ không đảo trạng thái mới, payload khác cùng key trả 409. PostgreSQL commit ledger cùng nghiệp vụ; adapter file chỉ dành cho demo một tiến trình.
+- Mỗi transaction đặt SET LOCAL statement_timeout/lock_timeout; không chỉ dựa vào startup options khi đi qua pooler.
+- API không chạy retrain nền. Worker: `python -m src.pipeline.worker --snapshot <folder> --selection <run>/selection.json`; chọn model bằng VAL và gate ranking + guardrail, không dùng TEST. Trỏ bằng `MOVIERS_SERVING_POINTER=artifacts/serving/current.json`.
+- Worker tạo bundle mới, kiểm tra checksum và đổi con trỏ nguyên tử; `--rollback <version>` về bundle hợp lệ. Serving nhận feedback vào lịch sử fit riêng; holdout nghiên cứu không đổi.
+- Model serving dùng title/genre canonical và metadata enrichment khi có. Onboarding rerank là hành vi ứng dụng, không phải metric MovieLens có nhãn onboarding thật.

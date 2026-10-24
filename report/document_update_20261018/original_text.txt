@@ -1,0 +1,743 @@
+P0 [Normal] TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN &
+P1 [Normal] TRUYỀN THÔNG VIỆT  HÀN 
+P2 [Normal] Khoa Khoa Học Máy Tính 
+P3 [Normal] 
+P5 [Normal] BÁO CÁO
+P6 [Normal] THỰC TẬP THỰC TẾ
+P8 [Normal] TÌM HIỂU HỆ THỐNG KHUYẾN NGHỊ SỬ DỤNG PHƯƠNG PHÁP LAI VÀ XÂY DỰNG NGUYÊN MẪU ỨNG DỤNG PHIM ẢNH
+P12 [Normal] Sinh viên thực hiện	: Nguyễn Thanh Chiến	
+P13 [Normal] Lớp	: 24GITe
+P14 [Normal] Giảng viên hướng dẫn	: TS. Trần Uyên Trang	
+P15 [Normal] Đơn vị thực tập 	: Công ty FPT Software
+P16 [Normal] Người hướng dẫn	: TS. Trần Uyên Trang	
+P26 [Normal] 		Đà Nẵng, tháng 8 năm 2026
+P28 [Normal] PHIẾU NHẬN XÉT CỦA ĐƠN VỊ THỰC TẬP
+P42 [Normal] LỜI CẢM ƠN
+P43 [Normal] Đồ án này được thực hiện tại Trường Đại học Công nghệ thông tin và Truyền thông Việt - Hàn, dưới sự hướng dẫn của TS. Trần Uyên Trang.
+P44 [Normal] Trước tiên, em xin gửi lời cảm ơn đến TS. Trần Uyên Trang đã hỗ trợ em trong khoảng thời gian thực hiện đề tài này, hướng dẫn và chỉ điểm những lưu ý trong quá trình thực hiện đề tài lần này.
+P45 [Normal] Xin cảm ơn các Thầy/Cô trong trường đã tạo điều kiện cho chúng em học tập, tiếp thu và nghiên cứu các kiến thức để thực hiện đồ án cơ sở lần này và tiếp tục cho những lần tiếp theo.
+P46 [Normal] Cuối cùng, xin gửi lời cảm ơn đến các bạn trong ngành Công nghệ thông tin đã ủng hộ, giúp đỡ, chia sẻ kiến thức, kinh nghiệm và tài liệu có được giúp đỡ tôi trong quá trình nghiên cứu và thực hiện đề tài. Và xin chân thành cảm ơn Công ty FPT Sofrware đã tạo ra môi trường để em có kì thực tập lần này với đề tài này.
+P47 [Normal] Do giới hạn về thời gian và kinh nghiệm cùng kinh nghiệm thực tiễn nên kết quả của đề tài sẽ không tránh khỏi sai sót. Em rất mong nhận được sự thông cảm và cả phản hồi quý giá của thầy cô.
+P48 [Normal] Em xin chân thành cảm ơn!
+P60 [Normal] MỤC LỤC
+P75 [Title] DANH MỤC HÌNH ẢNH
+P76 [table of figures] Hình 1 Biểu đồ ca sử dụng tổng quát	35
+P77 [table of figures] Hình 2 Biểu đồ lớp	36
+P78 [table of figures] Hình 3 Sơ đồ quan hệ thực thể	37
+P79 [table of figures] Hình 4 Luồng hoạt động đăng kí tài khoản	41
+P80 [table of figures] Hình 5 Luồng hoạt động đăng nhập	42
+P81 [table of figures] Hình 6 Luòng hoạt động tìm kiếm danh mục phim	43
+P82 [table of figures] Hình 7 Luồng thu thập Đánh giá sao	44
+P83 [table of figures] Hình 8 Luồng thu thập Yêu thích phim	45
+P84 [table of figures] Hình 9 Luồng Xem phim mô phỏng & Đo lường Watch Ratio	46
+P85 [table of figures] Hình 10 Luồng Trích xuất Gợi ý Cá nhân hóa	47
+P86 [table of figures] Hình 11 Tái huấn luyện mô hình	48
+P87 [table of figures] Hình 12 Tuần tự Khám phá dữ liệu	49
+P88 [table of figures] Hình 13 Tuần tự Đánh giá sao	49
+P89 [table of figures] Hình 14 Tuần tự Tiến trình Xem phim & Ghi nhận ngầm	50
+P90 [table of figures] Hình 15 Tuần tự phân phối gợi ý	51
+P91 [table of figures] Hình 16 Tuần tự vòng lặp học máy	52
+P92 [table of figures] Hình 17 Đăng kí	59
+P93 [table of figures] Hình 18 Đăng nhập	59
+P94 [table of figures] Hình 19 Trang chủ	60
+P95 [table of figures] Hình 20 Trang chủ (2)	60
+P96 [table of figures] Hình 21 Tìm kiếm phim	61
+P97 [table of figures] Hình 22 Trang yêu thích	62
+P98 [table of figures] Hình 23 Trang hồ sơ	63
+P99 [table of figures] Hình 24 Trang chi tiết phim	64
+P124 [Title] DANH MỤC VIẾT TẮT
+P128 [Title] PHẦN MỞ ĐẦU
+P129 [List Paragraph] Sự cần thiết của đề tài:
+P130 [Normal] Sự bùng nổ của các nền tảng phát trực tuyến đa phương tiện (OTT/Streaming) trong những năm gần đây đã tạo ra một nghịch lý: người dùng có quyền truy cập vào kho nội dung khổng lồ, nhưng khả năng khám phá và thời gian của họ lại cực kỳ hữu hạn. Theo nghiên cứu của Gomez-Uribe & Hunt (2015) về hệ thống của Netflix, hơn 80% thời lượng nội dung được tiêu thụ đến từ hệ thống khuyến nghị tự động (Recommendation System), thay vì từ hành vi tìm kiếm chủ động. Điều này khẳng định hệ thống khuyến nghị không chỉ là một tính năng phụ trợ, mà là "trái tim" định đoạt trải nghiệm người dùng và hiệu quả kinh doanh của các nền tảng số.
+P131 [Normal] Tuy nhiên, việc triển khai một hệ thống khuyến nghị hiệu quả trong thực tế đang phải đối mặt với nhiều thách thức kỹ thuật cốt lõi:
+P132 [Normal] Dữ liệu thưa thớt (Data Sparsity): Trong thực tế, mỗi người dùng chỉ tương tác với một phần rất nhỏ trong kho nội dung. Với bộ dữ liệu MovieLens 25M, tỷ lệ các cặp (người dùng, phim) có dữ liệu đánh giá chỉ chiếm 0.25%. Tức là ma trận tương tác trống đến 99.75%, khiến các phương pháp dựa trên độ tương đồng thuần túy (như User-based hay Item-based Collaborative Filtering) bị suy giảm hiệu suất nghiêm trọng (Koren et al., 2009).
+P133 [Normal] Vấn đề khởi động lạnh (Cold-Start Problem): Khi một người dùng mới tham gia hệ thống hoặc một bộ phim mới được phát hành, hệ thống không có dữ liệu lịch sử tương tác để làm cơ sở tính toán cá nhân hóa, dẫn đến trải nghiệm ban đầu kém hiệu quả.
+P134 [Normal] Khai thác phản hồi ngầm (Implicit Feedback): Phần lớn người dùng không chủ động để lại đánh giá (rating). Thay vào đó, sở thích của họ ẩn chứa qua các hành vi ngầm như: số phút xem phim, hành động "thêm vào danh sách yêu thích", hoặc bỏ ngang giữa chừng. Việc quy đổi các tín hiệu rời rạc này thành dữ liệu định lượng để huấn luyện mô hình là một bài toán phức tạp (Hu et al., 2008).
+P135 [Normal] Khoảng cách giữa nghiên cứu và môi trường sản xuất (Production Gap): Đa số các nghiên cứu học thuật chỉ dừng lại ở việc đánh giá mô hình ngoại tuyến (Offline Evaluation). Trong khi đó, một hệ thống thực tế đòi hỏi mô hình phải được phục vụ trực tuyến (Model Serving), có khả năng tiếp nhận luồng dữ liệu mới và tự động tái huấn luyện (Retraining) theo chuẩn MLOps (Machine Learning Operations) (Sculley et al., 2015).
+P136 [Normal] Xuất phát từ các thách thức trên, đề tài "Hệ thống Khuyến nghị Phim Cá Nhân Hóa theo chuẩn MLOps" được thực hiện. Mục tiêu của đề tài là xây dựng một nguyên mẫu (Prototype) khép kín, mô phỏng lại kiến trúc đường ống dữ liệu (Data Pipeline) của các tập đoàn công nghệ lớn: từ khâu thu thập dữ liệu, huấn luyện thuật toán, cung cấp API, đến việc tích hợp trên thiết bị di động và thiết lập vòng lặp phản hồi tự động.
+P137 [List Paragraph] Mục đích nghiên cứu:
+P138 [Normal] Đề tài hướng tới 4 mục đích trọng tâm:
+P139 [Normal] Về mặt thuật toán: Nghiên cứu, cài đặt và so sánh hiệu năng của các thuật toán khuyến nghị từ cơ bản đến nâng cao: mô hình cơ sở (Mean Predictor, Popularity), K-Nearest Neighbors (KNN), và thuật toán phân rã ma trận FunkSVD. Mục đích nhằm xác thực khả năng xử lý dữ liệu thưa thớt của phương pháp Matrix Factorization.
+P140 [Normal] Về mặt kỹ thuật phần mềm: Thiết kế và phát triển hệ thống hoàn chỉnh theo kiến trúc Client-Server, bao gồm: (1) Backend REST API (FastAPI) phục vụ dự đoán với độ trễ thấp và hỗ trợ nạp lại mô hình không gián đoạn (Zero-downtime Hot Reload); (2) Ứng dụng di động (Flutter) làm điểm chạm thu thập tương tác; (3) Dashboard quản trị (Streamlit) để phân tích dữ liệu và quản lý mô hình.
+P141 [Normal] Về mặt MLOps: Thiết kế và triển khai vòng lặp học máy khép kín (Closed-loop Pipeline) với quy trình: Data → Train → Evaluate (Model Gate) → Serve → App → Feedback → Merge & Retrain
+P142 [Normal] Hệ thống tích hợp "Model Gate" để tự động đánh giá mô hình mới sinh ra, đảm bảo hiệu năng không bị suy thoái trước khi đưa lên môi trường sản xuất.
+P143 [Normal] Về giải pháp Cold-Start: Đề xuất và cài đặt giải pháp lai: sử dụng luồng Onboarding (người dùng chọn sở thích ban đầu) kết hợp với thuật toán Popularity làm hệ thống dự phòng (Fallback Recommender) cho người dùng mới, trước khi họ có đủ tương tác để kích hoạt luồng SVD cá nhân hóa.
+P144 [List Paragraph] Phương pháp nghiên cứu:
+P145 [List Paragraph] Phương pháp nghiên cứu lý thuyết:
+P146 [Normal] Lý thuyết Hệ thống khuyến nghị: Tổng hợp tài liệu khoa học về các nhóm phương pháp: Content-based, Collaborative Filtering, và Hybrid Systems.
+P147 [Normal] Toán học của thuật toán FunkSVD: Dựa trên nghiên cứu của Simon Funk (2006) và Yehuda Koren (2009), phân tích mô hình biểu diễn người dùng u và phim i qua các véc-tơ đặc trưng ẩn (Latent Factors) p_u, q_i thuộc R^k. Dự đoán điểm đánh giá dựa trên công thức:
+P149 [Normal] Trong đó,  là trung bình toàn cục,  là độ lệch (bias). Quá trình tối ưu hóa sử dụng thuật toán Giảm chênh lệch ngẫu nhiên (SGD) tích hợp L2 Regularization để kiểm soát Overfitting.
+P150 [Normal] Tiêu chuẩn MLOps: Tham khảo các khung chuẩn của Google (MLOps Maturity Model) và Microsoft để thiết kế vòng đời mô hình học máy an toàn, chú trọng vào Model Versioning và Continuous Training.
+P151 [List Paragraph] Phương pháp thực nghiệm
+P152 [Normal] Đánh giá ngoại tuyến (Offline Evaluation): Áp dụng phương pháp phân chia dữ liệu theo thời gian thực (Temporal Split) với tỷ lệ 80/10/10 để mô phỏng chính xác bối cảnh dự đoán tương lai, ngăn chặn triệt để rò rỉ dữ liệu (Data Leakage). Hiệu năng được đối sánh qua các độ đo:
+P153 [List Paragraph] Độ chính xác dự đoán: RMSE (Root Mean Squared Error), MAE (Mean Absolute Error).
+P154 [List Paragraph] Chất lượng xếp hạng (Top-K): Precision@10, Recall@10, NDCG@10.
+P155 [List Paragraph] Độ đa dạng: Catalog Coverage (Độ phủ danh mục).
+P156 [Normal] Đánh giá trực tuyến (Live Benchmark): Sử dụng các công cụ tải thử nghiệm đo lường độ trễ (Latency) của API khi phản hồi dự đoán trên tập 62,316 bộ phim, tính toán các mốc trung bình, P50, P95, P99 để đảm bảo tiêu chuẩn thời gian thực.
+P157 [Normal] Kiểm chứng luồng hệ thống (Integration Test): Thực nghiệm kịch bản End-to-End để chứng minh hệ thống nhận diện và cập nhật thành công sở thích của người dùng từ trạng thái Cold-Start sang trạng thái cá nhân hóa sau một chu kỳ tái huấn luyện.
+P158 [List Paragraph] Phương pháp phát triển phần mềm
+P159 [Normal] Quản lý dự án: Áp dụng phương pháp Agile/Scrum, chia nhỏ chu kỳ phát triển thành 4 Sprints (1: Hạ tầng; 2: Mô hình; 3: Frontend; 4: MLOps).
+P160 [Normal] Quản trị mã nguồn và mô hình: Sử dụng Git cho vòng đời phần mềm và lưu trữ các Artifacts của mô hình (file .pkl và .json metadata) theo cơ chế Versioning có thể truy xuất/rollback.
+P161 [List Paragraph] Phạm vi nghiên cứu
+P162 [List Paragraph] Phạm vi về dữ liệu
+P163 [Normal] Nghiên cứu sử dụng bộ dữ liệu chuẩn mực MovieLens 25M (Harper & Konstan, 2015), chứa 25 triệu đánh giá từ 162,541 người dùng trên 62,423 bộ phim.
+P164 [Normal] Để tối ưu hóa tài nguyên phần cứng cá nhân nhưng vẫn đảm bảo tính đại diện thống kê, dữ liệu được tiền xử lý với bộ lọc: giới hạn 2 triệu lượt đánh giá mới nhất và loại bỏ các phim có dưới 50 lượt đánh giá. Tập huấn luyện thực tế đạt ~1.6 triệu bản ghi trên 13,176 phim. Tổng danh mục phim hiển thị trên ứng dụng vẫn giữ nguyên 62,316 phim.
+P165 [List Paragraph] Phạm vi về thuật toán
+P166 [Normal] Giới hạn trong khuôn khổ phương pháp Lọc cộng tác dựa trên mô hình (Model-based CF). Tập trung khai thác sâu thuật toán SVD.
+P167 [Normal] Sử dụng thư viện scikit-surprise (Hug, 2020) với các siêu tham số đã tối ưu để triển khai thực tế trên Production. Đề tài không đi sâu vào các mô hình Deep Learning để tập trung nguồn lực thiết kế đường ống MLOps.
+P168 [List Paragraph] Phạm vi về hệ thống phần mềm
+P169 [Normal] Backend: Khởi chạy cục bộ (Localhost) và phơi bày API qua Ngrok Tunnel để thiết bị thật có thể truy cập.
+P170 [Normal] Frontend (Flutter): Giới hạn ở mức Nguyên mẫu chức năng (Functional Prototype). Trọng tâm là mô phỏng UX/UI của các hành vi tương tác thu thập dữ liệu (đánh giá, thêm yêu thích, xem phim mô phỏng) chứ không phát triển trình phát video (Video Player) thực.
+P171 [Normal] Dashboard: Giao diện nội bộ dành cho Data Scientist/Admin, không cung cấp cho người dùng cuối.
+P172 [List Paragraph] Nguồn số liệu, dữ liệu
+P173 [Normal] Toàn bộ dữ liệu được sử dụng trong đề tài có nguồn gốc minh bạch và tuân thủ các chính sách API công khai.
+P174 [List Paragraph] Dữ liệu gốc (Raw Data)
+P175 [Normal] Trích xuất từ thư viện GroupLens Research (Đại học Minnesota, Mỹ):
+P176 [Normal] ratings.csv: Chứa ma trận tương tác (userId, movieId, rating, timestamp).
+P177 [Normal] movies.csv: Chứa thông tin cơ sở (movieId, title, genres).
+P178 [Normal] links.csv: Bảng ánh xạ ID sang các nền tảng bên ngoài (IMDb, TMDb).
+P179 [Normal] tags.csv, genome-scores.csv, genome-tags.csv: Dữ liệu phân tích ngữ nghĩa và thẻ gán.
+P180 [List Paragraph] Dữ liệu làm giàu (Enriched Data)
+P181 [Normal] Lấy từ API của The Movie Database (TMDb):
+P182 [Normal] Sử dụng mã tmdbId để truy vấn bổ sung: Poster phim (poster_path), tóm tắt nội dung (overview), điểm cộng đồng (vote_average).
+P183 [Normal] Cơ chế: Dữ liệu được lưu cache tại data/enriched/tmdb_cache.json nhằm tuân thủ giới hạn băng thông (Rate-limit: 40 requests/10s) của TMDb.
+P184 [List Paragraph] Dữ liệu đã xử lý phục vụ huấn luyện (Processed Data)
+P185 [Normal] ratings_processed.csv & movies_processed.csv: Phiên bản dữ liệu đã được làm sạch và hợp nhất.
+P186 [Normal] Tập dữ liệu chia tách (Temporal Split): ratings_train.csv (80%), ratings_val.csv (10%), ratings_test.csv (10%).
+P187 [Normal] interactions_log.csv: Cơ sở dữ liệu ghi nhận phản hồi (feedback) mới theo thời gian thực từ ứng dụng di động.
+P188 [List Paragraph] Dữ liệu dạng Artifacts của Mô hình (Model Artifacts)
+P189 [Normal] models/model_latest.pkl: File nhị phân lưu trữ trọng số của mô hình SVD đang phục vụ.
+P190 [Normal] models/model_latest.json: File siêu dữ liệu chứa cấu hình, lịch sử siêu tham số và chỉ số RMSE/MAE của phiên bản mô hình hiện hành.
+P191 [List Paragraph] Nội dung nghiên cứu
+P192 [Normal] Đề tài được cấu trúc thành 5 nhóm nội dung nghiên cứu logic như sau:
+P193 [Normal] Nội dung 1: Khảo cứu Cơ sở lý thuyết. Hệ thống hóa kiến thức về Recommender Systems. Trình bày chi tiết giải thuật FunkSVD, cơ chế học biểu diễn (Latent Factorization) và các nguyên tắc thiết kế hệ thống MLOps.
+P194 [Normal] Nội dung 2: Xử lý và Khám phá Dữ liệu (EDA). Xây dựng luồng tích hợp dữ liệu (MovieLens + TMDb). Trực quan hóa dữ liệu thống kê để minh chứng định lượng cho bài toán Sparsity, hiệu ứng Long-tail và phân loại hành vi người dùng (Cold/Warm/Heavy). Thực hiện kỹ thuật Temporal Split.
+P195 [Normal] Nội dung 3: Huấn luyện và Tối ưu Mô hình. Triển khai lập trình 5 thuật toán so sánh. Đánh giá toàn diện bằng các thang đo Toán học (RMSE) và Thang đo Trải nghiệm (Ranking/Coverage). Phân tích hiệu năng chéo giữa các nhóm người dùng.
+P196 [Normal] Nội dung 4: Xây dựng Kiến trúc Phần mềm. Lập trình Backend API bằng FastAPI, phát triển ứng dụng di động Flutter và Dashboard Streamlit. Giải quyết bài toán bảo đảm tốc độ phản hồi (Latency) khi tính toán trên ma trận lớn.
+P197 [Normal] Nội dung 5: Triển khai Đường ống MLOps & Đánh giá luồng phản hồi. Cài đặt cơ chế biến đổi Implicit Feedback. Thiết lập pipeline tự động: Khử trùng lặp → Tái chia tập → Huấn luyện lại → Đánh giá Model Gate → Cập nhật Zero-downtime. Xác thực độ tin cậy của vòng lặp trên ứng dụng di động thực.
+P201 [Heading 1] GIỚI THIỆU VỀ CÔNG TY FPT SOFTWARE
+P202 [Heading 2] CƠ QUAN THỰC TẬP
+P203 [Normal] Tên cơ quan: Công ty FPT Software	
+P204 [Normal] Địa chỉ: Toà nhà FPT Complex Đà Nẵng, Đường Nam Kỳ Khởi Nghĩa, Khu đô thị FPT City, Phường Ngũ Hành Sơn, TP. Đà Nẵng	
+P205 [Normal] Email: fdn.contact@fsoft.com.vn	
+P206 [Normal] Website: fptsoftware.com	
+P207 [Heading 2] GIỚI THIỆU CHUNG
+P208 [Heading 3] Tổng quan về Tập đoàn FPT (FPT Corporation) 
+P209 [Heading 4] Lịch sử hình thành và sứ mệnh
+P210 [Normal] Thành lập ngày 13/09/1988 bởi ông Trương Gia Bình cùng 12 nhà khoa học trẻ, FPT ban đầu mang tên Công ty Công nghệ Thực phẩm (Food Processing Technology). Tuy nhiên, với tầm nhìn nhạy bén về thời cuộc, chỉ hai năm sau (1990), công ty đã chuyển hướng sang lĩnh vực tin học và đổi tên thành Công ty Đầu tư và Phát triển Công nghệ (Financing and Promoting Technology), chính thức bước vào kỷ nguyên định hình nền công nghệ thông tin (CNTT) tại Việt Nam. 
+P211 [Normal] Trải qua gần 4 thập kỷ, FPT đã vươn lên trở thành tập đoàn công nghệ, viễn thông và giáo dục hàng đầu Việt Nam thuộc khối doanh nghiệp tư nhân. Tính đến năm 2025, FPT sở hữu quy mô hơn 80.000 cán bộ nhân viên, hiện diện tại hơn 30 quốc gia trên toàn cầu. 
+P212 [Heading 4] Các trụ cột kinh doanh cốt lõi
+P213 [Normal] Hệ sinh thái của Tập đoàn FPT được xây dựng thế chân kiềng vững chắc dựa trên 3 khối kinh doanh chính: 
+P214 [List Paragraph] Khối Công nghệ (Technology): Là động cơ tăng trưởng chính, mang lại doanh thu lớn nhất cho Tập đoàn. Các đơn vị thành viên nòng cốt bao gồm FPT Software (Xuất khẩu phần mềm), FPT IS (Tích hợp hệ thống và Chuyển đổi số trong nước), và FPT Smart Cloud. 
+P215 [List Paragraph] Khối Viễn thông (Telecommunications): Do FPT Telecom đảm nhiệm, sở hữu hạ tầng viễn thông phủ sóng toàn quốc, cung cấp các dịch vụ Internet băng thông rộng, truyền hình số (FPT Play) và Data Center chuẩn quốc tế.
+P216 [List Paragraph] Khối Giáo dục (Education): FPT Education (Tổ chức Giáo dục FPT) đào tạo đa cấp học từ tiểu học, trung học, cao đẳng thực hành (FPT Polytechnic) đến Đại học (FPT University) và sau đại học. Khối này đóng vai trò chiến lược trong việc cung cấp nguồn nhân lực chất lượng cao, lấp đầy cơn khát nhân sự IT cho chính hệ sinh thái FPT và thị trường toàn cầu.
+P217 [Heading 4] Giá trị văn hóa cốt lõi (Văn hóa STCo)
+P218 [Normal] Sức mạnh nội tại của FPT không chỉ nằm ở công nghệ mà còn ở hệ tư tưởng và văn hóa doanh nghiệp đặc sắc mang tên STCo (Sáng tạo Công ty). Triết lý phát triển của FPT được gói gọn trong 6 chữ vàng: "Tôn – Đổi – Đồng – Chí – Gương – Sáng". 
+P219 [List Paragraph] Tôn trọng – Đổi mới – Đồng đội: Dành cho mọi cán bộ nhân viên, khuyến khích sự bình đẳng, tư duy phản biện và tinh thần đoàn kết.
+P220 [List Paragraph] Chí công – Gương mẫu – Sáng suốt: Là hệ tiêu chuẩn bắt buộc đối với đội ngũ lãnh đạo, quản lý.
+P221 [Heading 4] Chiến lược "Cơn sóng thần công nghệ" (2025 - 2026)
+P222 [Normal] Chủ tịch FPT Trương Gia Bình đã khẳng định: Từ năm 2026, FPT chính thức chuyển mình từ một công ty "cung cấp dịch vụ" sang "doanh nghiệp sáng tạo công nghệ, làm chủ công nghệ chiến lược". Tâm điểm của chiến lược này là Trí tuệ nhân tạo (AI), Bán dẫn (Semiconductor), và Điện toán đám mây (Cloud). Sự ra đời của tổ hợp hạ tầng AI Factory và đặc biệt là thỏa thuận hợp tác trở thành đối tác toàn cầu của OpenAI vào cuối năm 2026 đã đưa FPT vào hàng ngũ những doanh nghiệp đủ sức giải quyết các bài toán dữ liệu lớn và an ninh mạng quy mô toàn cầu. 
+P223 [Heading 3] Đi sâu vào FPT Software (Lĩnh vực Xuất khẩu Phần mềm) 
+P224 [Normal] Thành lập ngày 13/01/1999, Công ty TNHH Phần mềm FPT (FPT Software - FSoft) ra đời với sứ mệnh mang trí tuệ Việt Nam xuất khẩu ra thế giới. Sau hơn 25 năm, FSoft hiện là "đầu tàu" công nghệ của Tập đoàn FPT và là doanh nghiệp xuất khẩu dịch vụ CNTT lớn nhất Đông Nam Á.
+P225 [Heading 4] Quy mô nhân sự và Mạng lưới toàn cầu hóa 
+P226 [Normal] Nhân lực: Vượt mốc 30.000 nhân sự trên toàn cầu, FSoft sở hữu lực lượng lao động trẻ, khả năng học hỏi cao và linh hoạt. Theo thống kê nội bộ, công ty có hơn 6.300 nhân sự làm việc tại nước ngoài (Onsite), trong đó có hàng ngàn nhân sự bản địa đại diện cho hơn 70 quốc tịch khác nhau. 
+P227 [Normal] Mạng lưới Delivery (Bàn giao dự án): Áp dụng xuất sắc mô hình Global Delivery, FSoft hiện diện tại hàng chục quốc gia với các thị trường trọng điểm bao gồm: Nhật Bản (thị trường truyền thống và lớn nhất), Bắc Mỹ, Châu Âu, và khu vực APAC (Hàn Quốc, Úc, Singapore...). 
+P228 [Heading 4] Cơ sở hạ tầng và Không gian làm việc chuẩn "World-Class"
+P229 [Normal] Không giới hạn ở các khối văn phòng truyền thống, FPT Software tiên phong xây dựng các tổ hợp Campus theo mô hình "Building in the Park" (Văn phòng trong công viên) kết hợp trung tâm nghiên cứu tại cả 3 miền, đáp ứng nhu cầu tăng trưởng mạnh mẽ:
+P230 [List Paragraph] Trụ sở chính: Tòa nhà FPT Tower (Cầu Giấy, Hà Nội). 
+P231 [List Paragraph] Tổ hợp F-Town (TP.HCM): Đặt tại Khu Công nghệ cao Quận 9. Tiêu biểu là Campus F-Town 3 khánh thành quy mô 69.000 $m^2$ với sức chứa 7.500 nhân sự. Công trình mang đậm dấu ấn "Sài Gòn thu nhỏ" với các sảnh Mây, Mưa, Sóng, Băng, cung cấp hệ sinh thái tiện ích nội khu như khu thư giãn, nhà ăn, phòng y tế, và nhà trẻ, tạo môi trường làm việc thúc đẩy sự sáng tạo. 
+P232 [List Paragraph] Tổ hợp F-Complex (Đà Nẵng): Dự án chiến lược tại miền Trung với sức chứa lên tới 10.000 kỹ sư, hình thành một thung lũng công nghệ khép kín.
+P233 [Heading 4] Năng lực Công nghệ, Lĩnh vực chuyên môn và Tiêu chuẩn chất lượng
+P234 [Normal] FSoft đang cung cấp dịch vụ chuyển đổi số toàn diện cho hàng trăm khách hàng thuộc danh sách Fortune Global 500. Các lĩnh vực mũi nhọn (Domain) bao gồm:
+P235 [List Paragraph] AI & Data Analytics: Triển khai các mô hình Machine Learning, Hệ thống khuyến nghị (Recommender Systems), Xử lý ngôn ngữ tự nhiên, và Computer Vision.
+P236 [List Paragraph] Automotive (Công nghệ Ô tô): Sự ra đời của FPT Automotive chứng minh năng lực lõi trong việc phát triển hệ thống thông tin giải trí (IVI) và xe tự lái, hợp tác chặt chẽ với các hãng xe hơi lớn trên thế giới.
+P237 [List Paragraph] Cloud & Enterprise Solutions: Dịch chuyển hệ thống Legacy lên AWS, Azure; tích hợp các giải pháp ERP quy mô lớn.
+P238 [Normal] Để duy trì năng lực cạnh tranh quốc tế, toàn bộ quy trình phát triển phần mềm (SDLC) tại FSoft đều tuân thủ nghiêm ngặt các chứng chỉ khắt khe nhất thế giới: CMMI Level 5 (Cấp độ cao nhất về đánh giá năng lực quy trình phần mềm), ISO 9001, và ISO/IEC 27001 (Bảo mật thông tin).
+P239 [Heading 4] Cột mốc lịch sử
+P240 [Normal] Năm 2023, FPT Software đã đánh dấu một cột mốc lịch sử khi chính thức vượt 1 tỷ USD doanh thu dịch vụ CNTT từ thị trường nước ngoài. Thành tựu này là minh chứng cho trí tuệ Việt Nam, tạo đà để công ty hướng tới mục tiêu 5 tỷ USD doanh thu vào năm 2030, củng cố vị thế vững chắc trên bản đồ công nghệ toàn cầu. 
+P241 [Heading 3] Tính phù hợp của Đề tài nghiên cứu
+P242 [Normal] Trong quá trình thực tập tại FPT Software, việc tiếp cận với các bài toán dữ liệu quy mô lớn là một yêu cầu tất yếu. FSoft không chỉ đòi hỏi kỹ sư viết mã nguồn chạy được thuật toán, mà còn phải xây dựng được các hệ thống đáp ứng tiêu chuẩn sản xuất thực tế (Production-ready), chịu tải cao và có khả năng tự động hóa vòng đời học máy. 
+P243 [Normal] Đề tài "Tìm hiểu hệ thống khuyến nghị sử dụng phương pháp lai và xây dựng nguyên mẫu ứng dụng phim ảnh" (định hướng MLOps) hoàn toàn tương thích với DNA công nghệ hiện tại của FSoft. Thông qua việc nghiên cứu thuật toán SVD để giải quyết bài toán dữ liệu thưa thớt, kết hợp với Content-Based cho vấn đề Cold-Start, và thiết lập luồng API/App khép kín, đề tài mô phỏng chính xác quy trình mà các Data Scientist và AI Engineer tại FPT Software đang thực hiện hàng ngày để gia tăng giá trị nghiệp vụ cho khách hàng toàn cầu.
+P244 [Heading 2] MỤC TIÊU HOẠT ĐỘNG
+P245 [Heading 3] Sứ mệnh cốt lõi và Tầm nhìn chiến lược
+P246 [Normal] Sứ mệnh: "Mang trí tuệ Việt Nam ra thế giới" – đưa các giải pháp công nghệ, năng lực sáng tạo và dịch vụ phần mềm chất lượng cao của kỹ sư Việt đến với các tập đoàn đa quốc gia.
+P247 [Normal] Tầm nhìn: Trở thành nhà cung cấp dịch vụ chuyển đổi số và giải pháp công nghệ toàn diện đẳng cấp thế giới (World-Class Digital Transformation Provider), cạnh tranh sòng phẳng với các đối thủ lớn đến từ Ấn Độ, Mỹ và Châu Âu.
+P248 [Heading 3] Mục tiêu Kinh doanh và Tăng trưởng Thị trường
+P249 [Normal] Cột mốc doanh thu 5 tỷ USD vào năm 2030: Sau khi xuất sắc vượt mốc 1 tỷ USD doanh thu từ thị trường nước ngoài vào năm 2023, FPT Software đặt mục tiêu tham vọng đạt 5 tỷ USD doanh thu dịch vụ CNTT vào năm 2030, đưa FPT vào danh sách các doanh nghiệp dịch vụ công nghệ cỡ lớn (Big Tech Services) trên thế giới.
+P250 [Normal] Mở rộng chuỗi Bàn giao Toàn cầu (Global Delivery Network): Tiếp tục đào sâu và giữ vững thị phần tại các thị trường truyền thống như Nhật Bản, Bắc Mỹ, Châu Âu; đồng thời mở rộng quy mô tại khu vực APAC (Hàn Quốc, Singapore, Úc). Công ty đẩy mạnh mô hình Nearshore và Onsite để tăng cường khả năng phản hồi và thấu hiểu khách hàng bản địa.
+P251 [Heading 3] Mục tiêu Chuyển dịch Công nghệ và Định hướng "AI-First"
+P252 [Normal] Dịch dịch chuyển chuỗi giá trị: Từng bước chuyển dịch từ mô hình gia công phần mềm truyền thống (Outsourcing) sang tư vấn kiến trúc hệ thống, thiết kế giải pháp end-to-end và phát triển sản phẩm công nghệ sở hữu trí tuệ (IP-based solutions).
+P253 [Normal] Định hướng chiến lược "AI-First": Nhằm thích ứng với làn sóng trí tuệ nhân tạo toàn cầu, FPT Software đặt mục tiêu nhúng AI vào 100% quy trình sản xuất phần mềm và dịch vụ khách hàng. Thông qua việc hợp tác với các tập đoàn công nghệ hàng đầu (như OpenAI, Nvidia) và khai thác hạ tầng FPT AI Factory, công ty hướng tới việc tối ưu hóa từ 30% - 50% năng suất kỹ sư và tiên phong cung cấp các giải pháp AI thế hệ mới (Generative AI, AI Agents).
+P254 [Normal] Phát triển các mảng công nghệ mũi nhọn: Tập trung nguồn lực xây dựng năng lực chuyên sâu trong các lĩnh vực:
+P255 [List Paragraph] Automotive: Mở rộng FPT Automotive để trở thành nhà cung cấp phần mềm hàng đầu cho các dòng xe thông minh và xe điện (Software-Defined Vehicles).
+P256 [List Paragraph] Cloud & Security: Tư vấn dịch chuyển đám mây thế hệ mới và đảm bảo an ninh mạng toàn diện cho các hệ thống tài chính, y tế khắt khe.
+P257 [List Paragraph] Semiconductor: Tham gia vào công đoạn thiết kế và kiểm thử vi mạch bán dẫn.
+P258 [Heading 3] Mục tiêu Phát triển Nguồn nhân lực và Trách nhiệm Xã hội 
+P259 [Normal] Xây dựng lực lượng lao động chuẩn toàn cầu: Thu hút và phát triển đội ngũ hơn 40.000 kỹ sư (mục tiêu hướng tới 100.000 nhân sự vào năm 2030), tạo điều kiện cho kỹ sư Việt Nam làm việc trong môi trường đa văn hóa với các chuyên gia đến từ hơn 70 quốc tịch.
+P260 [Normal] Tạo dựng môi trường làm việc hạnh phúc (Happy Workplace): Đầu tư không gian làm việc đạt chuẩn quốc tế (Campus F-Town, F-Complex, FPT Tower), chú trọng đào tạo liên tục (FPT Software Academy) và chăm sóc đời sống tinh thần cho nhân viên.
+P261 [Normal] Phát triển bền vững: Cam kết thực hiện các tiêu chuẩn về Môi trường - Xã hội - Quản trị doanh nghiệp (ESG), giảm thiểu dấu chân carbon trong hạ tầng vận hành và tích cực đóng góp cho các hoạt động giáo dục, cộng đồng tại Việt Nam.
+P262 [Heading 2] TỔ CHỨC HOẠT ĐỘNG
+P263 [Normal] Để quản lý và vận hành hiệu quả một hệ thống khổng lồ với hơn 30.000 nhân sự trên toàn cầu, phục vụ hàng nghìn dự án cùng lúc, FPT Software áp dụng cơ cấu tổ chức ma trận (Matrix Organization) kết hợp với Mô hình bàn giao toàn cầu (Global Delivery Model). Tổ chức hoạt động của công ty được thiết kế nhằm tối ưu hóa nguồn lực, chuyên môn hóa năng lực công nghệ và đáp ứng nhanh chóng nhu cầu của khách hàng quốc tế.
+P264 [Heading 3] Cơ cấu tổ chức ma trận (Matrix Organization) 
+P265 [Normal] Hoạt động của FPT Software được chia thành hai trục chính đan xen lẫn nhau:
+P266 [List Paragraph] Trục Khối Thị trường: Các chi nhánh, công ty con đặt tại nước ngoài mang nhiệm vụ tiếp cận, mở rộng thị trường và quản lý quan hệ khách hàng. Tiêu biểu như: FPT Japan (thị trường Nhật Bản), FPT Americas (thị trường Mỹ), FPT Europe (thị trường Châu Âu), và FPT APAC (khu vực Châu Á - Thái Bình Dương). Đội ngũ tại đây thường bao gồm các Giám đốc kinh doanh (Account Manager) và Kỹ sư cầu nối (BrSE).
+P267 [List Paragraph] Trục Khối Sản xuất: Các trung tâm phát triển phần mềm đóng vai trò thực thi kỹ thuật, viết mã, kiểm thử và bàn giao sản phẩm. Khối sản xuất chủ yếu đặt tại Việt Nam, chia theo các khu vực địa lý lớn như FHN (Hà Nội), FHCM (TP. Hồ Chí Minh), FDN (Đà Nẵng),... và được phân bổ theo các mảng công nghệ chuyên biệt.
+P268 [Heading 3] Mô hình Bàn giao Toàn cầu (Global Delivery Model) 
+P269 [Normal] Đây là "vũ khí chiến lược" giúp FPT Software cạnh tranh với các đối thủ quốc tế, đảm bảo dự án vận hành xuyên suốt 24/7 thông qua sự phối hợp của 3 tuyến:
+P270 [List Paragraph] Tuyến Onsite: Đội ngũ chuyên gia làm việc trực tiếp tại văn phòng của khách hàng ở nước ngoài (Mỹ, Nhật, Châu Âu...). Họ chịu trách nhiệm lấy yêu cầu (Requirement Gathering), tư vấn kiến trúc cấp cao và xử lý các vấn đề khẩn cấp.
+P271 [List Paragraph] Tuyến Nearshore: Các trung tâm sản xuất được đặt tại những quốc gia có cùng múi giờ hoặc vị trí địa lý gần với khách hàng (ví dụ: trung tâm tại Costa Rica, Colombia phục vụ thị trường Mỹ; Romania, Slovakia phục vụ thị trường Châu Âu). Tuyến này giúp khách hàng dễ dàng giao tiếp, họp bàn theo thời gian thực (real-time).
+P272 [List Paragraph] Tuyến Offshore: Các siêu trung tâm sản xuất quy mô lớn tại Việt Nam, Ấn Độ,... đóng vai trò là động cơ cốt lõi thực thi các dự án phức tạp, cung cấp lực lượng kỹ sư chất lượng cao với chi phí tối ưu.
+P273 [Heading 3] Các Trung tâm Chuyên môn và Công ty thành viên trực thuộc (Centers of Excellence) 
+P274 [Normal] Để chuyển dịch từ làm gia công (Outsourcing) sang tư vấn giải pháp, FPT Software đã tổ chức lại lực lượng thành các trung tâm chuyên môn hóa sâu theo ngành dọc (Domain) và công nghệ lõi:
+P275 [List Paragraph] FPT Automotive: Công ty thành viên chuyên trách về công nghệ ô tô (xe tự lái, hệ thống thông tin giải trí IVI, chuẩn AUTOSAR).
+P276 [List Paragraph] Trung tâm Trí tuệ Nhân tạo (FPT Software AI Center): Nơi nghiên cứu và ứng dụng các công nghệ Machine Learning, Generative AI, MLOps, Data Analytics vào các sản phẩm thực tế cho khách hàng.
+P277 [List Paragraph] Khối Giải pháp Doanh nghiệp: Chuyên triển khai các hệ thống quản trị nguồn lực khổng lồ (ERP) như SAP, Oracle, Microsoft.
+P278 [List Paragraph] Học viện FPT Software: Đơn vị chuyên trách đào tạo tân binh (Fresher), nâng cao năng lực cho nhân viên và tổ chức các kỳ thi lấy chứng chỉ quốc tế.
+P279 [Heading 3] Quy trình sản xuất và Quản lý chất lượng 
+P280 [Normal] Để đáp ứng tiêu chuẩn của các thị trường khó tính nhất, FPT Software bắt buộc tuân thủ các hệ thống quản lý chất lượng đẳng cấp thế giới:
+P281 [List Paragraph] Chứng chỉ CMMI Level 5 v2.0: Đây là cấp độ cao nhất về sự trưởng thành trong quy trình sản xuất phần mềm, chứng minh khả năng đo lường, kiểm soát và liên tục tối ưu hóa quy trình dự án.
+P282 [List Paragraph] Quy trình Agile/Scrum: Hơn 80% các dự án tại FPT Software hiện nay áp dụng mô hình phát triển linh hoạt Agile. Trong môi trường này, kỹ sư làm việc theo các vòng lặp ngắn (Sprints), liên tục tương tác với khách hàng, tích hợp và triển khai liên tục (CI/CD) nhằm ra mắt sản phẩm nhanh chóng.
+P283 [Heading 2] LĨNH VỰC HOẠT ĐỘNG
+P284 [Normal] Từ một đơn vị chuyên về gia công phần mềm truyền thống (IT Outsourcing), FPT Software đã dịch chuyển mạnh mẽ sang vai trò nhà cung cấp dịch vụ Chuyển đổi số toàn diện (End-to-End Digital Transformation). Các lĩnh vực hoạt động của công ty trải dài trên nhiều ngành công nghiệp trọng điểm (Vertical Domains) và các giải pháp công nghệ mũi nhọn (Technology Competencies).
+P285 [Heading 3] Trí tuệ Nhân tạo và Phân tích Dữ liệu (AI & Data Analytics)
+P286 [Normal] Đây được xác định là mũi nhọn chiến lược hàng đầu của FPT Software nhằm nâng cao chuỗi giá trị dịch vụ:
+P287 [List Paragraph] Machine Learning & MLOps: Xây dựng, triển khai và tự động hóa vòng đời các mô hình học máy (Machine Learning/Deep Learning) trên môi trường sản xuất cho các bài toán phân tích hành vi khách hàng, thị trường chứng khoán, và chăm sóc sức khỏe.
+P288 [List Paragraph] Hệ thống Khuyến nghị (Recommendation Systems): Phát triển các giải pháp cá nhân hóa trải nghiệm người dùng trong các ngành bán lẻ (Retail), thương mại điện tử (E-commerce), và truyền thông đa phương tiện (OTT/Streaming).
+P289 [List Paragraph] Generative AI & Agentic AI: Ứng dụng AI tạo sinh vào quy trình tự động hóa viết mã nguồn, kiểm thử phần mềm tự động, và phát triển các trợ lý ảo thông minh (Virtual Assistants/Chatbots) hỗ trợ doanh nghiệp.
+P290 [List Paragraph] Phân tích Dữ liệu lớn (Big Data Engineering): Xây dựng kho dữ liệu (Data Warehouse, Data Lake), xử lý luồng dữ liệu thời gian thực và phân tích dự báo (Predictive Analytics).
+P291 [Heading 3] Công nghệ Phần mềm Ô tô và Hệ thống Nhúng (Automotive & Embedded Systems)
+P292 [Normal] Nhận thấy tiềm năng khổng lồ của xu hướng "xe thông minh định nghĩa bằng phần mềm" (Software-Defined Vehicles), FPT Software đã thành lập công ty chuyên trách FPT Automotive:
+P293 [List Paragraph] Hệ thống thông tin giải trí (In-Vehicle Infotainment - IVI): Xây dựng giao diện màn hình lái, hệ thống định vị, và kết nối di động trên ô tô.
+P294 [List Paragraph] Hệ thống hỗ trợ lái xe nâng cao (ADAS & Autonomous Driving): Lập trình các thuật toán nhận diện vật cản, tự động giữ làn đường, và đỗ xe thông minh.
+P295 [List Paragraph] Kiến trúc phần mềm tiêu chuẩn (AUTOSAR): Phát triển các lớp phần mềm chuẩn hóa cho các bộ điều khiển trung tâm (ECU) trên xe hơi.
+P296 [Heading 3] Dịch vụ Đám mây và Hiện đại hóa Hệ thống (Cloud & System Modernization)
+P297 [Normal] FPT Software là đối tác cấp cao của các gã khổng lồ điện toán đám mây như Amazon Web Services (AWS Premier Partner), Microsoft Azure, và Google Cloud Platform (GCP):
+P298 [List Paragraph] Dịch chuyển lên mây (Cloud Migration): Tư vấn và thực hiện dịch chuyển các hệ thống công nghệ cũ (Legacy Systems) của doanh nghiệp lên hạ tầng Cloud an toàn và tối ưu chi phí.
+P299 [List Paragraph] Kiến trúc Cloud-Native: Xây dựng các ứng dụng microservices, containerization (Docker, Kubernetes) giúp hệ thống có khả năng mở rộng linh hoạt (Scalability) và chịu tải cao.
+P300 [Heading 3] Giải pháp Doanh nghiệp và Tự động hóa Quy trình (Enterprise Solutions & Hyperautomation)
+P301 [Normal] Cung cấp các giải pháp quản trị toàn diện cho các tập đoàn thuộc danh sách Fortune Global 500:
+P302 [List Paragraph] Hệ thống Quản trị Nguồn lực Doanh nghiệp (ERP): Tư vấn, triển khai và bảo trì các gói giải pháp ERP hàng đầu thế giới như SAP (S/4HANA), Oracle, và Microsoft Dynamics 365.
+P303 [List Paragraph] Quản lý Quan hệ Khách hàng (CRM): Triển khai nền tảng Salesforce giúp tối ưu hóa quy trình bán hàng và chăm sóc khách hàng.
+P304 [List Paragraph] Tự động hóa bằng Robot (RPA & Low-Code): Sử dụng các công cụ như akaBot (sản phẩm do FPT phát triển), UiPath, OutSystems để tự động hóa các tác vụ văn phòng lặp đi lặp lại, gia tăng năng suất vận hành.
+P305 [Heading 3] An ninh mạng và Internet kết nối vạn vật (Cybersecurity & IoT)
+P306 [Normal] An ninh mạng (Cybersecurity): Cung cấp các dịch vụ đánh giá lỗ hổng bảo mật, giám sát an toàn thông tin (SOC), và đảm bảo tuân thủ các tiêu chuẩn bảo mật khắt khe như ISO/IEC 27001, GDPR.
+P307 [Normal] Internet kết nối vạn vật (IoT): Phát triển các giải pháp Nhà máy thông minh (Smart Factory), Giám sát chuỗi cung ứng thông qua kết nối cảm biến và thiết bị phần cứng.
+P308 [Heading 2] CÁC SẢN PHẨM/PHƯƠNG ÁN/GIẢI PHÁP
+P309 [Normal] Để hiện thực hóa mục tiêu trở thành đối tác chuyển đổi số toàn diện (End-to-End Digital Transformation Provider), FPT Software không chỉ cung cấp dịch vụ phát triển phần mềm theo yêu cầu, mà còn đầu tư mạnh mẽ vào việc xây dựng hệ sinh thái sản phẩm "Made by FPT", các giải pháp chuyên ngành và phương pháp luận triển khai độc quyền.
+P310 [Heading 3] Hệ sinh thái Sản phẩm công nghệ sở hữu trí tuệ (IP - Intellectual Property)
+P311 [Normal] Thay vì làm lại từ đầu cho mỗi khách hàng, FPT Software đóng gói các công nghệ lõi thành các sản phẩm bản quyền (Platform/Product), giúp khách hàng tăng tốc độ triển khai và tối ưu chi phí. Nổi bật nhất là hệ sinh thái "aka" và các công cụ AI thế hệ mới:
+P312 [List Paragraph] akaBot (Tự động hóa quy trình bằng Robot - RPA): Là sản phẩm "ngôi sao" của FPT Software, akaBot tích hợp Trí tuệ nhân tạo (AI) và Nhận dạng ký tự quang học (OCR) để tự động hóa các tác vụ văn phòng có tính lặp lại (kế toán, nhân sự, nhập liệu). akaBot hiện đang phục vụ hàng nghìn doanh nghiệp toàn cầu và liên tục được vinh danh trong các báo cáo của Gartner.
+P313 [List Paragraph] akaMES (Quản lý điều hành sản xuất thông minh): Nền tảng số hóa toàn diện nhà máy, từ quản lý kho, theo dõi tiến độ sản xuất theo thời gian thực đến kiểm soát chất lượng, giúp các nhà máy tiến tới mô hình "Nhà máy thông minh" (Smart Factory).
+P314 [List Paragraph] FPT AI CodeVista & AI Agents: Bắt nhịp làn sóng Generative AI và thông qua hợp tác với OpenAI, FPT Software đã phát triển các trợ lý lập trình (AI Coding Assistants) và hệ sinh thái AI Agents. Các sản phẩm này hỗ trợ kỹ sư tự động sinh mã nguồn, viết kịch bản kiểm thử (test cases) và rà soát lỗi bảo mật, giúp tăng từ 30% đến 50% năng suất sản xuất phần mềm.
+P315 [Heading 3] Các giải pháp chuyển đổi số chuyên ngành (Domain-specific Solutions)
+P316 [Normal] FPT Software thiết kế các gói giải pháp giải quyết trực diện "nỗi đau" (Pain points) của từng ngành công nghiệp đặc thù:
+P317 [List Paragraph] Giải pháp Công nghệ Ô tô (Smart Automotive Solutions): Cung cấp giải pháp phần mềm toàn diện cho các nhà sản xuất xe hơi, bao gồm hệ thống thông tin giải trí trên xe (IVI), nền tảng xe kết nối (Connected Car), các thuật toán AI hỗ trợ xe tự lái (ADAS), và dịch vụ kiểm thử hệ thống nhúng đáp ứng chuẩn an toàn ISO 26262.
+P318 [List Paragraph] Giải pháp Tài chính - Ngân hàng (BFSI Solutions): Cung cấp hệ thống định danh khách hàng điện tử (eKYC) dựa trên công nghệ Computer Vision, giải pháp chấm điểm tín dụng (Credit Scoring) và hệ thống phát hiện gian lận (Fraud Detection) xử lý luồng dữ liệu lớn theo thời gian thực.
+P319 [List Paragraph] Giải pháp Hiện đại hóa Dữ liệu (Data Modernization & Analytics): Cung cấp các đường ống dữ liệu (Data Pipeline) đóng gói sẵn, giúp doanh nghiệp dễ dàng gom dữ liệu từ nhiều nguồn về Data Lake/Data Warehouse trên đám mây, từ đó tích hợp các mô hình Machine Learning/Hệ thống khuyến nghị để khai thác giá trị kinh doanh.
+P320 [Heading 3] Phương án triển khai và Phương pháp luận (Methodologies)
+P321 [Normal] Chất lượng của các sản phẩm và giải pháp được bảo chứng bởi các phương án tiếp cận và quy trình vận hành mang đậm dấu ấn FPT:
+P322 [List Paragraph] Phương pháp luận FPT Digital Kaizen: Đây là phương pháp chuyển đổi số độc quyền của FPT, được đúc kết từ kinh nghiệm thực tiễn toàn cầu. Phương pháp này dựa trên triết lý "Nghĩ lớn, Bắt đầu thông minh, Nhân rộng tốc độ" (Think big, Start smart, Scale fast), giúp doanh nghiệp quy hoạch lộ trình số hóa đi từ những điểm nghẽn nhỏ nhất nhưng mang lại hiệu quả ROI (Tỷ suất hoàn vốn) cao nhất.
+P323 [List Paragraph] Phương án bàn giao kết hợp (Best-shore Delivery Model): Tối ưu hóa bài toán chi phí và thời gian bằng cách kết hợp kỹ sư tại chỗ (Onsite) để thấu hiểu nghiệp vụ khách hàng, và lực lượng tại các trung tâm quốc tế (Offshore/Nearshore) để đảm bảo nguồn lực sản xuất quy mô lớn, vận hành không ngừng nghỉ.
+P324 [List Paragraph] Quy trình DevOps và MLOps: Chuyển dịch từ việc phát triển phần mềm thủ công sang ứng dụng CI/CD (Tích hợp và Triển khai liên tục). Đặc biệt trong lĩnh vực Trí tuệ Nhân tạo, FPT Software áp dụng chuẩn MLOps để quản lý vòng đời mô hình học máy: từ khâu lấy dữ liệu, huấn luyện, đánh giá, đến khi đưa lên môi trường thực tế (Production) và giám sát hiệu năng liên tục.
+P327 [Heading 1] THỰC TRẠNG HỆ THỐNG KHUYẾN NGHỊ ĐA PHƯƠNG TIỆN
+P328 [Heading 2] Phân tích bối cảnh và vấn đề thực tế
+P329 [Normal] Sự chuyển dịch của ngành công nghiệp giải trí sang các nền tảng phát trực tuyến (OTT/Streaming) đã tạo ra một kỷ nguyên bùng nổ nội dung số. Tuy nhiên, sự phong phú này đồng thời mang lại những thách thức lớn cho cả nhà cung cấp dịch vụ lẫn người dùng cuối. Thông qua quan sát hoạt động thực tế của các nền tảng lớn, có thể nhận thấy các vấn đề cốt lõi sau:
+P330 [Normal] Hiện tượng "Nghịch lý của sự lựa chọn" (Paradox of Choice): Khi phải đối mặt với hàng chục ngàn tựa phim hay bài hát, người dùng thường rơi vào trạng thái mệt mỏi nhận thức, dẫn đến việc mất quá nhiều thời gian để tìm kiếm nội dung hoặc thậm chí từ bỏ việc sử dụng dịch vụ.
+P331 [Normal] Sự thay đổi trong phương thức tương tác: Người dùng hiện đại có xu hướng tiêu thụ nội dung một cách thụ động. Họ rất hiếm khi chủ động thực hiện các thao tác đánh giá tường minh (Explicit Feedback) như chấm điểm 1-5 sao hay viết nhận xét.
+P332 [Normal] Vai trò sinh tử của Hệ thống khuyến nghị (Recommendation System): Hệ thống gợi ý không còn là một tính năng "có thì tốt" mà đã trở thành công cụ kinh doanh lõi. Các báo cáo ngành cho thấy, phần lớn thời lượng xem trên các nền tảng hàng đầu không xuất phát từ thanh tìm kiếm, mà đến từ các danh sách đề xuất tự động. Chất lượng của hệ thống khuyến nghị tỷ lệ thuận trực tiếp với tỷ lệ giữ chân khách hàng và doanh thu của doanh nghiệp.
+P333 [Heading 2] Phát hiện những bất hợp lý và thách thức kỹ thuật
+P334 [Normal] Dù đóng vai trò quan trọng, các hệ thống khuyến nghị đang được vận hành hiện nay vẫn bộc lộ nhiều điểm nghẽn và giới hạn về mặt kỹ thuật:
+P335 [Normal] Thách thức Dữ liệu thưa thớt (Data Sparsity): Đây là rào cản lớn nhất của các thuật toán Lọc cộng tác (Collaborative Filtering). Trong một hệ thống có hàng triệu người dùng và hàng trăm ngàn sản phẩm, một người dùng trung bình chỉ tương tác với chưa tới 1% tổng kho nội dung. Sự thưa thớt này khiến việc tìm kiếm sự tương đồng giữa các người dùng trở nên thiếu chính xác.
+P336 [Normal] Điểm mù "Khởi động lạnh" (Cold-Start Problem): Khi một nền tảng thu hút được người dùng mới, hệ thống khuyến nghị lập tức bị "tê liệt" vì không có lịch sử hành vi để phân tích. Hệ quả là người dùng mới thường phải nhận những gợi ý đại trà, không phù hợp sở thích, làm tăng nguy cơ rời bỏ nền tảng ngay trong những ngày đầu trải nghiệm (Churn Rate).
+P337 [Normal] Thiếu hụt luồng phản hồi thời gian thực (Real-time Feedback Loop): Nhiều hệ thống hiện nay vẫn vận hành mô hình học máy theo mẻ (Batch Processing) định kỳ hàng ngày hoặc hàng tuần. Sự chậm trễ này khiến hệ thống không nắm bắt được sự thay đổi sở thích tức thời của người dùng (Ví dụ: Một người dùng thường xem phim hành động, nhưng hôm nay lại muốn tìm phim hoạt hình cho con).
+P338 [Normal] Rủi ro tạo ra "Bong bóng lọc" (Filter Bubble): Việc quá tối ưu hóa độ chính xác (Accuracy) khiến nhiều thuật toán liên tục gợi ý những nội dung lặp đi lặp lại cùng một thể loại. Điều này làm giảm tính đa dạng (Diversity) và đánh mất yếu tố bất ngờ (Serendipity) cần có trong trải nghiệm giải trí.
+P339 [Heading 2] Lý giải nguyên nhân của các vấn đề
+P340 [Normal] Những bất hợp lý và thách thức kỹ thuật nêu trên bắt nguồn từ các nguyên nhân mang tính bản chất của dữ liệu và kiến trúc hệ thống:
+P341 [Normal] Bản chất của hiệu ứng "Đuôi dài" (Long-tail Effect): Trong bất kỳ kho nội dung nào, lượt xem luôn phân bổ không đồng đều. Một số ít các tác phẩm bom tấn chiếm trọn sự chú ý và lượng tương tác, trong khi phần lớn nội dung khác (phần đuôi dài) hiếm khi được động tới. Điều này gây ra hiện tượng thiên lệch dữ liệu (Data Bias), khiến thuật toán có xu hướng phớt lờ các nội dung ngách, làm trầm trọng thêm bài toán thưa thớt dữ liệu.
+P342 [Normal] Sự thiếu hụt dữ liệu đầu vào (Input Deficit): Vấn đề khởi động lạnh xảy ra do giới hạn cố hữu của các thuật toán thuần Lọc cộng tác (CF), vốn chỉ phân tích ma trận tương tác mà bỏ qua các thuộc tính nội tại của sản phẩm (như thể loại, đạo diễn, tóm tắt nội dung) hoặc hồ sơ nhân khẩu học của người dùng.
+P343 [Normal] Khó khăn trong việc số hóa "Phản hồi ngầm" (Implicit Feedback): Vì người dùng không chấm điểm, hệ thống phải thu thập các tín hiệu ngầm (số phút xem, tỷ lệ bỏ ngang, hành vi click). Nguyên nhân khiến các hệ thống chưa tối ưu được nguồn dữ liệu này là do thiếu một công thức quy đổi chuẩn xác. Hành vi "bỏ ngang phim sau 10 phút" có thể do phim dở, nhưng cũng có thể do người dùng bận việc đột xuất. Việc hệ thống nhầm lẫn các tín hiệu nhiễu (Noise) này với sở thích thực sự làm giảm độ tin cậy của thuật toán.
+P344 [Normal] Khoảng trống trong quy trình MLOps: Sự chậm trễ trong việc phản hồi sở thích người dùng xuất phát từ sự thiếu đồng bộ giữa bộ phận khoa học dữ liệu (phát triển mô hình offline) và bộ phận kỹ thuật phần mềm (vận hành online). Việc thiếu vắng một quy trình MLOps tự động hóa chuẩn mực khiến việc tái huấn luyện (Retrain) và triển khai (Deployment) mô hình mới gặp nhiều rủi ro và tốn kém thời gian.
+P346 [Heading 1] ĐỀ XUẤT GIẢI PHÁP
+P347 [Heading 2] Giới thiệu giải pháp tổng thể
+P348 [Normal] Để khắc phục những hạn chế của nền tảng giải trí đa phương tiện truyền thống, giải pháp cốt lõi được đề xuất là xây dựng và tích hợp một Hệ thống Khuyến nghị Phim Cá nhân hóa (Personalization Engine). 
+P349 [Normal] Hệ thống này không can thiệp vào mã nguồn của trình phát video cốt lõi, mà hoạt động độc lập dưới dạng một kiến trúc Client-Server hiện đại:
+P350 [List Paragraph] Phía Server (Backend): Một máy chủ cung cấp API (sử dụng FastAPI) chịu trách nhiệm tính toán học máy và định tuyến dữ liệu gợi ý. 
+P351 [List Paragraph] Phía Client (Frontend): Một nguyên mẫu ứng dụng di động đa nền tảng (phát triển bằng Flutter) làm điểm chạm để hiển thị phim và thu thập hành vi người dùng. 
+P352 [Normal] Giải pháp này thay đổi hoàn toàn mô hình tương tác: chuyển từ việc người dùng phải chủ động tìm kiếm nội dung sang việc hệ thống tự động thấu hiểu và "đẩy" nội dung phù hợp lên màn hình chính. 
+P353 [Heading 2] Cơ sở đề xuất
+P354 [Normal] Việc tích hợp hệ thống khuyến nghị không chỉ là một tiện ích bổ sung, mà là yêu cầu sống còn để giải quyết các bài toán thực tiễn sau đây:
+P355 [Normal] Giải quyết tình trạng "Quá tải thông tin": Trên các nền tảng phát trực tuyến như Netflix hay FPT Play, người dùng thường bị choáng ngợp trước hàng chục nghìn lựa chọn. Hệ thống gợi ý đóng vai trò trung tâm giúp cá nhân hóa nội dung, từ đó tăng tỷ lệ giữ chân người dùng (Retention Rate). 
+P356 [Normal] Tận dụng nguồn "Dữ liệu ngầm" bị lãng phí: Trong thực tế, người dùng hiếm khi chủ động chấm điểm sao cho phim. Nếu không có hệ thống theo dõi, toàn bộ các hành vi như thời lượng xem phim hay thả tim sẽ bị lãng phí. 
+P357 [Normal] Vượt qua rào cản "Dữ liệu thưa thớt" (Data Sparsity): Tỷ lệ các cặp người dùng và bộ phim có tương tác thực tế thường chỉ chiếm dưới 2% (nghĩa là ma trận dữ liệu trống tới hơn 98%). Hệ thống đa phương tiện thông thường không có năng lực toán học để dự đoán sở thích từ một ma trận trống như vậy. 
+P358 [Normal] Xử lý "Điểm mù" với người dùng mới (Cold-Start): Người dùng mới đăng ký chưa có bất kỳ dữ liệu lịch sử đánh giá nào, khiến họ dễ cảm thấy nhàm chán và rời bỏ ứng dụng ngay lần đầu truy cập. 
+P359 [Heading 2] Phương pháp tiếp cận
+P360 [Normal] Để hệ thống khuyến nghị thực sự giải quyết được các vấn đề nêu trên, dự án áp dụng các cơ sở thuật toán và quy trình kỹ thuật cụ thể như sau:
+P361 [Heading 3] Thuật toán Phân rã ma trận
+P362 [Normal] Thay vì cố gắng tìm kiếm sự trùng lặp hành vi giữa các người dùng (vốn rất khó vì ma trận trống 98%), giải pháp sử dụng thuật toán FunkSVD. 
+P363 [Normal] Cơ chế: Thuật toán này phân rã ma trận khổng lồ để biểu diễn mỗi người dùng và mỗi bộ phim thành các véc-tơ đặc trưng ẩn (Latent Factors). Mức độ phù hợp được tính toán bằng cách đối chiếu (nhân vô hướng) véc-tơ của người dùng với véc-tơ của bộ phim. 
+P364 [Normal] Để chống lại hiện tượng học vẹt (Overfitting) khi dữ liệu quá ít, mô hình được tích hợp hàm mất mát với L2 Regularization, giúp hệ thống gợi ý chính xác những bộ phim ngách phù hợp với "khẩu vị" ngầm của người dùng. 
+P365 [Heading 3] Cơ chế Khuyến nghị Lai (Hybrid) và Khởi động lạnh
+P366 [Normal] Để giải quyết triệt để bài toán Cold-Start, hệ thống áp dụng luồng định tuyến thông minh theo vòng đời người dùng:
+P367 [List Paragraph] Khi vừa đăng ký tài khoản, người dùng buộc phải chọn một số thể loại yêu thích. Hệ thống sẽ kết hợp mô hình Lọc theo độ phổ biến (Popularity) và Lọc theo thể loại để đưa ra gợi ý tức thì. 
+P368 [List Paragraph] Ngay khi hệ thống thu thập đủ số lượng tương tác, luồng tính toán sẽ tự động chuyển đổi sang thuật toán SVD để cung cấp các gợi ý cá nhân hóa sâu sắc hơn. 
+P369 [Heading 3] Số hóa phản hồi ngầm và Cập nhật tức thời
+P370 [Normal] Quy đổi toán học: Ứng dụng theo dõi tiến độ xem phim (Watch Progress) và tự động quy đổi thành điểm đánh giá. Ví dụ: Xem trên 80% thời lượng được quy đổi thành 5.0 điểm; xem dưới 20% bị phạt và quy đổi thành 1.5 điểm. Hành vi thả tim được quy đổi thành 4.5 điểm. 
+P371 [Normal] Cá nhân hóa tức thời: Ngay khi nhận được một phản hồi (chấm sao hoặc xem xong), máy chủ không cần chờ đợi huấn luyện lại toàn bộ mô hình. Thay vào đó, hệ thống trích xuất ngay véc-tơ sở thích của người dùng đó và chạy một bước tính toán cập nhật (1 bước SGD) trong bộ nhớ. Kết quả là danh sách gợi ý thay đổi ngay lập tức trên màn hình ứng dụng. 	 
+P372 [Heading 3] Tự động hóa bằng Quy trình MLOps
+P373 [Normal] Khác với các mô hình nghiên cứu chỉ chạy thử nghiệm ngoại tuyến (offline), hệ thống này được thiết kế với vòng lặp MLOps khép kín để tự động tiến hóa: 
+P374 [List Paragraph] Thu thập và điều hướng dữ liệu: Mọi phản hồi mới đều được lưu trữ riêng biệt và chủ động đưa vào tập dữ liệu huấn luyện (Train set) nhằm đảm bảo hệ thống học được các sở thích mới nhất. 
+P375 [List Paragraph] Tái huấn luyện tự động (Auto-Retrain): Một tiến trình chạy ngầm sẽ kích hoạt luồng huấn luyện SVD khi phát hiện có đủ số lượng tương tác mới được gửi về từ ứng dụng. 
+P376 [List Paragraph] Cổng kiểm duyệt và Triển khai (Model Gate & Reload): Phiên bản AI mới chỉ được cấp phép hoạt động khi sai số dự đoán (RMSE) vượt qua Cổng kiểm soát chất lượng. Sau đó, máy chủ API sẽ tự động nạp mô hình mới (Zero-downtime) mà không làm gián đoạn trải nghiệm của người dùng đang sử dụng ứng dụng di động. 
+P388 [Heading 1] CƠ SỞ LÝ THUYẾT
+P389 [Heading 2] Giới thiệu ngôn ngữ Python
+P390 [Heading 3] Python là gì?
+P391 [Normal] Python là ngôn ngữ lập trình bậc cao, đa mục đích, được Guido van Rossum phát triển và ra mắt lần đầu vào năm 1991. Python nổi bật với triết lý thiết kế hướng tới tính dễ đọc (readability) - cú pháp trong sáng, ngắn gọn, sử dụng thụt lề (indentation) thay vì dấu ngoặc nhọn để phân định khối lệnh.
+P392 [Normal] Python hiện là một trong những ngôn ngữ phổ biến nhất thế giới (xếp hạng #1 trên TIOBE Index 2025) và là ngôn ngữ thống trị trong lĩnh vực Khoa học Dữ liệu (Data Science), Học máy (Machine Learning), và Trí tuệ Nhân tạo (AI) nhờ hệ sinh thái thư viện phong phú: NumPy (tính toán ma trận), Pandas (xử lý dữ liệu dạng bảng), scikit-learn (học máy), Matplotlib/Seaborn (trực quan hóa), và nhiều framework khác.
+P393 [Heading 3] Python hoạt động như thế nào?
+P394 [Normal] Python là ngôn ngữ thông dịch (interpreted language), hoạt động theo cơ chế ba bước cơ bản. Đầu tiên, lập trình viên viết mã nguồn trong các tệp tin định dạng .py. Tiếp theo, trình thông dịch CPython (phiên bản chuẩn) sẽ biên dịch mã nguồn này thành bytecode - một dạng mã trung gian (intermediate code) và lưu trữ trong các tệp .pyc tại thư mục pycache. Cuối cùng, tập lệnh bytecode này sẽ được đưa vào Máy ảo Python (PVM) để đọc và thực thi từng lệnh trực tiếp trên hệ điều hành đích (Windows, macOS, Linux).
+P395 [Normal] Cơ chế thông dịch này mang lại tính linh hoạt rất cao, cho phép một tệp mã nguồn có thể chạy chéo trên nhiều nền tảng mà không cần chỉnh sửa lại mã. Đồng thời, Python hỗ trợ mạnh mẽ lập trình đa mô hình (multi-paradigm) bao gồm: lập trình hướng đối tượng (OOP), lập trình hàm (Functional Programming), và lập trình thủ tục (Procedural Programming). Trong dự án MovieRS, khi khởi chạy Backend, trình thông dịch sẽ tự động xử lý toàn bộ mã nguồn các module để khởi tạo máy chủ Uvicorn, sẵn sàng lắng nghe các yêu cầu HTTP.
+P396 [Heading 2] Giới thiệu Framework FastAPI
+P397 [Heading 3] FastAPI là gì?
+P398 [Normal] FastAPI là một framework hiện đại, hiệu năng cao dành cho Python, được thiết kế chuyên biệt để xây dựng các RESTful API (Application Programming Interface). FastAPI được phát triển bởi Sebastián Ramírez, ra mắt năm 2018, và nhanh chóng trở thành một trong những framework Python phát triển nhanh nhất trên GitHub.
+P399 [Normal] Các đặc điểm nổi bật của FastAPI:
+P400 [List Paragraph] Hiệu năng cao: Dựa trên Starlette (ASGI framework) và Pydantic (data validation), FastAPI đạt tốc độ tương đương Node.js và Go — nhanh hơn đáng kể so với Flask hay Django REST Framework.
+P401 [List Paragraph] Tự động sinh tài liệu API: FastAPI tự động tạo giao diện Swagger UI và ReDoc từ mã nguồn, cho phép lập trình viên tương tác trực tiếp với API mà không cần công cụ cấu hình bên ngoài.
+P402 [List Paragraph] Type Hints & Validation: Sử dụng hệ thống Type Hints của Python 3.6+ kết hợp Pydantic để tự động kiểm tra, xác thực kiểu dữ liệu đầu vào và trả về thông báo lỗi rõ ràng.
+P403 [List Paragraph] Hỗ trợ bất đồng bộ (Async/Await): Hỗ trợ xử lý bất đồng bộ gốc (native async), cho phép máy chủ xử lý hàng nghìn kết nối đồng thời mà không bị nghẽn cổ chai.
+P404 [Heading 3] FastAPI hoạt động như thế nào?
+P405 [Normal] Quy trình xử lý một HTTP request trong FastAPI vận hành theo một luồng liền mạch và chặt chẽ. Khi phía Client (chẳng hạn như ứng dụng di động Flutter) gửi đi một yêu cầu HTTP, máy chủ Uvicorn (ASGI server) sẽ lập tức tiếp nhận yêu cầu này. Trước khi đến được hàm xử lý cốt lõi, yêu cầu sẽ phải đi qua một chuỗi các Middleware, điển hình như CORS Middleware, để rà soát các vấn đề về phân quyền và giao tiếp chéo miền.
+P406 [Normal] Sau khi qua lớp Middleware, hệ thống định tuyến (Router) của FastAPI sẽ phân tích URL để ánh xạ yêu cầu tới đúng hàm xử lý (endpoint) tương ứng. Ngay trước khi hàm này được kích hoạt, thư viện Pydantic sẽ tự động đối chiếu và xác thực toàn bộ dữ liệu đầu vào theo các cấu trúc đã định nghĩa. Nếu dữ liệu không hợp lệ, hệ thống từ chối và trả về lỗi ngay lập tức. Nếu hợp lệ, logic nghiệp vụ thực sự sẽ được thực thi - như gọi đến dịch vụ đọc mô hình SVD, tính toán và xuất ra danh sách gợi ý. Cuối cùng, dữ liệu kết quả được tuần tự hóa thành định dạng JSON và đẩy về cho Client kèm theo mã trạng thái HTTP chuẩn xác.
+P407 [Heading 2] Giới thiệu về ngôn ngữ Dart và Framework Flutter
+P408 [Heading 3] Ngôn ngữ Dart là gì?
+P409 [Normal] Dart là ngôn ngữ lập trình hướng đối tượng, kiểu tĩnh (statically typed), được Google phát triển và công bố lần đầu vào năm 2011. Dart được thiết kế để xây dựng các ứng dụng có giao diện người dùng (UI) trên nhiều nền tảng: di động (Android, iOS), web, và desktop.
+P410 [Normal] Các đặc điểm chính của Dart:
+P411 [List Paragraph] Kiểu dữ liệu tĩnh (Static Typing): Biến được khai báo kiểu dữ liệu tại thời điểm biên dịch, giúp phát hiện lỗi sớm và tối ưu hiệu năng.
+P412 [List Paragraph] Sound Null Safety: Đảm bảo các biến không thể nhận giá trị null trừ khi được khai báo tường minh, giảm thiểu triệt để lỗi ngoại lệ (NullPointerException) lúc chạy.
+P413 [List Paragraph] Hỗ trợ bất đồng bộ (Async/Await): Tích hợp lập trình bất đồng bộ gốc thông qua Future và Stream, đặc biệt tối ưu cho các tác vụ I/O như gọi API hay truy xuất cơ sở dữ liệu.
+P414 [Heading 3] Dart hoạt động như thế nào?
+P415 [Normal] Ngôn ngữ Dart sở hữu cơ chế hoạt động linh hoạt nhờ việc hỗ trợ hai chế độ biên dịch khác nhau, tùy thuộc vào giai đoạn của vòng đời phần mềm.
+P416 [Normal] Trong giai đoạn phát triển (Development), Dart sử dụng cơ chế biên dịch tức thời JIT (Just-In-Time). Mã nguồn sẽ được chạy trực tiếp trên Máy ảo Dart (Dart VM), cho phép hệ thống chỉ biên dịch những phần mã thực sự cần thiết. Ưu điểm lớn nhất của cơ chế này là tính năng Hot Reload, cho phép lập trình viên nhìn thấy sự thay đổi giao diện ngay lập tức trên màn hình mô phỏng mỗi khi lưu tệp mã nguồn mà không cần phải biên dịch lại toàn bộ ứng dụng.
+P417 [Normal] Ngược lại, khi ứng dụng bước vào giai đoạn phát hành, Dart sẽ chuyển sang sử dụng trình biên dịch AOT. Lúc này, toàn bộ mã nguồn Dart sẽ được dịch thẳng thành mã máy gốc (native machine code) để đóng gói thành các tệp tin cài đặt độc lập (như APK cho Android hoặc IPA cho iOS). Việc loại bỏ máy ảo trung gian giúp ứng dụng đạt được tốc độ khởi động cực kỳ nhanh chóng và mang lại trải nghiệm tương tác đồ họa mượt mà nhất.
+P418 [Heading 3] Framework Flutter là gì?
+P419 [Normal] Flutter là bộ công cụ phát triển giao diện người dùng (UI Toolkit) mã nguồn mở do Google phát triển, ra mắt phiên bản ổn định đầu tiên vào tháng 12/2018. Flutter cho phép xây dựng ứng dụng đa nền tảng (cross-platform) - từ một cơ sở mã nguồn duy nhất viết bằng Dart có thể biên dịch thành ứng dụng gốc cho Android, iOS, Web và Desktop.
+P420 [Normal] Các đặc điểm nổi bật của Flutter:
+P421 [List Paragraph] Kiến trúc dựa trên Widget (Widget-based): Mọi thành phần hiển thị, từ một nút bấm nhỏ cho đến cấu trúc nguyên một màn hình, đều là các Widget được lồng ghép với nhau theo cấu trúc dạng cây.
+P422 [List Paragraph] Thiết kế đồng bộ: Tích hợp bộ thư viện giao diện chuẩn Material Design (Android) và Cupertino (iOS).
+P423 [List Paragraph] Skia/Impeller Engine: Flutter không phụ thuộc vào các thành phần giao diện gốc của hệ điều hành. Nó tự vẽ (render) mọi pixel trực tiếp lên màn hình thông qua engine đồ họa hiệu năng cao ở tốc độ 60–120 FPS.
+P424 [Normal] Vai trò trong dự án MovieRS: Flutter đảm nhận việc xây dựng nguyên mẫu ứng dụng di động, bao gồm hệ thống các màn hình tương tác phức tạp như: Onboarding, Trang chủ gợi ý phim, Tìm kiếm, Chi tiết phim, Mô phỏng trình phát video và Hồ sơ người dùng.
+P425 [Heading 3] Flutter hoạt động như thế nào?
+P426 [Normal] Kiến trúc vận hành của Flutter được chia thành ba tầng rõ rệt, kết nối chặt chẽ với nhau để tạo ra trải nghiệm người dùng mượt mà.
+P427 [Normal] Nằm ở vị trí trên cùng là Tầng Framework (viết bằng ngôn ngữ Dart). Đây là lớp mà các lập trình viên làm việc trực tiếp, cung cấp kho thư viện đồ sộ gồm các Widget thiết kế sẵn, hệ thống điều hướng, quản lý hoạt ảnh (Animation) và ghi nhận thao tác vuốt chạm (Gestures).
+P428 [Normal] Ngay bên dưới Framework là Tầng Engine (được viết bằng C/C++). Tầng này là "trái tim" của hệ thống, đóng vai trò tiếp nhận các lệnh từ Framework và sử dụng trình kết xuất đồ họa (như Skia hoặc Impeller) để tính toán bố cục và vẽ trực tiếp các điểm ảnh 2D. Tầng Engine cũng chứa môi trường thực thi ngôn ngữ Dart (Dart Runtime).
+P429 [Normal] Dưới cùng là Tầng Embedder. Tầng này có nhiệm vụ làm lớp vỏ bọc giao tiếp giữa Engine của Flutter và hệ điều hành gốc của thiết bị (Android hoặc iOS). Nó quản lý chu kỳ sống của ứng dụng, các luồng (threads) và tiếp nhận các sự kiện đầu vào từ phần cứng máy. Quy trình hiển thị một khung hình trong Flutter là sự phối hợp nhịp nhàng giữa ba tầng này: Framework duyệt cây Widget để tìm sự thay đổi, tính toán kích thước bố cục mới và ra lệnh cho Engine vẽ các điểm ảnh đó gửi lên GPU của thiết bị.
+P430 [Heading 2] Giới thiệu công cụ trực quan hóa Streamlit
+P431 [Heading 3] Streamlit là gì?
+P432 [Normal] Streamlit là một framework mã nguồn mở dành cho Python, cho phép xây dựng các ứng dụng web tương tác phục vụ mục đích phân tích dữ liệu, trực quan hóa và quản trị mô hình học máy — tất cả chỉ với mã Python thuần, hoàn toàn không cần can thiệp HTML, CSS hay JavaScript.
+P433 [Normal] Khác với các framework như Django hay Flask, Streamlit được sinh ra để phục vụ nhóm Khoa học Dữ liệu (Data Science). Nhờ tính năng phản hồi tương tác tự động và cú pháp khai báo đơn giản (st.dataframe, st.chart), nó cho phép chuyển đổi nhanh chóng một tập lệnh phân tích thành một Web Dashboard chuyên nghiệp.
+P434 [Heading 3] Streamlit hoạt động như thế nào?
+P435 [Normal] Khác biệt hoàn toàn so với mô hình định tuyến của các framework web truyền thống, Streamlit vận hành dựa trên cơ chế phản ứng đặc trưng gọi là "chạy lại tập lệnh" (Script rerun).
+P436 [Normal] Mỗi khi người dùng truy cập vào bảng điều khiển qua trình duyệt, máy chủ Streamlit sẽ mở tệp mã nguồn Python và thực thi nó chạy một mạch từ dòng đầu tiên đến dòng cuối cùng. Quá trình thực thi các hàm giao diện của Streamlit sẽ tự động sinh ra cấu trúc HTML hiển thị lên trang web.
+P437 [Normal] Sự đặc biệt của cơ chế này thể hiện rõ nhất khi có sự tương tác. Ví dụ, khi quản trị viên thay đổi một thanh trượt thông số hoặc bấm vào nút "Kích hoạt Retrain", trình duyệt sẽ gửi sự kiện đó về máy chủ. Ngay lập tức, Streamlit ghi nhận trạng thái mới này và tiến hành chạy lại toàn bộ tệp mã nguồn từ đầu. Khi luồng thực thi đi qua khối lệnh chứa điều kiện nút bấm, hệ thống sẽ gọi các hàm nghiệp vụ tương ứng để cập nhật dữ liệu và vẽ lại giao diện mới trả về cho trình duyệt. Mô hình thiết kế "top-down" này giúp việc đồng bộ dữ liệu và giao diện trở nên vô cùng trực quan và dễ bảo trì.
+P438 [Heading 2] Giới thiệu thuật toán SVD và thư viện Surprise
+P439 [Heading 3] Thuật toán SVD (Singular Value Decomposition) là gì?
+P440 [Normal] SVD (Phân rã Giá trị Suy biến) trong ngữ cảnh hệ thống khuyến nghị là một kỹ thuật thuộc nhóm Collaborative Filtering dựa trên mô hình (Model-based). SVD áp dụng phương pháp Phân rã Ma trận để tìm ra các mẫu hình ẩn, từ đó dự đoán mức độ yêu thích của người dùng đối với các mục (item) chưa từng tương tác.
+P441 [Normal] Ý tưởng cốt lõi của giải pháp này là biến đổi ma trận tương tác thưa thớt (sparse matrix) khổng lồ thành tích của hai ma trận có kích thước nhỏ hơn rất nhiều. Qua đó, mỗi người dùng u và mỗi bộ phim i đều được biểu diễn thành các véc-tơ đặc trưng ẩn (Latent Factor Vector) trong một không gian toán học nhiều chiều (ví dụ k=50 chiều).
+P442 [Normal] Điểm dự đoán được tính toán thông qua công thức:
+P444 [Normal] Trong đó, là điểm đánh giá trung bình toàn cục,  lần lượt là độ lệch (bias) cá nhân của người dùng và của phim. Phần  là tích vô hướng giữa hai véc-tơ ẩn, phản ánh mức độ trùng khớp giữa sở thích nội tại của người dùng và đặc điểm của tác phẩm. Đây chính là nguyên lý của thuật toán FunkSVD danh tiếng, giúp lấp đầy các khoảng trống trong dữ liệu để mang lại những gợi ý mang tính cá nhân hóa sâu sắc.
+P445 [Heading 3] Thư viện Surprise và cách SVD hoạt động trong dự án
+P446 [Normal] Surprise (Simple Python Recommendation System Engine) là thư viện mã nguồn mở chuyên biệt để xây dựng và đánh giá hệ thống khuyến nghị. Surprise cung cấp sẵn các thuật toán tối ưu hóa cao cùng bộ công cụ đo lường sai số chuẩn xác (như RMSE, MAE).
+P447 [Normal] Quy trình ứng dụng SVD thông qua thư viện Surprise trong dự án diễn ra theo một chuỗi các bước khép kín. Đầu tiên, toàn bộ tập dữ liệu huấn luyện (khoảng 1.6 triệu bản ghi) sẽ được nạp và định dạng lại cấu trúc theo yêu cầu của thư viện. Sau đó, mô hình học máy được khởi tạo cùng với các siêu tham số đã tinh chỉnh sẵn (như số vòng lặp, tốc độ học, và hệ số kiểm soát quá mức).
+P448 [Normal] Sau khi khởi tạo, mô hình bước vào giai đoạn huấn luyện cốt lõi sử dụng thuật toán Giảm chênh lệch ngẫu nhiên (SGD). Ở giai đoạn này, thuật toán liên tục quét qua tập dữ liệu nhiều vòng, tự động điều chỉnh các véc-tơ đặc trưng và độ lệch thông qua việc tính toán đạo hàm nhằm triệt tiêu tối đa sai số giữa mức đánh giá dự đoán và thực tế. Khi mô hình đã đạt đến trạng thái hội tụ tốt nhất, toàn bộ trọng số toán học sẽ được xuất ra và lưu trữ dưới dạng các tệp tin nhị phân. Các tệp tin này cuối cùng sẽ được tải lên bộ nhớ của máy chủ API, sẵn sàng thực hiện các phép nhân vô hướng phức tạp để lọc ra danh sách phim phù hợp nhất mỗi khi có yêu cầu gợi ý từ phía người dùng.
+P470 [Heading 1] PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+P471 [Heading 2] Khảo sát hệ thống
+P472 [Heading 3] Mô tả bài toán
+P473 [Normal] Hệ thống MovieRS được định hình là một nền tảng khuyến nghị phim cá nhân hóa, vận hành toàn diện dựa trên các tiêu chuẩn của MLOps. Để đảm bảo tính phân tán và hiệu năng cao, kiến trúc hệ thống được chia thành ba thành phần cốt lõi:
+P474 [List Paragraph] Ứng dụng di động (Frontend - Flutter): Đóng vai trò là điểm chạm tương tác với người dùng cuối. Ứng dụng cung cấp không gian để người dùng khám phá danh mục phim, thực hiện các thao tác đánh giá (chấm sao, thả tim) và trải nghiệm trình phát video mô phỏng.
+P475 [List Paragraph] Máy chủ xử lý (Backend API - FastAPI): Đóng vai trò là "trái tim" của hệ thống, chịu trách nhiệm xử lý toàn bộ logic nghiệp vụ, phục vụ các luồng gợi ý cá nhân hóa, tiếp nhận và lưu trữ phản hồi từ thiết bị đầu cuối, cũng như quản lý định danh người dùng.
+P476 [List Paragraph] Bảng điều khiển quản trị (Dashboard - Streamlit): Cung cấp giao diện trực quan dành riêng cho quản trị viên nhằm theo dõi, phân tích dữ liệu (EDA), giám sát vòng đời của các phiên bản AI và kích hoạt quy trình tái huấn luyện mô hình khi cần thiết.
+P477 [Heading 3] Xác định tác nhân (Actors)
+P478 [Normal] Dựa trên yêu cầu nghiệp vụ, hệ thống được thiết kế để phục vụ 3 nhóm tác nhân chính:
+P479 [Heading 3] Xác định yêu cầu chức năng
+P480 [Normal] Các chức năng của hệ thống được phân rã chi tiết theo từng nhóm tác nhân như sau:
+P481 [Heading 3] Bảng thiết kế API Endpoints
+P482 [Normal] Để kết nối Frontend và Backend, hệ thống thiết kế 15 cổng giao tiếp RESTful API tiêu chuẩn:
+P483 [Heading 2] Biểu đồ ca sử dụng (Use Case Diagram)
+P484 [Heading 3] Biểu đồ ca sử dụng tổng quát
+P485 [Normal] Biểu đồ dưới đây mô tả bức tranh toàn cảnh về sự tương tác giữa 3 tác nhân với toàn bộ hệ thống MovieRS.
+P486 [Normal] 
+P487 [Caption] Hình 1 Biểu đồ ca sử dụng tổng quát
+P488 [Heading 2] Biểu đồ lớp (Class Diagram)
+P489 [Normal] Biểu đồ lớp dưới đây định nghĩa cấu trúc đối tượng tĩnh của hệ thống, bao gồm các thuộc tính, phương thức và mối quan hệ cardinality giữa các thực thể cốt lõi như User, Movie, mô hình AI và các Service nghiệp vụ.
+P490 [Normal (Web)] 
+P491 [Caption] Hình 2 Biểu đồ lớp
+P492 [Heading 2] Thiết kế cơ sở dữ liệu
+P493 [Heading 3] Sơ đồ Mô hình Quan hệ Thực thể (ERD)
+P494 [Normal] Dù phiên bản nguyên mẫu (Prototype) sử dụng cấu trúc lưu trữ dựa trên tệp (CSV/JSON), các thực thể vẫn được quy hoạch nghiêm ngặt theo chuẩn hóa cơ sở dữ liệu quan hệ (RDBMS). Điều này đảm bảo khả năng mở rộng và dịch chuyển lên các hệ quản trị CSDL chuyên nghiệp (như PostgreSQL) trong tương lai.
+P495 [Normal (Web)] 
+P496 [Caption] Hình 3 Sơ đồ quan hệ thực thể
+P497 [Heading 3] Từ điển dữ liệu (Data Dictionary)
+P498 [Heading 4] Bảng Users
+P499 [Normal] Lưu trữ thông tin định danh và tùy chọn cấu hình sở thích của người dùng.
+P500 [Heading 4] Bảng Movies
+P501 [Normal] Kho siêu dữ liệu phim đã được làm sạch và hợp nhất thông tin từ TMDb API.
+P502 [Heading 4] Bảng Interactions
+P503 [Normal] Sổ cái ghi nhận toàn bộ lịch sử phản hồi quy đổi của người dùng. Đây là nguồn cung cấp dữ liệu chính cho quy trình tái huấn luyện thuật toán.
+P504 [Heading 4] Bảng Favorites
+P505 [Normal] Quản lý trạng thái bộ sưu tập phim yêu thích, phục vụ riêng cho UI hiển thị danh sách yêu thích cá nhân.
+P506 [Heading 4] Bảng Watch Progress 
+P507 [Normal] Lưu vết tiến độ xem phim để phục vụ tính năng "Tiếp tục xem" (Continue Watching) và quy đổi tỷ lệ xem (Watch Ratio).
+P508 [Heading 4] Bảng Model Registry
+P509 [Normal] Kho lưu trữ siêu dữ liệu phiên bản phục vụ quy trình MLOps và chức năng Rollback.
+P510 [Heading 2] Biểu đồ hoạt động
+P511 [Heading 3] Luồng hoạt động Đăng ký tài khoản
+P512 [Normal] 
+P513 [Caption] Hình 4 Luồng hoạt động đăng kí tài khoản
+P514 [Heading 3] Luồng hoạt động Đăng nhập
+P515 [Normal] 
+P516 [Caption] Hình 5 Luồng hoạt động đăng nhập
+P517 [Heading 3] Luồng hoạt động Tìm kiếm danh mục phim
+P518 [Normal] 
+P519 [Caption] Hình 6 Luòng hoạt động tìm kiếm danh mục phim
+P521 [Heading 3] Luồng thu thập Đánh giá sao 
+P522 [Normal] 
+P523 [Caption] Hình 7 Luồng thu thập Đánh giá sao
+P524 [Heading 3] Luồng thu thập Yêu thích phim 
+P525 [Normal] 
+P526 [Caption] Hình 8 Luồng thu thập Yêu thích phim
+P527 [Heading 3] Luồng Xem phim mô phỏng & Đo lường Watch Ratio
+P528 [Normal] 
+P529 [Caption] Hình 9 Luồng Xem phim mô phỏng & Đo lường Watch Ratio
+P530 [Heading 3] Luồng Trích xuất Gợi ý Cá nhân hóa (Trang chủ)
+P531 [Normal] 
+P532 [Caption] Hình 10 Luồng Trích xuất Gợi ý Cá nhân hóa
+P534 [Heading 3] Luồng Vận hành MLOps: Tái huấn luyện mô hình (Retrain)
+P535 [Normal] 
+P536 [Caption] Hình 11 Tái huấn luyện mô hình
+P537 [Heading 2] Biểu đồ tuần tự 
+P538 [Heading 3] Tuần tự Khám phá dữ liệu 
+P539 [Normal] 
+P540 [Caption] Hình 12 Tuần tự Khám phá dữ liệu
+P541 [Heading 3] Tuần tự Đánh giá sao 
+P542 [Normal] 
+P543 [Caption] Hình 13 Tuần tự Đánh giá sao
+P544 [Heading 3] Tuần tự Tiến trình Xem phim & Ghi nhận ngầm
+P545 [Normal] 
+P546 [Caption] Hình 14 Tuần tự Tiến trình Xem phim & Ghi nhận ngầm
+P547 [Heading 3] Tuần tự phân phối gợi ý
+P548 [Normal] 
+P549 [Caption] Hình 15 Tuần tự phân phối gợi ý
+P550 [Heading 3] Tuần tự Vòng lặp Học máy 
+P551 [Normal] 
+P552 [Caption] Hình 16 Tuần tự vòng lặp học máy
+P558 [Heading 1] CÀI ĐẶT VÀ KẾT QUẢ THỬ NGHIỆM
+P559 [Heading 2] Yêu cầu phần cứng và hệ điều hành
+P560 [Heading 2] Môi trường phát triển
+P561 [Heading 3] Môi trường Backend & ML Pipeline
+P562 [Heading 3] Môi trường Mobile App
+P563 [Heading 3] Môi trường Dashboard quản trị
+P564 [Heading 3] Công cụ hỗ trợ
+P565 [Heading 3] Các Extension hỗ trợ trên VS Code
+P566 [Heading 2] Thư viện và Công nghệ sử dụng
+P567 [Heading 3] Frontend — Flutter Mobile App
+P568 [Heading 3] Backend — Python API & ML Pipeline 
+P569 [Heading 3] Công cụ phát triển và kiểm thử
+P570 [Heading 2] Cấu hình biến môi trường (.env)
+P571 [Normal] File .env nằm tại thư mục gốc dự án, chứa toàn bộ cấu hình có thể thay đổi mà không cần sửa mã nguồn:
+P573 [Heading 2] Kết quả thử nghiệm
+P574 [Heading 3] Đăng nhập/ Đăng kí tài khoản
+P575 [Normal] 
+P589 [Normal] Đối với giao diện đăng nhập và đăng kí, chúng được thiết kế mức tối giản là đăng kí với tên làm khóa chính và mật khẩu tối thiểu 4 kí tự. Khi đăng kí tài khoản, người dùng được yêu cầu chọn ít nhất 1 thể loại phim yêu thích để có thể gợi ý những bộ phim đầu tiên đến với người dùng khi chưa có lịch sử tương tác.
+P590 [Heading 3] Trang chủ
+P591 [Normal] 
+P592 [Caption] Hình 20 Trang chủ (2)
+P593 [Normal] Với giao diện trang chủ, người dùng có thể được gợi ý những bộ phim phổ biến nhất với bộ lọc theo thể loại yêu thích họ đã chọn, và phần đề xuất này dành cho người dùng mới vì chưa có lịch sử tương tác của họ.
+P594 [Normal] Tiếp đó là phần gợi ý phim dựa trên thuật toán SVD. Sau khi đã tương tác với hệ thống đủ lâu, hệ khuyến nghị sẽ chạy mô hình và đưa ra các kết quả dự đoán những bộ phim mà những người dùng khác có tương tác tương tự cũng xem. Như ví dụ trong ảnh, vì tài khoản đang được lấy làm ví dụ có lịch sử tương tác với thể loại animation và action nhiều trong khoản thời gian gần nhất, những gợi ý cho thấy những bộ phim đình đám theo thể loại họ vừa xem nhiều đó.
+P595 [Normal] Tuy nhiên, để tối ưu cho phần gợi ý, hệ thống có sử dụng cơ chế 2 chốt: 
+P596 [Normal] Chốt đầu tiên, khi người dùng mới tạo tài khoản, lịch sử xem trống vắng và vector yêu thích bằng 0 thì hệ khuyến nghị sẽ để lr của người đó ở mức cao nhất ( lr = 0.15) để có thể học nhanh nhất những thể loại mà người dùng đang xem ngay lúc này. 
+Tuy nhiên, sau khi tương tác đủ 5 lần, hệ thống sẽ chuyển sang chốt thứ hai. Khi này hệ thống sẽ chạy ngầm lại mô hình với tham số lr = 0.005, nhằm có thể ghi nhận mọi lịch sử từ quá khứ đến hiện tại để xây dựng vector sở thích đồng đều dựa trên lịch sử tương tác nhằm gợi ý những bộ phim hợp gu của người dùng. 
+P597 [Heading 3] Tìm kiếm phim
+P598 [Normal] 
+P599 [Caption] Hình 21 Tìm kiếm phim
+P600 [Normal] Ở trang tìm kiếm này, người dùng sẽ gõ từ khóa bằng tên hoặc thể loại của bộ phim để tìm kiếm. Các kế quả được trả về dựa trên độ trùng khớp với từ khóa, và mỗi trang trả về bao gồm tối đa 20 bộ phim phù hợp nhất với từ khóa.
+P601 [Heading 3] Trang yêu thích
+P602 [Normal] 
+P603 [Caption] Hình 22 Trang yêu thích
+P604 [Normal] Đây là trang lưu trữ những bộ phim được người dùng thả tim, và mục đích là để phục vụ việc xem lịch sử cũng như đánh giá hệ thống.
+P605 [Heading 3] Trang hồ sơ
+P606 [Normal] 
+P607 [Caption] Hình 23 Trang hồ sơ
+P608 [Normal] Đây là trang lưu trữ thông tin tương tác của người dùng cũng như thể loại họ yêu thích. Người dùng có thể chọn lại thể loại yêu thích ở trang này.
+P609 [Heading 3] Trang chi tiết phim
+P610 [Normal] 
+P611 [Caption] Hình 24 Trang chi tiết phim
+P612 [Normal] Ở trang chi tiết phim này, người dùng có thể bình chọn số sao cho bộ phim mình đang xem, nhấn yêu thích và nhấn xem phim. Ở hệ thống này, việc xem ohim chỉ là phát một thanh player chạy nhưng không có phim thật được phát vì lí do bản quyền. Hệ thống chỉ phát player nền và thu thập thông tin số phút xem của người dùng trước khi họ thoát khỏi player. ở đây, hệ thống sẽ thu thập 3 loại thông tin dành cho việc huấn luyện mô hình. Trên một bộ phim xác đinh, hệ thống sẽ thu thập 2 loại phản hồi, đó là:
+P613 [Normal] Phản hồi tường minh: Thu thập số sao mà người dùng đánh giá cho bộ phim đó và việc người dùng có nhấn yêu thích bộ phim đó hay không.
+P614 [Normal] Phản hồi ngầm định: Thu thập số phút xem phim của  người dùng và quy đối sang số sao tương ứng.
+P615 [Title] KIẾN NGHỊ VÀ KẾT LUẬN
+P616 [Heading 2] 1. Kết luận về những kết quả đạt được
+P617 [Normal] Sau quá trình thực tập, nghiên cứu và trực tiếp phát triển đề tài "Hệ thống Khuyến nghị Phim đa phương tiện MovieRS", dự án đã hoàn thành các mục tiêu ban đầu đặt ra. Kết quả đạt được có thể được đúc kết trên ba phương diện chính:
+P618 [Normal] Về mặt nghiên cứu và cơ sở lý thuyết:
+P619 [List Paragraph] Hệ thống hóa thành công các kiến thức chuyên sâu về Hệ thống Khuyến nghị (Recommender Systems), đặc biệt là phương pháp Lọc cộng tác (Collaborative Filtering) và kỹ thuật Phân rã ma trận (Matrix Factorization - SVD).
+P620 [List Paragraph] Tìm hiểu và làm rõ cách thức xử lý các bài toán kinh điển trong hệ gợi ý như: Hiện tượng dữ liệu thưa thớt (Data Sparsity), vấn đề "Khởi động lạnh" (Cold-Start) và phương pháp số hóa phản hồi ngầm (Implicit Feedback).
+P621 [List Paragraph] Nắm bắt được quy trình vòng đời học máy tự động (MLOps), từ khâu thu thập dữ liệu, tái huấn luyện, đến bước nạp lại mô hình mà không làm gián đoạn dịch vụ.
+P622 [List Paragraph] Tìm hiểu sâu sắc về các chỉ số đánh giá mô hình học máy như RMSE, MAE cũng như các tham số như lr (Learning rate),... trong học máy.
+P623 [Normal] Về mặt thực tiễn và xây dựng phần mềm:
+P624 [List Paragraph] Thiết kế và lập trình thành công nguyên mẫu ứng dụng di động đa nền tảng bằng Flutter, mang lại trải nghiệm mượt mà với các tính năng: khám phá nội dung, tìm kiếm, đánh giá sao, và mô phỏng trình phát video.
+P625 [List Paragraph] Tìm hiểu được các thách thức thực tế trong việc xây dựng mô hình khuyến nghị, như vấn đề tối ưu các tham số như lr trong các giai đoạn học máy, chọn số chiều cho ma trận đặc trưng.
+P626 [List Paragraph] Xây dựng hệ thống Backend mạnh mẽ bằng FastAPI, cung cấp luồng API ổn định có khả năng phục vụ danh sách gợi ý với độ trễ thấp (trung bình dưới 800ms) cho danh mục hơn 62.000 bộ phim.
+P627 [List Paragraph] Triển khai thành công đường ống MLOps tự động hóa hoàn toàn. Hệ thống có khả năng tự động gộp dữ liệu phản hồi mới, huấn luyện lại thuật toán SVD, đối chiếu sai số RMSE qua Cổng kiểm duyệt (Model Gate) và nạp nóng mô hình mới vào bộ nhớ (Zero-downtime Reload).
+P628 [List Paragraph] Xây dựng Dashboard quản trị trực quan bằng Streamlit, giúp đơn giản hóa việc giám sát dữ liệu và quản lý các phiên bản trí tuệ nhân tạo.
+P629 [Normal] Về mặt phát triển kỹ năng cá nhân:
+P630 [List Paragraph] Áp dụng quy trình làm việc chuyên nghiệp, rèn luyện tư duy thiết kế hệ thống hướng đối tượng và kỹ năng lập trình full-stack (từ giao diện Flutter đến máy chủ Python).
+P631 [List Paragraph] Tích lũy kinh nghiệm quý báu khi được trải nghiệm môi trường làm việc thực tế, hiểu rõ cách thức phân tích yêu cầu bài toán từ góc độ trải nghiệm người dùng và hiệu quả kinh doanh.
+P632 [Heading 2] 2. Những điểm còn hạn chế
+P633 [Normal] Mặc dù đã đạt được những kết quả khả quan, do giới hạn về mặt thời gian và tài nguyên phần cứng, hệ thống vẫn còn tồn tại một số điểm cần khắc phục:
+P634 [List Paragraph] Về cơ sở dữ liệu: Nguyên mẫu hiện tại vẫn đang sử dụng cấu trúc lưu trữ dựa trên tệp tin (CSV/JSON), chưa được tích hợp hệ quản trị cơ sở dữ liệu quan hệ hoàn chỉnh, làm giảm hiệu năng khi thực hiện các truy vấn phức tạp ở quy mô lớn.
+P635 [List Paragraph] Về thuật toán: Mô hình SVD hiện tại chủ yếu khai thác đặc trưng tương tác (hành vi). Việc bỏ qua các yếu tố về mặt ngữ nghĩa của bộ phim (như tóm tắt nội dung, dàn diễn viên) khiến hệ thống mất đi một phần thông tin quý giá.
+P636 [List Paragraph] Về cơ chế tự động hóa: Bộ đếm kích hoạt tính năng tái huấn luyện (Auto-Retrain) mới chỉ dựa trên số lượng bản ghi tương tác tĩnh, chưa có các cơ chế phát hiện độ trôi lệch dữ liệu (Data Drift) phức tạp.
+P637 [Heading 2] 3. Kiến nghị thực hiện giải pháp và hướng phát triển
+P638 [Normal] Nhằm khắc phục các hạn chế nêu trên và đưa nguyên mẫu hệ thống MovieRS từ mức độ phòng thí nghiệm (Prototype) tiến tới môi trường triển khai thực tế (Production), báo cáo đề xuất các kiến nghị và phương án như sau:
+P639 [Normal] Kiến nghị đối với việc nâng cấp hạ tầng (Infrastructure)
+P640 [List Paragraph] Chuyển đổi hệ quản trị cơ sở dữ liệu: Cần chuyển đổi toàn bộ cấu trúc lưu trữ từ tệp tin CSV/JSON sang hệ quản trị cơ sở dữ liệu PostgreSQL để đảm bảo tính toàn vẹn dữ liệu (ACID) và tối ưu hóa tốc độ truy vấn.
+P641 [List Paragraph] Tích hợp bộ nhớ đệm tốc độ cao: Triển khai Redis Cache tại tầng Backend để lưu trữ tạm thời các danh sách gợi ý và kết quả tìm kiếm, giúp giảm thiểu tải tính toán cho máy chủ và đưa độ trễ API xuống dưới mốc 200ms.
+P642 [List Paragraph] Triển khai trên nền tảng đám mây (Cloud): Đề xuất đóng gói toàn bộ hệ thống Backend, ML Pipeline và Dashboard bằng Docker, sau đó triển khai lên các dịch vụ đám mây (như AWS EC2 hoặc Google Cloud Platform) để đảm bảo khả năng chịu tải cao và tính sẵn sàng 24/7.
+P643 [Normal] Kiến nghị đối với việc nâng cấp Trí tuệ Nhân tạo
+P644 [List Paragraph] Phát triển mô hình Lai (Hybrid Recommender): Kết hợp thuật toán SVD hiện tại với các mô hình Học sâu xử lý ngôn ngữ tự nhiên (như BERT hoặc TF-IDF) để quét nội dung kịch bản phim. Giải pháp này sẽ giúp phân tích sâu hơn về sở thích nội dung, khắc phục triệt để hơn nữa bài toán Khởi động lạnh.
+P645 [List Paragraph] Tối ưu hóa trọng số đánh giá ngầm: Thiết lập hệ thống học máy phụ trợ để tự động học hỏi và điều chỉnh các trọng số quy đổi điểm (ví dụ: tinh chỉnh tỷ lệ xem Watch Ratio hoặc thời gian dừng trên màn hình) thay vì cấu hình bằng quy tắc cứng (Hard-coded) như hiện tại.
+P655 [Title] TÀI LIỆU THAM KHẢO
+P656 [List Paragraph] Harper, F. M., & Konstan, J. A. (2015). The MovieLens Datasets: History and Context. ACM Transactions on Interactive Intelligent Systems (TiiS). (Nguồn dữ liệu MovieLens 25M sử dụng cho huấn luyện). 
+P657 [List Paragraph] Koren, Y., Bell, R., & Volinsky, C. (2009). Matrix Factorization Techniques for Recommender Systems. Computer, 42(8), 30-37. (Cơ sở toán học cho thuật toán SVD). 
+P658 [List Paragraph] Hug, Nicolas (2020). Surprise: A Python library for recommender systems. Journal of Open Source Software. (Thư viện lõi dùng để triển khai mô hình tối ưu hóa). 
+P659 [List Paragraph] Ge, M., Delgado-Battenfeld, C., & Jannach, D. (2010). Beyond accuracy: evaluating recommender systems by coverage and serendipity. (Lý thuyết đánh giá hệ thống không chỉ qua RMSE mà còn qua tính đa dạng và thời sự). 
+P660 [List Paragraph] Các khái niệm lý thuyết ứng dụng trong đồ án: Concept Drift (Độ lệch khái niệm), Catastrophic Forgetting (Quên thảm họa), và Online Learning (Học trực tuyến). 
+P661 [List Paragraph] FastAPI Documentation. Tiêu chuẩn xây dựng API Backend hiệu năng cao tại https://fastapi.tiangolo.com/ 
+P662 [List Paragraph] Streamlit Documentation. Thư viện xây dựng MLOps Dashboard & EDA tại https://docs.streamlit.io/ 
+P663 [List Paragraph] Pandas, NumPy, Scikit-learn. Bộ công cụ tiêu chuẩn trong tiền xử lý và đánh giá dữ liệu Python. 
+P664 [List Paragraph] Flutter Official Documentation. Khung làm việc (Framework) xây dựng ứng dụng di động đa nền tảng từ Google tại https://flutter.dev/
+
+TABLE 0 rows=32 cols=2
+Từ viết tắt | Nội dung
+ADAS | Advanced Driver Assistance Systems (Hệ thống hỗ trợ lái xe nâng cao)
+AI | Artificial Intelligence (Trí tuệ nhân tạo)
+AOT | Ahead-Of-Time (Biên dịch trước thời gian thực)
+API | Application Programming Interface (Giao diện lập trình ứng dụng)
+CB | Content-Based Filtering (Phương pháp Lọc dựa trên nội dung)
+CF | Collaborative Filtering (Phương pháp Lọc cộng tác)
+CORS | Cross-Origin Resource Sharing (Cơ chế chia sẻ tài nguyên chéo nguồn gốc)
+CSV | Comma-Separated Values (Định dạng tệp dữ liệu phân tách bằng dấu phẩy)
+EDA | Exploratory Data Analysis (Phân tích dữ liệu thăm dò)
+ERD | Entity-Relationship Diagram (Sơ đồ mô hình quan hệ thực thể)
+ERP | Enterprise Resource Planning (Hệ thống Quản trị nguồn lực doanh nghiệp)
+FK | Foreign Key (Khóa ngoại trong cơ sở dữ liệu)
+IVI | In-Vehicle Infotainment (Hệ thống thông tin giải trí trên xe hơi)
+JIT | Just-In-Time (Biên dịch tức thời)
+JSON | JavaScript Object Notation (Định dạng tệp trao đổi dữ liệu dạng văn bản)
+KNN | K-Nearest Neighbors (Thuật toán K-láng giềng gần nhất)
+MAE | Mean Absolute Error (Sai số tuyệt đối trung bình)
+ML | Machine Learning (Học máy)
+MLOps | Machine Learning Operations (Quy trình vận hành và triển khai mô hình học máy)
+NDCG | Normalized Discounted Cumulative Gain (Chỉ số đo lường chất lượng xếp hạng)
+OCR | Optical Character Recognition (Nhận dạng ký tự quang học)
+OTT | Over-The-Top (Dịch vụ cung cấp nội dung số trên Internet)
+PK | Primary Key (Khóa chính trong cơ sở dữ liệu)
+RDBMS | Relational Database Management System (Hệ quản trị cơ sở dữ liệu quan hệ)
+RMSE | Root Mean Squared Error (Sai số bình phương trung bình gốc)
+RPA | Robotic Process Automation (Tự động hóa quy trình bằng Robot)
+RS | Recommendation System (Hệ thống khuyến nghị / Hệ thống gợi ý)
+SGD | Stochastic Gradient Descent (Thuật toán tối ưu hóa giảm chênh lệch ngẫu nhiên)
+SVD | Singular Value Decomposition (Kỹ thuật phân rã giá trị suy biến)
+TMDb | The Movie Database (Cơ sở dữ liệu thông tin điện ảnh trực tuyến)
+TTL | Time To Live (Thời gian tồn tại của dữ liệu trong bộ nhớ Cache)
+
+TABLE 1 rows=4 cols=4
+STT | Tác nhân | Mô tả vai trò | Giao diện tương tác
+1 | Người dùng (User) | Đối tượng sử dụng dịch vụ đầu cuối. Thực hiện các hành vi tìm kiếm, khám phá nội dung và cung cấp phản hồi (đánh giá, xem phim) để hệ thống học hỏi. | Ứng dụng di động (Flutter)
+2 | Quản trị viên (Admin) | Nhân sự vận hành hệ thống. Có quyền giám sát hiệu năng của mô hình học máy, phân tích luồng dữ liệu và ra quyết định can thiệp tái huấn luyện. | Streamlit Dashboard
+3 | Hệ thống MLOps (System) | Tác nhân tự động hóa chạy ngầm. Chịu trách nhiệm thực thi đường ống (pipeline) huấn luyện, kiểm duyệt chất lượng (Model Gate) và nạp lại mô hình. | Môi trường máy chủ (Background Pipeline)
+
+TABLE 2 rows=16 cols=4
+STT | Chức năng nghiệp vụ | Tác nhân | Mô tả chi tiết
+1 | Đăng ký tài khoản | Người dùng | Cấp phát tài khoản mới thông qua username/password và yêu cầu khai báo các thể loại phim yêu thích ban đầu (xử lý Cold-Start).
+2 | Đăng nhập | Người dùng | Xác thực thông tin và cấp quyền truy cập hệ thống.
+3 | Xem trang chủ (Gợi ý) | Người dùng | Tiếp nhận và hiển thị danh sách phim được cá nhân hóa từ thuật toán SVD, kết hợp thuật toán phổ biến.
+4 | Tìm kiếm phim | Người dùng | Truy vấn phim theo tiêu đề hoặc lọc theo thể loại.
+5 | Xem chi tiết phim | Người dùng | Truy xuất thông tin metadata (poster, tóm tắt nội dung, điểm đánh giá cộng đồng, thể loại).
+6 | Đánh giá sao | Người dùng | Thực hiện hành vi Explicit Feedback bằng cách chấm từ 0.5 đến 5.0 sao.
+7 | Yêu thích phim | Người dùng | Thực hiện hành vi Implicit Feedback thông qua thao tác thả tim hoặc bỏ tim.
+8 | Xem phim mô phỏng | Người dùng | Kích hoạt trình phát video, hệ thống tự động đo lường tỷ lệ xem (Watch Ratio) để quy đổi thành điểm phản hồi.
+9 | Xem danh sách yêu thích | Người dùng | Quản lý bộ sưu tập các bộ phim đã thả tim.
+10 | Xem hồ sơ cá nhân | Người dùng | Truy xuất các số liệu thống kê cá nhân (số phim đã đánh giá, yêu thích, xu hướng thể loại).
+11 | Cập nhật sở thích | Người dùng | Tinh chỉnh lại các danh mục thể loại phim quan tâm.
+12 | Phân tích dữ liệu (EDA) | Quản trị viên | Trực quan hóa các chỉ số thống kê như phân phối rating, độ thưa ma trận (Sparsity) và hiệu ứng đuôi dài (Long-tail).
+13 | Quản lý Model Registry | Quản trị viên | Giám sát lịch sử các phiên bản SVD, so sánh chỉ số sai số (RMSE, MAE) và các siêu tham số huấn luyện.
+14 | Kích hoạt tái huấn luyện | Quản trị viên | Gửi lệnh thực thi pipeline retrain.py thủ công từ giao diện Dashboard.
+15 | Retrain & Reload tự động | Hệ thống MLOps | Tự động gộp dữ liệu, huấn luyện, kiểm tra qua Model Gate và nạp nóng mô hình mới không gây gián đoạn (Zero-downtime).
+
+TABLE 3 rows=16 cols=4
+STT | Phương thức | Cổng giao tiếp (Endpoint) | Mục đích sử dụng
+1 | POST | /api/auth/register | Xử lý yêu cầu tạo tài khoản mới.
+2 | POST | /api/auth/login | Xử lý xác thực đăng nhập.
+3 | GET | /api/recommendations/{userId} | Trả về danh sách phim gợi ý theo cá nhân hóa.
+4 | GET | /api/movies/search?q=... | Phục vụ truy vấn tìm kiếm danh mục phim.
+5 | GET | /api/movies/{movieId} | Lấy siêu dữ liệu chi tiết của một bộ phim cụ thể.
+6 | POST | /api/interactions/rating | Ghi nhận điểm đánh giá sao (Explicit).
+7 | POST | /api/interactions/favorite | Ghi nhận hành vi yêu thích (Implicit).
+8 | POST | /api/interactions/watch | Lưu trữ lịch sử hoàn thành việc xem phim.
+9 | PUT | /api/watch/progress | Nhận tín hiệu "heartbeat" cập nhật tiến độ xem phim.
+10 | GET | /api/users/{userId}/profile | Truy xuất dữ liệu hồ sơ cá nhân.
+11 | GET | /api/users/{userId}/favorites | Truy xuất danh sách phim đã yêu thích.
+12 | GET | /api/users/{userId}/ratings | Truy xuất lịch sử phim đã đánh giá.
+13 | PUT | /api/users/{userId}/preferences | Cập nhật lại danh mục thể loại yêu thích.
+14 | POST | /api/recommendations/reload | Gửi tín hiệu nạp lại trọng số mô hình mới vào bộ nhớ.
+15 | GET | /api/health | Kiểm tra tình trạng phản hồi của máy chủ.
+
+TABLE 4 rows=7 cols=4
+Trường | Kiểu dữ liệu | Ràng buộc | Định nghĩa / Mô tả
+user_id | int | PK, Auto-increment | Định danh người dùng. Hệ thống cấp phát từ mốc 200,000 để tránh xung đột với không gian ID của tập dữ liệu MovieLens.
+username | string | Unique | Tên đăng nhập (giới hạn 3–50 ký tự).
+password_hash | string | Not Null | Mật khẩu được băm an toàn thông qua thuật toán SHA-256.
+salt | string | Not Null | Chuỗi mã hóa ngẫu nhiên (16 ký tự hex) kết hợp với mật khẩu gốc.
+genres | list[string] | Nullable | Lưu trữ mảng các thể loại phim yêu thích phục vụ luồng Cold-Start.
+created_at | datetime | Auto | Dấu thời gian hệ thống ghi nhận lúc tạo tài khoản.
+
+TABLE 5 rows=8 cols=4
+Trường | Kiểu dữ liệu | Ràng buộc | Định nghĩa / Mô tả
+movieId | int | PK | Định danh nội bộ của bộ phim (kế thừa từ gốc MovieLens).
+title | string | Not Null | Tiêu đề phim chuẩn hóa (bao gồm năm phát hành).
+genres | string | Not Null | Chuỗi các thể loại phim, phân tách bằng ký tự |.
+poster_path | string | Nullable | Đường dẫn tương đối lưu trữ ảnh bìa lấy từ TMDb API.
+overview | string | Nullable | Nội dung tóm tắt kịch bản phim.
+vote_average | float | Default 0 | Điểm đánh giá trung bình cộng đồng từ TMDb.
+runtime_minutes | int | Default 100 | Tổng thời lượng phim tính bằng phút (sử dụng trong bộ đếm player).
+
+TABLE 6 rows=5 cols=4
+Trường | Kiểu dữ liệu | Ràng buộc | Định nghĩa / Mô tả
+userId | int | FK → Users | Mã người dùng thực hiện tương tác.
+movieId | int | FK → Movies | Mã bộ phim nhận tương tác.
+rating | float | Min 0.5 - Max 5.0 | Điểm đánh giá (có thể là đánh giá trực tiếp hoặc điểm quy đổi toán học từ các hành vi ngầm).
+timestamp | datetime | Auto | Thời điểm chính xác xảy ra tương tác.
+
+TABLE 7 rows=4 cols=4
+Trường | Kiểu dữ liệu | Ràng buộc | Định nghĩa / Mô tả
+userId | int | FK → Users | Mã người dùng.
+movieId | int | FK → Movies | Mã bộ phim được thả tim.
+added_at | datetime | Auto | Thời điểm thêm vào danh sách.
+
+TABLE 8 rows=8 cols=4
+Trường | Kiểu dữ liệu | Ràng buộc | Định nghĩa / Mô tả
+userId | int | FK → Users | Mã người dùng.
+movieId | int | FK → Movies | Mã bộ phim đang phát.
+position_seconds | int | >= 0 | Vị trí thời gian hiện tại của trình phát (tính bằng giây).
+duration_seconds | int | >0 | Tổng thời lượng phim (tính bằng giây).
+ratio | float | 0.0 – 1.0 | Tỷ lệ hoàn thành = position_seconds / duration_seconds.
+status | string | "watching" / "finished" | Trạng thái trình phát. Đạt ngưỡng hoàn thành khi tỷ lệ xem qua 95%.
+updated_at | datetime | Auto | Mốc thời gian lưu vết (heartbeat) gần nhất.
+
+TABLE 9 rows=9 cols=4
+Trường | Kiểu dữ liệu | Ràng buộc | Định nghĩa / Mô tả
+version | string | PK | Tên định danh phiên bản (được đánh dấu bằng timestamp).
+model_file | string | Not Null | Tên tệp tin nhị phân .pkl chứa trọng số huấn luyện tương ứng.
+RMSE | float | — | Sai số bình phương trung bình gốc đo lường trên tập Validation.
+MAE | float | — | Sai số tuyệt đối trung bình đo lường trên tập Validation.
+params | dict | — | Lưu trữ các siêu tham số huấn luyện (n_factors, lr_all, reg_all).
+train_rows | int | — | Kích thước dữ liệu mẫu đưa vào huấn luyện.
+promoted | bool | — | Đánh dấu True nếu phiên bản đã vượt qua bài kiểm tra Model Gate.
+created_at | datetime | Auto | Dấu thời gian kích hoạt quá trình tái huấn luyện.
+
+TABLE 10 rows=6 cols=3
+Thành phần | Yêu cầu tối thiểu | Khuyến nghị
+Hệ điều hành | Windows 10 64-bit | Windows 11
+RAM | 8 GB | 16 GB (mô hình SVD chiếm ~102 MB RAM khi nạp)
+Ổ đĩa trống | 5 GB (dữ liệu ml-25m ~1 GB + model + cache) | 10 GB
+CPU | Intel Core i5 thế hệ 8 trở lên | Intel Core i7 / AMD Ryzen 5 trở lên
+Thiết bị di động | Điện thoại Android 5.0+ hoặc Android Emulator | Android 10+ (thiết bị thật)
+
+TABLE 11 rows=7 cols=4
+Thành phần | Công nghệ | Phiên bản | Mô tả
+Ngôn ngữ Backend | Python | 3.10 | Ngôn ngữ chính cho API Server, ML Pipeline, Dashboard
+API Framework | FastAPI | 0.100 | Framework REST API hiệu năng cao, tự sinh tài liệu Swagger
+ASGI Server | Uvicorn | 0.23 | Server bất đồng bộ phục vụ FastAPI (chạy tại cổng 8000)
+ML Engine | scikit-surprise | 1.1.3 | Thư viện huấn luyện mô hình SVD (Collaborative Filtering)
+Lưu trữ dữ liệu | File CSV / JSON | — | Lưu trữ dạng file cho phạm vi nguyên mẫu (không dùng RDBMS)
+Quản lý biến môi trường | python-dotenv | 1.0 | Đọc cấu hình từ file .env
+
+TABLE 12 rows=5 cols=4
+Thành phần | Công nghệ | Phiên bản | Mô tả
+Framework | Flutter | 3.x (stable) | Bộ công cụ UI đa nền tảng (Android / iOS / Web)
+Ngôn ngữ | Dart | SDK 3.10.7 | Ngôn ngữ lập trình chính cho Flutter
+IDE | Android Studio / VS Code / Antigravity IDE | Bản mới nhất | Môi trường phát triển tích hợp
+Emulator | Android Emulator (AVD) | API 30+ | Giả lập thiết bị Android để phát triển
+
+TABLE 13 rows=4 cols=4
+Thành phần | Công nghệ | Phiên bản | Mô tả
+Framework | Streamlit | 1.28 | Xây dựng giao diện web tương tác bằng Python thuần
+Trực quan hóa | Matplotlib + Seaborn | 3.7 / 0.12 | Biểu đồ phân tích EDA, so sánh mô hình
+Port mặc định | — | 8501 | Truy cập Dashboard tại http://localhost:8501
+
+TABLE 14 rows=4 cols=2
+Công cụ | Mô tả
+Ngrok | Tạo tunnel HTTPS công khai từ localhost, cho phép Flutter App trên thiết bị thật kết nối tới FastAPI Server chạy local
+Git | Quản lý mã nguồn và lịch sử thay đổi
+Jupyter Notebook | Phân tích dữ liệu thăm dò (EDA) và thử nghiệm thuật toán offline
+
+TABLE 15 rows=7 cols=3
+Extension | Nhà phát triển | Mô tả
+Python | Microsoft | Hỗ trợ IntelliSense, debug, linting cho Python
+Pylance | Microsoft | Hỗ trợ gợi ý code, kiểm tra kiểu dữ liệu Python nâng cao
+Flutter | Dart Code | Hỗ trợ phát triển Flutter: Hot Reload, Widget Inspector, Dart DevTools
+Dart | Dart Code | Hỗ trợ cú pháp, gợi ý code, refactoring cho ngôn ngữ Dart
+REST Client (tùy chọn) | Huachao Mao | Gửi HTTP request trực tiếp từ VS Code để kiểm thử API
+Markdown Preview Mermaid | Matt Bierner | Render biểu đồ Mermaid trong file Markdown
+
+TABLE 16 rows=6 cols=3
+Thư viện | Phiên bản | Vai trò trong dự án
+http | ^1.1.0 | HTTP Client gửi request RESTful API tới FastAPI Backend (GET/POST/PUT/DELETE). Được sử dụng trong ApiService để gọi tất cả endpoints: đăng ký, đăng nhập, lấy gợi ý, ghi nhận tương tác, heartbeat xem phim.
+shared_preferences | ^2.2.0 | Lưu trữ cục bộ (key-value) trên thiết bị — dùng để giữ phiên đăng nhập (userId, username), danh sách phim đã đánh giá (tránh gọi API lặp lại), và trạng thái onboarding. Khi mở lại app, SplashScreen đọc SharedPreferences để tự động đăng nhập.
+cached_network_image | ^3.3.0 | Tải và lưu cache hình ảnh poster phim từ TMDb API. Khi hiển thị MovieCard trên trang chủ và danh sách tìm kiếm, thư viện tự động lưu poster vào bộ nhớ đệm (disk cache), tránh tải lại mỗi lần cuộn danh sách — cải thiện hiệu năng và giảm băng thông mạng.
+flutter_rating_bar | ^4.0.0 | Widget thanh đánh giá sao (RatingBar) cho phép người dùng kéo chọn từ 0.5 đến 5.0 sao trên DetailScreen. Tín hiệu đánh giá này được gửi tới API dưới dạng Explicit Feedback, là nguồn dữ liệu có độ tin cậy cao nhất cho vòng huấn luyện MLOps.
+cupertino_icons | ^1.0.8 | Bộ icon chuẩn iOS (Cupertino Design), cung cấp các biểu tượng giao diện (tim, tìm kiếm, hồ sơ, v.v.) cho thanh điều hướng và các nút bấm trong ứng dụng.
+
+TABLE 17 rows=14 cols=3
+Thư viện | Phiên bản | Vai trò trong dự án
+fastapi | 0.100 | Framework chính xây dựng REST API. Cung cấp các decorator @router.get(), @router.post() để định nghĩa endpoints, tự động sinh tài liệu Swagger UI tại /docs, hỗ trợ xác thực dữ liệu đầu vào qua Pydantic.
+uvicorn[standard] | 0.23 | ASGI Server chạy FastAPI. Hỗ trợ bất đồng bộ (async), hot-reload khi phát triển (API_RELOAD=1), và phục vụ hàng nghìn kết nối đồng thời. Khởi chạy bằng lệnh python api/main.py (nội bộ gọi uvicorn.run()).
+pydantic | 2.0 | Xác thực và tuần tự hóa dữ liệu (Data Validation & Serialization). Mọi request body và response model đều được khai báo bằng BaseModel của Pydantic — đảm bảo kiểu dữ liệu đúng, trả lỗi rõ ràng nếu client gửi dữ liệu không hợp lệ.
+scikit-surprise | 1.1.3 | Thư viện cốt lõi huấn luyện mô hình SVD (Singular Value Decomposition). Cung cấp lớp SVD() với các siêu tham số (n_factors, lr_all, reg_all, n_epochs), hàm fit() để huấn luyện và predict() để dự đoán rating. Mô hình sau huấn luyện được serialize bằng joblib thành file .pkl.
+scikit-learn | 1.3 | Hỗ trợ tiền xử lý dữ liệu và đánh giá mô hình. Cung cấp các metric RMSE, MAE, cùng các tiện ích chia tập dữ liệu (train_test_split) phục vụ benchmark offline.
+pandas | 2.0 | Xử lý dữ liệu dạng bảng (DataFrame). Được sử dụng xuyên suốt dự án: đọc/ghi file CSV (ratings, movies, interactions_log), lọc và tìm kiếm phim, merge dữ liệu phản hồi, thống kê EDA.
+numpy | 1.24 | Tính toán ma trận và đại số tuyến tính. Phục vụ cài đặt FunkSVD viết tay bằng NumPy thuần (trong svd_numpy.py) và các phép tính vector hóa khi tạo danh sách gợi ý (tính score cho toàn bộ catalog cùng lúc).
+matplotlib | 3.7 | Trực quan hóa dữ liệu — vẽ biểu đồ phân phối ratings, so sánh RMSE giữa các thuật toán, hiển thị trên Streamlit Dashboard và Jupyter Notebook.
+seaborn | 0.12 | Thư viện trực quan hóa thống kê bậc cao, xây dựng trên matplotlib. Dùng để vẽ heatmap, violin plot, và các biểu đồ phân phối dữ liệu trong phân tích EDA.
+streamlit | 1.28 | Framework xây dựng Dashboard quản trị AI — hiển thị EDA, Model Registry, và nút kích hoạt Retrain. Chạy bằng lệnh streamlit run dashboard/app.py.
+requests | 2.31 | HTTP Client cho Python. Dùng để gọi TMDb API lấy metadata phim (poster, overview) trong pipeline làm giàu dữ liệu (fetch_tmdb.py), và gọi API reload model sau retrain.
+joblib | 1.3 | Serialize/deserialize đối tượng Python. Dùng để lưu mô hình SVD đã huấn luyện thành file .pkl (~102 MB) và nạp lại khi API khởi động hoặc hot-reload.
+python-dotenv | 1.0 | Đọc biến môi trường từ file .env — cấu hình cổng API, URL Ngrok, siêu tham số SVD, ngưỡng Model Gate, và tham số Auto-Retrain.
+
+TABLE 18 rows=7 cols=3
+Thư viện | Phiên bản | Vai trò
+jupyter | 1.0 | Chạy Jupyter Notebook cho phân tích EDA và thử nghiệm thuật toán offline
+ipykernel | 6.25 | Kernel Python cho Jupyter Notebook
+pytest | 7.4 | Framework kiểm thử đơn vị Python (tùy chọn)
+locust | 2.15 | Kiểm thử tải (Load Testing) cho API (tùy chọn)
+flutter_test | SDK | Framework kiểm thử Widget cho Flutter
+flutter_lints | 6.0.0 | Bộ quy tắc lint (phân tích tĩnh) theo chuẩn Dart/Flutter
+
+TABLE 19 rows=15 cols=3
+Biến | Giá trị mặc định | Mô tả
+TMDB_API_KEY | (API key riêng) | Khóa API TMDb để lấy poster và metadata phim
+API_HOST | localhost | Địa chỉ host của FastAPI Server
+API_PORT | 8000 | Cổng lắng nghe của FastAPI Server
+API_RELOAD | 0 | 1 = bật hot-reload khi phát triển, 0 = tắt cho demo ổn định
+NGROK_URL | https://xxxx.ngrok
+-free.dev | URL công khai Ngrok (cập nhật mỗi phiên chạy)
+MODEL_PATH | models/model_latest.pkl | Đường dẫn file mô hình SVD đang phục vụ
+SVD_N_FACTORS | 50 | Số lượng Latent Factors của SVD
+SVD_LR_ALL | 0.005 | Learning Rate cho SGD
+SVD_REG_ALL | 0.05 | Hệ số Regularization L2 (chống overfitting)
+SVD_N_EPOCHS | 20 | Số vòng lặp huấn luyện (Epochs)
+GATE_TOLERANCE | 0.01 | Ngưỡng chấp nhận RMSE của Model Gate (0.01 = chấp nhận trong ngưỡng)
+AUTO_RETRAIN | 1 | 1 = bật Auto-Retrain, 0 = tắt
+AUTO_RETRAIN
+_MIN_ROWS | 5 | Số tương tác mới tối thiểu để kích hoạt retrain tự động
+AUTO_RETRAIN
+_MIN_INTERVAL | 300 | Khoảng cách tối thiểu giữa 2 lần retrain (giây)

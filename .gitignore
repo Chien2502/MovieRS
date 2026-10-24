@@ -6,6 +6,7 @@ __pycache__/
 venv/
 env/
 .venv/
+.venv-refactor/
 *.egg-info/
 dist/
 build/
@@ -22,6 +23,8 @@ data/enriched/*
 !data/enriched/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+data/snapshots/
+artifacts/
 
 # ===== Models (large files) =====
 models/*.pkl

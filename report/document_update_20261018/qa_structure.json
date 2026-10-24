@@ -1,0 +1,9 @@
+{
+  "pages": 84,
+  "code_differences_from_verification": [],
+  "chapter_numbers_verified": true,
+  "required_facts_verified": true,
+  "field_error_strings_absent": true,
+  "output_sha256": "888984976e254b802766000a5de130b8e6dfdd372b7f8f12f939ec2f871f2f1d",
+  "delivery_qa": "delivery_qa.json"
+}

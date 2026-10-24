@@ -8,7 +8,7 @@ Quy ước:
   - status = "in_progress": đang xem dở (5% <= ratio < 95%) → hiện trong hàng
     "Tiếp tục xem" của app.
   - status = "finished": xem xong (ratio >= 95%) → ẩn khỏi hàng "Tiếp tục xem",
-    được quy đổi thành tín hiệu watch hoàn thành (rating 5.0) trong vòng feedback.
+    được ghi nhận thành proxy watch_complete (4.0) nếu chưa có nguồn ưu tiên cao hơn.
   - Upsert theo cặp (userId, movieId): mỗi heartbeat mới nhất ghi đè bản cũ.
   - Ghi file an toàn: threading.Lock + ghi tạm rồi rename (atomic) để tránh hỏng
     file khi nhiều heartbeat gửi đồng thời.
@@ -18,6 +18,7 @@ import threading
 from datetime import datetime
 from pathlib import Path
 import pandas as pd
+from api.repositories import postgres_enabled, repository
 
 from api.logging_config import get_logger
 
@@ -44,7 +45,7 @@ def _read_all() -> pd.DataFrame:
         return pd.read_csv(WATCH_PROGRESS_CSV)
     except Exception as e:
         logger.warning(f"[⚠] Không đọc được watch_progress.csv: {e}")
-        return pd.DataFrame(columns=COLUMNS)
+        raise ValueError('Không đọc được tiến độ; dừng để bảo vệ dữ liệu') from e
 
 
 def _write_all(df: pd.DataFrame):
@@ -56,12 +57,13 @@ def _write_all(df: pd.DataFrame):
 
 
 def upsert_progress(user_id: int, movie_id: int, position_seconds: int,
-                    duration_seconds: int) -> dict:
+                    duration_seconds: int,idempotency_key=None) -> dict:
     """Ghi/ghi đè tiến độ xem của user cho một phim.
 
     Trả về dict {ratio, status, finished} — finished=True khi vừa xem xong
     (ratio >= 95%) trong lần ghi này.
     """
+    if postgres_enabled():return repository().progress(user_id,movie_id,position_seconds,duration_seconds,idempotency_key)
     position = max(0, int(position_seconds))
     duration = max(1, int(duration_seconds))
     position = min(position, duration)
@@ -86,7 +88,7 @@ def upsert_progress(user_id: int, movie_id: int, position_seconds: int,
             for col in COLUMNS:
                 df.loc[mask, col] = row[col]
         else:
-            df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)
+            df = pd.DataFrame([row]) if df.empty else pd.concat([df, pd.DataFrame([row])], ignore_index=True)
         _write_all(df)
 
     return {"ratio": ratio, "status": status, "finished": status == "finished"}
@@ -98,6 +100,7 @@ def get_progress(user_id: int) -> list[dict]:
     Điều kiện: status = in_progress và 5% <= ratio < 95%, sắp xếp theo
     updated_at giảm dần (phim xem gần nhất đứng đầu).
     """
+    if postgres_enabled():return repository().get_progress(user_id)
     df = _read_all()
     if df.empty or "userId" not in df.columns:
         return []
@@ -115,6 +118,7 @@ def get_progress(user_id: int) -> list[dict]:
 
 def get_progress_for_movie(user_id: int, movie_id: int) -> dict | None:
     """Tiến độ xem của 1 phim cụ thể (dùng để resume đúng vị trí)."""
+    if postgres_enabled():return repository().get_progress(user_id,movie_id)
     df = _read_all()
     if df.empty:
         return None
@@ -126,6 +130,7 @@ def get_progress_for_movie(user_id: int, movie_id: int) -> dict | None:
 
 def remove_progress(user_id: int, movie_id: int) -> bool:
     """Xoá tiến độ xem của 1 phim (người dùng tự bỏ khỏi "Tiếp tục xem")."""
+    if postgres_enabled():return repository().remove_progress(user_id,movie_id)
     with _lock:
         df = _read_all()
         before = len(df)

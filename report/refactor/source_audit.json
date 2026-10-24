@@ -1,0 +1,138 @@
+{
+  "created_at_utc": "2026-10-15T15:10:38.915953+00:00",
+  "purpose": "Kiểm kê chỉ đọc để lập kế hoạch; chưa tạo sample hoặc huấn luyện mô hình",
+  "source_file": "data/raw/ratings.csv",
+  "source_sha256": "9c85525758597dca76e8d98cebb9c13e018c2317b09a0878b6d383179526e385",
+  "rows": 25000095,
+  "users": 162541,
+  "rated_movies": 59047,
+  "catalog_movies": 62423,
+  "orphan_movie_ids": 0,
+  "missing_rows": 0,
+  "invalid_rows": 0,
+  "source_sorted_by_user_movie": true,
+  "duplicate_user_movie_pairs": 0,
+  "time_start_utc": "1995-01-09T11:46:49+00:00",
+  "time_end_utc": "2019-11-21T09:15:03+00:00",
+  "ratings_histogram": {
+    "0.5": 393068,
+    "1.0": 776815,
+    "1.5": 399490,
+    "2.0": 1640868,
+    "2.5": 1262797,
+    "3.0": 4896928,
+    "3.5": 3177318,
+    "4.0": 6639798,
+    "4.5": 2200539,
+    "5.0": 3612474
+  },
+  "ratings_by_year": {
+    "1995": 3,
+    "1996": 1430093,
+    "1997": 626202,
+    "1998": 272099,
+    "1999": 1059080,
+    "2000": 1735398,
+    "2001": 1058750,
+    "2002": 776654,
+    "2003": 920295,
+    "2004": 1048116,
+    "2005": 1613550,
+    "2006": 1038458,
+    "2007": 931432,
+    "2008": 1018001,
+    "2009": 810127,
+    "2010": 792436,
+    "2011": 676498,
+    "2012": 635208,
+    "2013": 515684,
+    "2014": 478270,
+    "2015": 1604971,
+    "2016": 1757440,
+    "2017": 1689935,
+    "2018": 1310761,
+    "2019": 1200634
+  },
+  "user_activity_quantiles": {
+    "0": 20.0,
+    "0.25": 36.0,
+    "0.5": 71.0,
+    "0.75": 162.0,
+    "0.9": 353.0,
+    "0.99": 1228.0,
+    "1": 32202.0
+  },
+  "sample_method": "Sort all unique user IDs by SHA-256 UTF-8(seed:userId), then take first N; retain every rating of selected users",
+  "sample_seed": 20261015,
+  "candidate_sample_sizes": {
+    "1000": {
+      "users": 1000,
+      "ratings": 157183,
+      "selection_sha256": "23d5040e123e2bce45c6df9d5955094a4dc682436eb41b97370dda421255dd9e"
+    },
+    "4000": {
+      "users": 4000,
+      "ratings": 602364,
+      "selection_sha256": "35a0a3f3a37617919744e58fee0b95f100f63971d75f3768c2a7ba6872a53619"
+    },
+    "8000": {
+      "users": 8000,
+      "ratings": 1237592,
+      "selection_sha256": "f65d8312d0282d3570ba69369c82a5f42893582cf9ab82ead2b3e9538e18aa36"
+    },
+    "12000": {
+      "users": 12000,
+      "ratings": 1874092,
+      "selection_sha256": "3ff008f3bee544b1723d4504de53a9717e8eed6a832e5cb859a87e19866d1698"
+    }
+  },
+  "machine": {
+    "logical_cpus": 16,
+    "ram_total_gib": 13.81,
+    "ram_available_gib_at_end": 3.65
+  },
+  "audit_peak_rss_mib": 300.18,
+  "duration_seconds": 15.25,
+  "limitations": [
+    "Đã đối chiếu MD5 ZIP với checksum chính thức và SHA-256 ratings.csv với bản trong ZIP; checksum xác nhận toàn vẹn, không chứng minh rating là sự thật khách quan.",
+    "Phân phối sample, các cohort theo thời gian và chất lượng metadata cần kiểm tra ở pha dữ liệu.",
+    "Đếm cặp trùng chính xác chỉ khi nguồn đã xác minh sắp tăng theo userId,movieId."
+  ],
+  "source_archive": {
+    "path": "data\\raw\\ml-25m.zip",
+    "md5": "6b51fb2759a8657d3bfcbfc42b592ada",
+    "ratings_sha256_from_archive": "9c85525758597dca76e8d98cebb9c13e018c2317b09a0878b6d383179526e385",
+    "extracted_ratings_match_archive": true,
+    "ratings_entry_crc_checked": true,
+    "official_md5_verified": true,
+    "official_md5_url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip.md5",
+    "official_md5": "6b51fb2759a8657d3bfcbfc42b592ada",
+    "verified_at_utc": "2026-10-15"
+  },
+  "proposed_research_sample_audit": {
+    "users": 8000,
+    "ratings": 1237592,
+    "rated_movies": 27498,
+    "ratings_per_user_median": 71.0,
+    "ratings_per_user_min": 20,
+    "rating_distribution_total_variation_vs_source": 0.0023373661097346576,
+    "temporal_80_10_10": {
+      "train_rows": 990073,
+      "val_rows": 123759,
+      "test_rows": 123760,
+      "t1_utc": "2016-07-25T17:31:14+00:00",
+      "t2_utc": "2018-01-23T19:51:49+00:00"
+    },
+    "test_after_train_plus_val_refit": {
+      "users": 903,
+      "cold_users": 561,
+      "known_users": 342,
+      "cold_user_rating_fraction": 0.7528522947640595,
+      "catalog_size": 22821,
+      "unavailable_positive_fraction": 0.07300857307105901
+    },
+    "sample_materialized_to_disk": false,
+    "warning": "Kiểm kê dữ liệu, chưa chạy mô hình; lấy nguyên lịch sử không tự giải quyết user mới trong chia thời gian toàn cục.",
+    "rss_mib_at_measurement": 183.16
+  }
+}

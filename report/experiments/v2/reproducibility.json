@@ -1,0 +1,9 @@
+{
+  "first_run": "run_20261015T233538413594Z",
+  "second_run": "run_20261015T235317064101Z",
+  "same_all_family_metrics": true,
+  "same_split_sha256": true,
+  "same_evaluation_users": true,
+  "same_primary_delta": true,
+  "model_families": 12
+}

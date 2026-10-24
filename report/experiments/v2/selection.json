@@ -1,0 +1,219 @@
+{
+  "frozen_at": "2026-10-15T23:55:31.700824+00:00",
+  "criterion": "validation_macro_ndcg_at_10",
+  "svd": [
+    32,
+    15,
+    0.02
+  ],
+  "knn": [
+    50,
+    10.0
+  ],
+  "hybrid": {
+    "tau": 20.0,
+    "beta": 0.75
+  },
+  "mmr_weight": 0.0,
+  "mmr_validation": [
+    {
+      "weight": 0.0,
+      "ndcg": 0.16048688858250798,
+      "diversity": 0.6633150352733687
+    },
+    {
+      "weight": 0.05,
+      "ndcg": 0.10388153169055789,
+      "diversity": 0.8851940035273368
+    },
+    {
+      "weight": 0.1,
+      "ndcg": 0.09786721920446709,
+      "diversity": 0.8982469576719576
+    },
+    {
+      "weight": 0.2,
+      "ndcg": 0.09086097864529051,
+      "diversity": 0.9007243386243385
+    }
+  ],
+  "primary_baseline": "MostPopular",
+  "trials": [
+    {
+      "family": "MostPopular",
+      "parameters": {},
+      "status": "complete",
+      "ndcg": 0.29675855622022174,
+      "duration_seconds": 2.5140264999936335
+    },
+    {
+      "family": "BayesianItemMean",
+      "parameters": {},
+      "status": "complete",
+      "ndcg": 0.1522721223057851,
+      "duration_seconds": 2.453226599987829
+    },
+    {
+      "family": "GenreContent",
+      "parameters": {},
+      "status": "complete",
+      "ndcg": 0.14190040779056318,
+      "duration_seconds": 3.324589299998479
+    },
+    {
+      "family": "BiasedSVD",
+      "parameters": [
+        32,
+        15,
+        0.02
+      ],
+      "status": "complete",
+      "ndcg": 0.06425831976750083,
+      "duration_seconds": 7.474446899999748
+    },
+    {
+      "family": "BiasedSVD",
+      "parameters": [
+        32,
+        20,
+        0.05
+      ],
+      "status": "complete",
+      "ndcg": 0.011881137027073305,
+      "duration_seconds": 8.639520900003845
+    },
+    {
+      "family": "BiasedSVD",
+      "parameters": [
+        64,
+        15,
+        0.05
+      ],
+      "status": "complete",
+      "ndcg": 0.0362426612434865,
+      "duration_seconds": 9.555755800000043
+    },
+    {
+      "family": "BiasedSVD",
+      "parameters": [
+        64,
+        20,
+        0.1
+      ],
+      "status": "complete",
+      "ndcg": 0.008575243107449771,
+      "duration_seconds": 10.225373699999182
+    },
+    {
+      "family": "SparseItemKNN",
+      "parameters": [
+        50,
+        10.0
+      ],
+      "status": "complete",
+      "ndcg": 0.18013909845644527,
+      "duration_seconds": 8.039920399998664
+    },
+    {
+      "family": "SparseItemKNN",
+      "parameters": [
+        100,
+        10.0
+      ],
+      "status": "complete",
+      "ndcg": 0.179177496941819,
+      "duration_seconds": 8.684152400004677
+    },
+    {
+      "family": "SparseItemKNN",
+      "parameters": [
+        100,
+        50.0
+      ],
+      "status": "complete",
+      "ndcg": 0.17978900376517704,
+      "duration_seconds": 8.773957199999131
+    },
+    {
+      "family": "AdaptiveHybrid",
+      "parameters": {
+        "tau": 5.0,
+        "beta": 0.0
+      },
+      "status": "complete",
+      "ndcg": 0.1550433305139382,
+      "duration_seconds": 4.361409200006165
+    },
+    {
+      "family": "AdaptiveHybrid",
+      "parameters": {
+        "tau": 5.0,
+        "beta": 0.25
+      },
+      "status": "complete",
+      "ndcg": 0.1595080200309018,
+      "duration_seconds": 3.8434735000046203
+    },
+    {
+      "family": "AdaptiveHybrid",
+      "parameters": {
+        "tau": 5.0,
+        "beta": 0.5
+      },
+      "status": "complete",
+      "ndcg": 0.15958987973168726,
+      "duration_seconds": 3.548063299997011
+    },
+    {
+      "family": "AdaptiveHybrid",
+      "parameters": {
+        "tau": 5.0,
+        "beta": 0.75
+      },
+      "status": "complete",
+      "ndcg": 0.1601539250063734,
+      "duration_seconds": 3.5726687999995193
+    },
+    {
+      "family": "AdaptiveHybrid",
+      "parameters": {
+        "tau": 20.0,
+        "beta": 0.0
+      },
+      "status": "complete",
+      "ndcg": 0.15542157072196458,
+      "duration_seconds": 3.745024999996531
+    },
+    {
+      "family": "AdaptiveHybrid",
+      "parameters": {
+        "tau": 20.0,
+        "beta": 0.25
+      },
+      "status": "complete",
+      "ndcg": 0.1596725717667369,
+      "duration_seconds": 3.5149508000031346
+    },
+    {
+      "family": "AdaptiveHybrid",
+      "parameters": {
+        "tau": 20.0,
+        "beta": 0.5
+      },
+      "status": "complete",
+      "ndcg": 0.15936626831323253,
+      "duration_seconds": 3.6045231000025524
+    },
+    {
+      "family": "AdaptiveHybrid",
+      "parameters": {
+        "tau": 20.0,
+        "beta": 0.75
+      },
+      "status": "complete",
+      "ndcg": 0.16048688858250798,
+      "duration_seconds": 3.615429600002244
+    }
+  ],
+  "test_opened_before_freeze": false
+}

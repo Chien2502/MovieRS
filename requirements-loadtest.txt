@@ -1,0 +1,2 @@
+# Chỉ cài khi cần benchmark tải HTTP.
+locust>=2.15

@@ -75,7 +75,7 @@ def test_end_to_end_loop():
             "password": "test12345",
         })
         if res.status_code == 201:
-            user_id = res.json()["user"]["userId"]
+            user_id = res.json()["user_id"]
             print(f"     ✓ Đã đăng ký User {user_id}.")
         else:
             print(f"     ✗ Đăng ký thất bại: {res.status_code} {res.json()}")

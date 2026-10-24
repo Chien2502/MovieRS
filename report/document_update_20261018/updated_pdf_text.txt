@@ -1,0 +1,2156 @@
+PAGE 1
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN &
+TRUYỀN THÔNG VIỆT HÀN 
+Khoa Khoa Học Máy Tính 
+BÁO CÁO
+THỰC TẬP THỰC TẾ
+TÌM HIỂU HỆ THỐNG KHUYẾN NGHỊ SỬ DỤNG 
+PHƯƠNG PHÁP LAI VÀ XÂY DỰNG NGUYÊN MẪU ỨNG 
+DỤNG PHIM ẢNH
+Sinh viên thực hiện : Nguyễn Thanh Chiến
+Lớp : 24GITe
+Giảng viên hướng dẫn : TS. Trần Uyên Trang
+Đơn vị thực tập : Công ty FPT Software
+Người hướng dẫn : TS. Trần Uyên Trang
+Đà Nẵng, tháng 8 năm 2026
+
+PAGE 2
+i
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+PHIẾU NHẬN XÉT CỦA ĐƠN VỊ THỰC TẬP
+...........................................................................................................................................
+
+PAGE 3
+ii
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+LỜI CẢM ƠN
+Báo cáo thực tập được thực hiện tại Trường Đại học Công nghệ thông tin và 
+Truyền thông Việt Hàn, dưới sự hướng dẫn của TS. Trần Uyên Trang.
+Trước tiên, em xin gửi lời cảm ơn đến TS. Trần Uyên Trang đã hỗ trợ em trong 
+khoảng thời gian thực hiện đề tài này, hướng dẫn và chỉ điểm những lưu ý trong quá 
+trình thực hiện đề tài lần này.
+Em xin cảm ơn các Thầy, Cô trong trường đã tạo điều kiện học tập và cung cấp 
+kiến thức nền tảng để em nghiên cứu, xây dựng và kiểm chứng đề tài trong kỳ thực tập.
+Em xin cảm ơn Công ty FPT Software đã tạo điều kiện thực tập; cảm ơn các bạn 
+đã chia sẻ tài liệu và kinh nghiệm trong quá trình thực hiện đề tài.
+Do thời gian và kinh nghiệm thực tiễn còn hạn chế, báo cáo có thể còn thiếu sót. 
+Em mong nhận được góp ý của giảng viên và đơn vị thực tập để tiếp tục hoàn thiện.
+Em xin chân thành cảm ơn!
+MỤC LỤC
+DANH MỤC HÌNH ẢNH TOC \h \z \c "Hình" ........................................... vii
+DANH MỤC VIẾT TẮT...................................................................................ix
+PHẦN MỞ ĐẦU .................................................................................................1
+1.1 Câu hỏi nghiên cứu và căn cứ kiểm chứng..............................................7
+CHƯƠNG 2: GIỚI THIỆU VỀ CÔNG TY FPT SOFTWARE .................8
+2.1 CƠ QUAN THỰC TẬP...........................................................................8
+2.2 GIỚI THIỆU CHUNG.............................................................................8
+2.2.1 Tổng quan về Tập đoàn FPT (FPT Corporation)..............................8
+2.2.1.1 Lịch sử hình thành và sứ mệnh ..................................................8
+2.2.1.2 Các trụ cột kinh doanh cốt lõi....................................................8
+2.2.1.3 Giá trị văn hóa cốt lõi (Văn hóa STCo).....................................9
+2.2.1.4 Định hướng công nghệ trong bối cảnh đề tài.............................9
+2.2.2 Đi sâu vào FPT Software (Lĩnh vực Xuất khẩu Phần mềm) ............9
+
+PAGE 4
+iii
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+2.2.2.1 Quy mô nhân sự và Mạng lưới toàn cầu hóa .............................9
+2.2.2.2 Cơ sở hạ tầng và Không gian làm việc chuẩn "World-Class" ...9
+2.2.2.3 Năng lực Công nghệ, Lĩnh vực chuyên môn và Tiêu chuẩn chất 
+lượng 10
+2.2.2.4 Cột mốc lịch sử ........................................................................10
+2.2.3 Tính phù hợp của Đề tài nghiên cứu...............................................11
+2.3 MỤC TIÊU HOẠT ĐỘNG ...................................................................11
+2.3.1 Sứ mệnh cốt lõi và Tầm nhìn chiến lược ........................................11
+2.3.2 Mục tiêu Kinh doanh và Tăng trưởng Thị trường ..........................11
+2.3.3 Mục tiêu Chuyển dịch Công nghệ và Định hướng "AI-First" ........11
+2.3.4 Mục tiêu Phát triển Nguồn nhân lực và Trách nhiệm Xã hội.........12
+2.4 TỔ CHỨC HOẠT ĐỘNG.....................................................................12
+2.4.1 Cơ cấu tổ chức ma trận (Matrix Organization)...............................12
+2.4.2 Mô hình Bàn giao Toàn cầu (Global Delivery Model)...................13
+2.4.3 Các Trung tâm Chuyên môn và Công ty thành viên trực thuộc 
+(Centers of Excellence) .........................................................................................13
+2.4.4 Quy trình sản xuất và Quản lý chất lượng ......................................14
+2.5 LĨNH VỰC HOẠT ĐỘNG ...................................................................14
+2.5.1 Trí tuệ Nhân tạo và Phân tích Dữ liệu (AI & Data Analytics) .......14
+2.5.2 Công nghệ Phần mềm Ô tô và Hệ thống Nhúng (Automotive & 
+Embedded Systems) ..............................................................................................15
+2.5.3 Dịch vụ Đám mây và Hiện đại hóa Hệ thống (Cloud & System 
+Modernization) ......................................................................................................15
+2.5.4 Giải pháp Doanh nghiệp và Tự động hóa Quy trình (Enterprise 
+Solutions & Hyperautomation)..............................................................................16
+2.5.5 An ninh mạng và Internet kết nối vạn vật (Cybersecurity & IoT)..16
+2.6 CÁC SẢN PHẨM/PHƯƠNG ÁN/GIẢI PHÁP....................................16
+2.6.1 Hệ sinh thái Sản phẩm công nghệ sở hữu trí tuệ (IP - Intellectual 
+Property) 16
+
+PAGE 5
+iv
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+2.6.2 Các giải pháp chuyển đổi số chuyên ngành (Domain-specific 
+Solutions) 17
+2.6.3 Phương án triển khai và Phương pháp luận (Methodologies) ........17
+CHƯƠNG 3: THỰC TRẠNG HỆ THỐNG KHUYẾN NGHỊ ĐA 
+PHƯƠNG TIỆN 19
+3.1 Phân tích bối cảnh và vấn đề thực tế .....................................................19
+3.2 Phát hiện những bất hợp lý và thách thức kỹ thuật ...............................19
+3.3 Lý giải nguyên nhân của các vấn đề......................................................20
+CHƯƠNG 4: ĐỀ XUẤT GIẢI PHÁP .........................................................21
+4.1 Giới thiệu giải pháp tổng thể .................................................................21
+4.2 Cơ sở đề xuất .........................................................................................21
+4.3 Phương pháp tiếp cận.............................................................................22
+4.3.1 Thuật toán Phân rã ma trận .............................................................22
+4.3.2 Cơ chế Khuyến nghị Lai (Hybrid) và Khởi động lạnh ...................22
+4.3.3 Số hóa phản hồi ngầm và Cập nhật tức thời ...................................22
+4.3.4 Tự động hóa bằng Quy trình MLOps .............................................23
+4.4 Kiến trúc tách nghiên cứu và vận hành .................................................23
+CHƯƠNG 5: CƠ SỞ LÝ THUYẾT.............................................................24
+5.1 Giới thiệu ngôn ngữ Python...................................................................24
+5.1.1 Python là gì?....................................................................................24
+5.1.2 Python hoạt động như thế nào?.......................................................24
+5.2 Giới thiệu Framework FastAPI..............................................................24
+5.2.1 FastAPI là gì?..................................................................................24
+5.2.2 FastAPI hoạt động như thế nào? .....................................................25
+5.3 Giới thiệu về ngôn ngữ Dart và Framework Flutter..............................25
+5.3.1 Ngôn ngữ Dart là gì?.......................................................................25
+5.3.2 Dart hoạt động như thế nào? ...........................................................26
+5.3.3 Framework Flutter là gì?.................................................................26
+5.3.4 Flutter hoạt động như thế nào? .......................................................27
+
+PAGE 6
+v
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+5.4 Giới thiệu công cụ trực quan hóa Streamlit...........................................27
+5.4.1 Streamlit là gì? ................................................................................27
+5.4.2 Streamlit hoạt động như thế nào? ...................................................28
+5.5 Giới thiệu thuật toán SVD và thư viện Surprise....................................28
+5.5.1 Thuật toán SVD (Singular Value Decomposition) là gì? ...............28
+5.5.2 Thư viện Surprise và cách SVD hoạt động trong dự án .................29
+5.6 Lấy mẫu user và đánh giá theo thời gian...............................................29
+5.7 Baseline và thiết kế hybrid ....................................................................29
+5.8 Định nghĩa metric và khoảng tin cậy.....................................................30
+5.9 PostgreSQL và ranh giới xác thực .........................................................30
+CHƯƠNG 6: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG.........................31
+6.1 Khảo sát hệ thống ..................................................................................31
+6.1.1 Mô tả bài toán .................................................................................31
+6.1.2 Xác định tác nhân (Actors) .............................................................31
+6.1.3 Xác định yêu cầu chức năng ...........................................................31
+6.1.4 Bảng thiết kế API Endpoints...........................................................32
+6.2 Biểu đồ ca sử dụng (Use Case Diagram)...............................................34
+6.2.1 Biểu đồ ca sử dụng tổng quát..........................................................34
+6.3 Biểu đồ lớp (Class Diagram) .................................................................34
+6.4 Thiết kế cơ sở dữ liệu ............................................................................35
+6.4.1 Sơ đồ Mô hình Quan hệ Thực thể (ERD).......................................35
+6.4.2 Từ điển dữ liệu (Data Dictionary)...................................................36
+6.4.2.1 Bảng app_users........................................................................36
+6.4.2.2 Bảng Movies............................................................................37
+6.4.2.3 Bảng feedback..........................................................................37
+6.4.2.4 Bảng Favorites .........................................................................38
+6.4.2.5 Bảng Watch Progress...............................................................38
+6.4.2.6 Registry model dạng artifact local ...........................................38
+
+PAGE 7
+vi
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.5 Bảng sessions và idempotency_keys.....................................................39
+6.6 Migration và bảo toàn dữ liệu................................................................39
+6.7 Biểu đồ hoạt động..................................................................................40
+6.7.1 Luồng hoạt động Đăng ký tài khoản...............................................40
+6.7.2 Luồng hoạt động Đăng nhập...........................................................41
+6.7.3 Luồng hoạt động Tìm kiếm danh mục phim...................................42
+6.7.4 Luồng thu thập Đánh giá sao ..........................................................43
+6.7.5 Luồng thu thập Yêu thích phim ......................................................44
+6.7.6 Luồng Xem phim mô phỏng & Đo lường Watch Ratio .................45
+6.7.7 Luồng Trích xuất Gợi ý Cá nhân hóa (Trang chủ) .........................46
+6.7.8 Luồng Vận hành MLOps: Tái huấn luyện mô hình (Retrain) ........47
+6.8 Biểu đồ tuần tự.......................................................................................48
+6.8.1 Tuần tự Khám phá dữ liệu ..............................................................48
+6.8.2 Tuần tự Đánh giá sao ......................................................................49
+6.8.3 Tuần tự Tiến trình Xem phim & Ghi nhận ngầm ...........................50
+6.8.4 Tuần tự phân phối gợi ý..................................................................51
+6.8.5 Tuần tự Vòng lặp Học máy.............................................................52
+CHƯƠNG 7: CÀI ĐẶT VÀ KẾT QUẢ THỬ NGHIỆM ..........................53
+7.1 Yêu cầu phần cứng và hệ điều hành ......................................................53
+7.2 Môi trường phát triển.............................................................................53
+7.2.1 Môi trường Backend & ML Pipeline..............................................53
+7.2.2 Môi trường Mobile App..................................................................53
+7.2.3 Môi trường Dashboard quản trị ......................................................54
+7.2.4 Công cụ hỗ trợ.................................................................................54
+7.2.5 Các Extension hỗ trợ trên VS Code ................................................54
+7.3 Thư viện và Công nghệ sử dụng............................................................55
+7.3.1 Frontend — Flutter Mobile App .....................................................55
+7.3.2 Backend — Python API & ML Pipeline.........................................55
+
+PAGE 8
+vii
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+7.3.3 Công cụ phát triển và kiểm thử.......................................................56
+7.4 Cấu hình biến môi trường (.env) ...........................................................56
+7.5 Kết quả thử nghiệm................................................................................58
+7.5.1 Đăng nhập/ Đăng kí tài khoản ........................................................58
+7.5.2 Trang chủ ........................................................................................59
+7.5.3 Tìm kiếm phim................................................................................60
+7.5.4 Trang yêu thích ...............................................................................61
+7.5.5 Trang hồ sơ .....................................................................................62
+7.5.6 Trang chi tiết phim..........................................................................63
+7.6 Dữ liệu thực nghiệm và chất lượng mẫu ...............................................64
+7.7 So sánh mô hình theo giao thức chung..................................................64
+7.8 Ablation và đánh đổi của hybrid............................................................66
+7.9 Chi phí tài nguyên và khả năng tái lập ..................................................67
+7.10 Dashboard nghiên cứu và truy vết số liệu ..........................................67
+7.11 Kiểm thử phần mềm và database .......................................................68
+7.12 Quy trình chạy lại và kịch bản demo..................................................68
+KIẾN NGHỊ VÀ KẾT LUẬN..........................................................................69
+1. Kết luận về những kết quả đạt được...........................................................69
+2. Những điểm còn hạn chế............................................................................70
+3. Kiến nghị thực hiện giải pháp và hướng phát triển....................................71
+TÀI LIỆU THAM KHẢO ...............................................................................71
+DANH MỤC HÌNH ẢNH TOC \h \z \c "Hình" 
+Hình 1 Biểu đồ ca sử dụng tổng quát ..........................................................................34
+Hình 2 Biểu đồ lớp ......................................................................................................35
+
+PAGE 9
+viii
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Hình 3 Sơ đồ quan hệ thực thể ....................................................................................36
+Hình 4 Luồng hoạt động đăng kí tài khoản.................................................................40
+Hình 5 Luồng hoạt động đăng nhập ............................................................................41
+Hình 6 Luòng hoạt động tìm kiếm danh mục phim ....................................................42
+Hình 7 Luồng thu thập Đánh giá sao...........................................................................43
+Hình 8 Luồng thu thập Yêu thích phim.......................................................................44
+Hình 9 Luồng Xem phim mô phỏng & Đo lường Watch Ratio..................................45
+Hình 10 Luồng Trích xuất Gợi ý Cá nhân hóa............................................................46
+Hình 11 Tái huấn luyện mô hình.................................................................................47
+Hình 12 Tuần tự Khám phá dữ liệu.............................................................................48
+Hình 13 Tuần tự Đánh giá sao.....................................................................................49
+Hình 14 Tuần tự Tiến trình Xem phim & Ghi nhận ngầm..........................................50
+Hình 15 Tuần tự phân phối gợi ý ................................................................................51
+Hình 16 Tuần tự vòng lặp học máy.............................................................................52
+Hình 17 Đăng kí ..........................................................................................................58
+Hình 18 Đăng nhập......................................................................................................58
+Hình 19 Trang chủ.......................................................................................................59
+Hình 20 Trang chủ (2).................................................Error! Bookmark not defined.
+Hình 21 Tìm kiếm phim..............................................Error! Bookmark not defined.
+
+PAGE 10
+ix
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Hình 22 Trang yêu thích..............................................Error! Bookmark not defined.
+Hình 23 Trang hồ sơ....................................................Error! Bookmark not defined.
+Hình 24 Trang chi tiết phim ........................................Error! Bookmark not defined.
+DANH MỤC VIẾT TẮT
+Từ viết tắt Nội dung
+ADAS Advanced Driver Assistance Systems (Hệ thống hỗ trợ lái xe nâng cao)
+AI Artificial Intelligence (Trí tuệ nhân tạo)
+AOT Ahead-Of-Time (Biên dịch trước thời gian thực)
+API Application Programming Interface (Giao diện lập trình ứng dụng)
+CB Content-Based Filtering (Phương pháp Lọc dựa trên nội dung)
+CF Collaborative Filtering (Phương pháp Lọc cộng tác)
+CORS Cross-Origin Resource Sharing (Cơ chế chia sẻ tài nguyên chéo nguồn gốc)
+CSV Comma-Separated Values (Định dạng tệp dữ liệu phân tách bằng dấu phẩy)
+EDA Exploratory Data Analysis (Phân tích dữ liệu thăm dò)
+ERD Entity-Relationship Diagram (Sơ đồ mô hình quan hệ thực thể)
+ERP Enterprise Resource Planning (Hệ thống Quản trị nguồn lực doanh nghiệp)
+FK Foreign Key (Khóa ngoại trong cơ sở dữ liệu)
+IVI In-Vehicle Infotainment (Hệ thống thông tin giải trí trên xe hơi)
+JIT Just-In-Time (Biên dịch tức thời)
+JSON JavaScript Object Notation (Định dạng tệp trao đổi dữ liệu dạng văn bản)
+KNN K-Nearest Neighbors (Thuật toán K-láng giềng gần nhất)
+MAE Mean Absolute Error (Sai số tuyệt đối trung bình)
+ML Machine Learning (Học máy)
+
+PAGE 11
+x
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Từ viết tắt Nội dung
+MLOps Machine Learning Operations (Quy trình vận hành và triển khai mô hình học 
+máy)
+NDCG Normalized Discounted Cumulative Gain (Chỉ số đo lường chất lượng xếp hạng)
+OCR Optical Character Recognition (Nhận dạng ký tự quang học)
+OTT Over-The-Top (Dịch vụ cung cấp nội dung số trên Internet)
+PK Primary Key (Khóa chính trong cơ sở dữ liệu)
+RDBMS Relational Database Management System (Hệ quản trị cơ sở dữ liệu quan hệ)
+RMSE Root Mean Squared Error (Sai số bình phương trung bình gốc)
+RPA Robotic Process Automation (Tự động hóa quy trình bằng Robot)
+RS Recommendation System (Hệ thống khuyến nghị / Hệ thống gợi ý)
+SGD Stochastic Gradient Descent (Thuật toán tối ưu hóa giảm chênh lệch ngẫu nhiên)
+SVD Singular Value Decomposition (Kỹ thuật phân rã giá trị suy biến)
+TMDb The Movie Database (Cơ sở dữ liệu thông tin điện ảnh trực tuyến)
+TTL Time To Live (Thời gian tồn tại của dữ liệu trong bộ nhớ Cache)
+
+PAGE 12
+1
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+PHẦN MỞ ĐẦU
+1. Sự cần thiết của đề tài:
+Danh mục phim lớn làm tăng nhu cầu lựa chọn nội dung phù hợp cho từng người 
+dùng. Hệ khuyến nghị hỗ trợ sắp xếp một danh sách ngắn từ tập ứng viên, nhưng chất 
+lượng của danh sách phải được kiểm tra bằng dữ liệu, baseline và giao thức đánh giá rõ 
+ràng. Đề tài MovieRS kết hợp nghiên cứu thuật toán với xây dựng nguyên mẫu ứng 
+dụng để kiểm chứng luồng dữ liệu và cách phục vụ khuyến nghị.
+Tuy nhiên, việc triển khai một hệ thống khuyến nghị hiệu quả trong thực tế đang 
+phải đối mặt với nhiều thách thức kỹ thuật cốt lõi:
+Dữ liệu thưa: người dùng chỉ đánh giá một phần nhỏ catalog. Độ thưa phải gắn 
+với tập user và tập phim dùng làm mẫu số; không dùng một tỷ lệ chung cho mọi phiên 
+bản dữ liệu. Mẫu V2 có 8.000 user, 27.498 phim được đánh giá và 1.237.592 rating, 
+tương ứng độ thưa khoảng 99,4374% trên ma trận này.
+Vấn đề khởi động lạnh (Cold-Start Problem): Khi một người dùng mới tham gia 
+hệ thống hoặc một bộ phim mới được phát hành, hệ thống không có dữ liệu lịch sử tương 
+tác để làm cơ sở tính toán cá nhân hóa, dẫn đến trải nghiệm ban đầu kém hiệu quả.
+Khai thác phản hồi ngầm (Implicit Feedback): Phần lớn người dùng không chủ
+động để lại đánh giá (rating). Thay vào đó, sở thích của họ ẩn chứa qua các hành vi 
+ngầm như: số phút xem phim, hành động "thêm vào danh sách yêu thích", hoặc bỏ ngang 
+giữa chừng. Việc quy đổi các tín hiệu rời rạc này thành dữ liệu định lượng để huấn luyện 
+mô hình là một bài toán phức tạp (Hu et al., 2008).
+Khoảng cách giữa nghiên cứu và vận hành: điểm offline có thể bị lệch nếu trộn 
+feedback mới vào holdout hoặc chọn model bằng TEST. MovieRS tách snapshot nghiên 
+cứu bất biến khỏi PostgreSQL runtime; việc fit, đánh giá, đóng gói và rollback được lưu 
+thành artifact có nguồn gốc.
+Đề tài giữ tên “Tìm hiểu hệ thống khuyến nghị sử dụng phương pháp lai và xây 
+dựng nguyên mẫu ứng dụng phim ảnh”. Trọng tâm sau refactor là đánh giá hybrid theo 
+độ dài lịch sử trên mẫu ML-25M vừa sức máy, so sánh công bằng và xây dựng luồng 
+ứng dụng nhất quán. Kết quả không mặc định hybrid tốt hơn baseline.
+2. Mục đích nghiên cứu:
+
+PAGE 13
+2
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Đề tài hướng tới 4 mục đích trọng tâm:
+Về thuật toán: triển khai GlobalMean, regularized bias, MostPopular, Bayesian 
+item mean, genre content, ItemKNN sparse, BiasedSVD và các biến thể hybrid. Phân 
+biệt dự đoán rating với xếp hạng Top-K; kiểm tra lợi ích của trọng số thích ứng, genre, 
+cold fallback và MMR bằng đối chứng riêng.
+Về phần mềm: xây dựng FastAPI, Flutter, dashboard nghiên cứu Streamlit và 
+PostgreSQL trên Supabase. API quản lý phiên và quyền sở hữu; cache và model 
+snapshot phục vụ suy luận. Trình phát giữ mô phỏng, không nối dịch vụ video thật.
+Về vòng đời mô hình: tổ chức luồng raw → audit → sample → split → fit TRAIN 
+→ chọn VAL → khóa cấu hình → refit TRAIN+VAL → TEST → artifact. Luồng 
+serving dùng worker riêng, validation gate và con trỏ phiên bản; không chạy retrain nền 
+trong API.
+Cổng promotion chấm lại incumbent và candidate trên cùng validation, kiểm tra 
+NDCG, cohort, latency và RMSE khi cả hai hỗ trợ dự đoán rating. Không dùng TEST 
+để chọn model hoặc nới gate nhằm hợp thức hóa một phiên bản.
+Về cold-start: nghiên cứu fallback bằng thống kê dữ liệu đã biết; ứng dụng có 
+onboarding thể loại và rerank. Không suy ra sở thích onboarding từ nhãn TEST. Model 
+đang phục vụ được chọn từ VAL, hiện là MostPopular; không tự chuyển thành SVD sau 
+một số tương tác cố định.
+3. Phương pháp nghiên cứu:
+• Phương pháp nghiên cứu lý thuyết:
+Lý thuyết Hệ thống khuyến nghị: Tổng hợp tài liệu khoa học về các nhóm phương 
+pháp: Content-based, Collaborative Filtering, và Hybrid Systems.
+Mô hình BiasedSVD biểu diễn user và phim bằng vector ẩn và bias; công thức 
+dự đoán được giữ dưới đây. Trong dự án, implementation chuẩn là Surprise SVD, học 
+bằng SGD có regularization, không phải phép phân rã đại số trực tiếp của một ma trận 
+đã điền đầy [4].
+rui = μ + bu + bi + pu
+Tqi
+Trong công thức, μ là trung bình trên dữ liệu fit, b_u và b_i là bias, p_u và q_i là 
+vector ẩn. Tất cả được ước lượng trên TRAIN khi chọn tham số và trên TRAIN+VAL 
+khi chấm TEST; không fit bằng nhãn TEST.
+
+PAGE 14
+3
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Nguyên tắc quản lý vòng đời gồm versioning, lineage, validation gate và 
+rollback. Đây là nguyên mẫu có kiểm thử, chưa có bằng chứng về khả năng chịu tải hoặc 
+mức trưởng thành MLOps của một hệ thống sản xuất.
+• Phương pháp thực nghiệm
+Đánh giá offline dùng cutoff thời gian toàn cục, xấp xỉ 80/10/10, giữ timestamp 
+bằng nhau ở cùng một phía. Chọn cấu hình trên VAL trước khi mở TEST. Giao thức 
+giảm những dạng rò rỉ đã kiểm tra, không khẳng định loại bỏ mọi sai lệch của dữ liệu 
+hồi cứu [6].
+• Độ chính xác dự đoán: RMSE (Root Mean Squared Error), MAE (Mean 
+Absolute Error).
+• Chất lượng xếp hạng (Top-K): Precision@10, Recall@10, NDCG@10.
+• Thuộc tính danh sách: catalog coverage, genre diversity và novelty; các 
+proxy này không thay cho mức hài lòng của người dùng.
+Kiểm tra vận hành tách latency scoring model, thời gian HTTP và cache. Báo cáo 
+sử dụng số đo được lưu trong artifact và HTTP smoke; chưa coi đây là load test đa người 
+dùng hoặc cam kết SLA.
+Kiểm thử luồng tích hợp gồm đăng ký/đăng nhập, ownership, đánh giá, favorite, 
+watch progress, retry, rollback và hết phiên. Kiểm thử chứng minh các hợp đồng kỹ
+thuật; chưa chứng minh mức tăng hài lòng hoặc cá nhân hóa qua A/B test.
+• Phương pháp phát triển phần mềm
+Phát triển theo các pha có phụ thuộc: cấu hình/môi trường, dữ liệu, evaluator, 
+model/runner, dashboard, database/ứng dụng và nghiệm thu. Không suy diễn rằng dự
+án đã thực hiện Scrum hoặc bốn sprint khi không có hồ sơ tương ứng.
+Quản trị mã nguồn và mô hình: Sử dụng Git cho vòng đời phần mềm và lưu trữ
+các Artifacts của mô hình (file .pkl và .json metadata) theo cơ chế Versioning có thể
+truy xuất/rollback.
+4. Phạm vi nghiên cứu
+• Phạm vi về dữ liệu
+Nguồn nghiên cứu là ML-25M do GroupLens công bố: 25.000.095 rating từ
+162.541 user; catalog có 62.423 phim, trong đó 59.047 phim có rating. Nguồn yêu cầu 
+user có tối thiểu 20 rating và không cung cấp nhân khẩu học [2].
+
+PAGE 15
+4
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+V2 quét toàn nguồn và chọn 8.000 user theo thứ tự SHA256 của 
+“20261015:userId”, giữ toàn bộ lịch sử. Mẫu có 1.237.592 rating; không lấy 2 triệu 
+rating mới nhất và không lọc phim dưới 50 rating. Catalog ứng dụng giữ 62.423 phim, 
+kể cả phim thiếu enrichment TMDb.
+• Phạm vi về thuật toán
+Phạm vi gồm baseline thống kê, content theo genre, ItemKNN sparse và 
+factorization có bias; hybrid kết hợp điểm chuẩn hóa. Chưa triển khai BPR/ALS hoặc 
+mô hình học sâu trong kết quả xác nhận.
+Surprise được dùng với siêu tham số chọn trên VAL và ba seed huấn luyện. Kết 
+quả là benchmark offline và nguyên mẫu serving, chưa được gọi là triển khai production 
+đã kiểm chứng.
+• Phạm vi về hệ thống phần mềm
+Backend chạy local; tunnel Ngrok là tùy chọn khi cần truy cập từ thiết bị khác. 
+URL mobile cấu hình bằng AppConfig hoặc --dart-define=API_URL, không lấy từ .env 
+backend.
+Frontend (Flutter): Giới hạn ở mức Nguyên mẫu chức năng (Functional 
+Prototype). Trọng tâm là mô phỏng UX/UI của các hành vi tương tác thu thập dữ liệu 
+(đánh giá, thêm yêu thích, xem phim mô phỏng) chứ không phát triển trình phát video 
+(Video Player) thực.
+Dashboard: Giao diện nội bộ dành cho Data Scientist/Admin, không cung cấp 
+cho người dùng cuối.
+5. Nguồn số liệu, dữ liệu
+Nguồn dữ liệu và giới hạn sử dụng được ghi riêng. ML-25M tuân theo điều kiện 
+nghiên cứu của GroupLens; metadata TMDb phục vụ hiển thị và không đồng nghĩa 
+quyền phân phối video [2].
+• Dữ liệu gốc (Raw Data)
+Trích xuất từ thư viện GroupLens Research (Đại học Minnesota, Mỹ):
+ratings.csv: Chứa ma trận tương tác (userId, movieId, rating, timestamp).
+movies.csv: Chứa thông tin cơ sở (movieId, title, genres).
+
+PAGE 16
+5
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+links.csv: Bảng ánh xạ ID sang các nền tảng bên ngoài (IMDb, TMDb).
+tags.csv và các file genome có trong nguồn nhưng không được dùng làm feature 
+của benchmark V2; tránh mô tả chúng như thành phần đã huấn luyện.
+• Dữ liệu làm giàu (Enriched Data)
+Lấy từ API của The Movie Database (TMDb):
+Sử dụng mã tmdbId để truy vấn bổ sung: Poster phim (poster_path), tóm tắt nội 
+dung (overview), điểm cộng đồng (vote_average).
+Cơ chế: Dữ liệu được lưu cache tại data/enriched/tmdb_cache.json nhằm tuân thủ
+giới hạn băng thông (Rate-limit: 40 requests/10s) của TMDb.
+• Dữ liệu đã xử lý phục vụ huấn luyện (Processed Data)
+Snapshot nghiên cứu lưu ratings/train/validation/test/movies dạng Parquet cùng 
+user IDs, manifest, quality và data card tại data/snapshots/<dataset_id>. CSV processed 
+cũ được giữ cho đối chiếu V1 và metadata ứng dụng.
+Split V2 cố định T1=2016-07-25T17:31:14Z và T2=2018-01-23T19:51:49Z; 
+tương ứng 990.073 TRAIN, 123.759 VAL và 123.760 TEST.
+Dữ liệu vận hành nằm trong schema moviers của PostgreSQL. 
+interactions_log.csv là nguồn prototype được backup/import; feedback ứng dụng chỉ
+tham gia fit serving, không tham gia holdout nghiên cứu.
+• Dữ liệu dạng Artifacts của Mô hình (Model Artifacts)
+Run nghiên cứu nằm trong artifacts/runs/<run_id>; model phục vụ nằm trong 
+artifacts/serving/<version>/model.joblib. current.json là con trỏ nguyên tử đến manifest 
+đã kiểm checksum.
+Manifest lưu dataset/protocol/config/code/environment hashes, selection và 
+resource budget; metrics/per-user/comparisons phục vụ kiểm chứng. 
+models/model_latest.pkl và metadata V1 được giữ làm lịch sử, không là entrypoint 
+serving V2.
+6. Nội dung nghiên cứu
+Đề tài được cấu trúc thành 5 nhóm nội dung nghiên cứu logic như sau:
+
+PAGE 17
+6
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Nội dung 1: Khảo cứu Cơ sở lý thuyết. Hệ thống hóa kiến thức về Recommender 
+Systems. Trình bày chi tiết giải thuật FunkSVD, cơ chế học biểu diễn (Latent 
+Factorization) và các nguyên tắc thiết kế hệ thống MLOps.
+Nội dung 2: Xử lý và Khám phá Dữ liệu (EDA). Xây dựng luồng tích hợp dữ
+liệu (MovieLens + TMDb). Trực quan hóa dữ liệu thống kê để minh chứng định lượng 
+cho bài toán Sparsity, hiệu ứng Long-tail và phân loại hành vi người dùng 
+(Cold/Warm/Heavy). Thực hiện kỹ thuật Temporal Split.
+Nội dung 3: triển khai và đối chứng 12 họ mô hình/biến thể. Đo RMSE/MAE 
+cho model rating và NDCG/Recall/Precision cùng coverage/diversity/novelty cho 
+ranking; phân tích cohort và CI ghép cặp.
+Nội dung 4: Xây dựng Kiến trúc Phần mềm. Lập trình Backend API bằng 
+FastAPI, phát triển ứng dụng di động Flutter và Dashboard Streamlit. Giải quyết bài 
+toán bảo đảm tốc độ phản hồi (Latency) khi tính toán trên ma trận lớn.
+Nội dung 5: PostgreSQL, xác thực, feedback có nguồn, idempotency, worker 
+serving riêng, validation gate và rollback. Luồng research không bị ứng dụng sửa 
+holdout; dữ liệu nhập được đối soát và nguồn cũ được bảo toàn.
+
+PAGE 18
+7
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+1.1 Câu hỏi nghiên cứu và căn cứ kiểm chứng
+Bản cập nhật nội dung ngày 18/10/2026 đối chiếu mã nguồn và biên bản nghiệm 
+thu ngày 16/10/2026. Thông tin hành chính ở bìa theo hồ sơ gốc; các số liệu kỹ thuật 
+dưới đây thuộc lần kiểm chứng V2.
+Câu hỏi chính: hybrid thích ứng có cải thiện NDCG@10 so với baseline mạnh 
+nhất được chọn trên VAL không? Các câu hỏi phụ kiểm tra hiệu quả theo lịch sử, lợi ích 
+ngoài fallback, đóng góp genre và đánh đổi MMR.
+Thành công về kỹ thuật và kết quả thuật toán được báo riêng. MostPopular hiện 
+tốt hơn hybrid ở so sánh chính; kết quả này không bị thay bằng số minh họa hoặc điều 
+chỉnh TEST sau khi quan sát.
+
+PAGE 19
+8
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+CHƯƠNG 2: GIỚI THIỆU VỀ CÔNG TY FPT SOFTWARE
+2.1 CƠ QUAN THỰC TẬP
+Tên cơ quan: Công ty FPT Software ...........................................................................
+Địa chỉ: Toà nhà FPT Complex Đà Nẵng, Đường Nam Kỳ Khởi Nghĩa, Khu đô 
+thị FPT City, Phường Ngũ Hành Sơn, TP. Đà Nẵng.........................................................
+Email: fdn.contact@fsoft.com.vn ................................................................................
+Website: fptsoftware.com ............................................................................................
+2.2 GIỚI THIỆU CHUNG
+2.2.1 Tổng quan về Tập đoàn FPT (FPT Corporation)
+2.2.1.1 Lịch sử hình thành và sứ mệnh
+Thành lập ngày 13/09/1988 bởi ông Trương Gia Bình cùng 12 nhà khoa học trẻ, 
+FPT ban đầu mang tên Công ty Công nghệ Thực phẩm (Food Processing Technology). 
+Tuy nhiên, với tầm nhìn nhạy bén về thời cuộc, chỉ hai năm sau (1990), công ty đã 
+chuyển hướng sang lĩnh vực tin học và đổi tên thành Công ty Đầu tư và Phát triển Công 
+nghệ (Financing and Promoting Technology), chính thức bước vào kỷ nguyên định hình 
+nền công nghệ thông tin (CNTT) tại Việt Nam.
+FPT là tập đoàn hoạt động trong công nghệ, viễn thông và giáo dục. Báo cáo sử
+dụng thông tin giới thiệu công khai để mô tả bối cảnh đơn vị, không lấy quy mô nhân 
+sự hoặc số quốc gia tại một thời điểm làm bằng chứng cho năng lực của MovieRS [1].
+2.2.1.2 Các trụ cột kinh doanh cốt lõi
+Hệ sinh thái của Tập đoàn FPT được xây dựng thế chân kiềng vững chắc dựa trên 
+3 khối kinh doanh chính:
+• Khối Công nghệ (Technology): Là động cơ tăng trưởng chính, mang lại 
+doanh thu lớn nhất cho Tập đoàn. Các đơn vị thành viên nòng cốt bao gồm 
+FPT Software (Xuất khẩu phần mềm), FPT IS (Tích hợp hệ thống và 
+Chuyển đổi số trong nước), và FPT Smart Cloud. 
+• Khối Viễn thông (Telecommunications): Do FPT Telecom đảm nhiệm, 
+sở hữu hạ tầng viễn thông phủ sóng toàn quốc, cung cấp các dịch vụ
+Internet băng thông rộng, truyền hình số (FPT Play) và Data Center chuẩn 
+quốc tế.
+• Khối Giáo dục (Education): FPT Education (Tổ chức Giáo dục FPT) đào 
+tạo đa cấp học từ tiểu học, trung học, cao đẳng thực hành (FPT 
+
+PAGE 20
+9
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Polytechnic) đến Đại học (FPT University) và sau đại học. Khối này đóng 
+vai trò chiến lược trong việc cung cấp nguồn nhân lực chất lượng cao, lấp 
+đầy cơn khát nhân sự IT cho chính hệ sinh thái FPT và thị trường toàn cầu.
+2.2.1.3 Giá trị văn hóa cốt lõi (Văn hóa STCo)
+Sức mạnh nội tại của FPT không chỉ nằm ở công nghệ mà còn ở hệ tư tưởng và 
+văn hóa doanh nghiệp đặc sắc mang tên STCo (Sáng tạo Công ty). Triết lý phát triển 
+của FPT được gói gọn trong 6 chữ vàng: "Tôn – Đổi – Đồng – Chí – Gương – Sáng".
+• Tôn trọng – Đổi mới – Đồng đội: Dành cho mọi cán bộ nhân viên, khuyến 
+khích sự bình đẳng, tư duy phản biện và tinh thần đoàn kết.
+• Chí công – Gương mẫu – Sáng suốt: Là hệ tiêu chuẩn bắt buộc đối với đội 
+ngũ lãnh đạo, quản lý.
+2.2.1.4 Định hướng công nghệ trong bối cảnh đề tài
+Các lĩnh vực AI, dữ liệu và nền tảng đám mây tạo bối cảnh phù hợp cho đề tài. 
+Nội dung này chỉ giới thiệu định hướng công nghệ; không suy diễn một quan hệ hợp tác 
+tương lai hoặc hiệu quả kinh doanh từ nguyên mẫu MovieRS.
+2.2.2 Đi sâu vào FPT Software (Lĩnh vực Xuất khẩu Phần mềm) 
+Thành lập ngày 13/01/1999, Công ty TNHH Phần mềm FPT (FPT Software -
+FSoft) ra đời với sứ mệnh mang trí tuệ Việt Nam xuất khẩu ra thế giới. Sau hơn 25 năm, 
+FSoft hiện là "đầu tàu" công nghệ của Tập đoàn FPT và là doanh nghiệp xuất khẩu dịch 
+vụ CNTT lớn nhất Đông Nam Á.
+2.2.2.1 Quy mô nhân sự và Mạng lưới toàn cầu hóa
+FPT Software có mạng lưới nhân sự và trung tâm phát triển tại nhiều thị
+trường. Quy mô được công bố có thể thay đổi; báo cáo không sử dụng số liệu nội 
+bộ chưa có tài liệu đối chiếu.
+Mạng lưới Delivery (Bàn giao dự án): Áp dụng xuất sắc mô hình Global 
+Delivery, FSoft hiện diện tại hàng chục quốc gia với các thị trường trọng điểm bao gồm: 
+Nhật Bản (thị trường truyền thống và lớn nhất), Bắc Mỹ, Châu Âu, và khu vực APAC 
+(Hàn Quốc, Úc, Singapore...). 
+2.2.2.2 Cơ sở hạ tầng và Không gian làm việc chuẩn "World-Class"
+Không giới hạn ở các khối văn phòng truyền thống, FPT Software tiên phong xây 
+dựng các tổ hợp Campus theo mô hình "Building in the Park" (Văn phòng trong công 
+
+PAGE 21
+10
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+viên) kết hợp trung tâm nghiên cứu tại cả 3 miền, đáp ứng nhu cầu tăng trưởng mạnh 
+mẽ:
+• Trụ sở chính: Tòa nhà FPT Tower (Cầu Giấy, Hà Nội).
+• Tổ hợp F-Town (TP.HCM): Đặt tại Khu Công nghệ cao Quận 9. Tiêu 
+biểu là Campus F-Town 3 khánh thành quy mô 69.000 $m^2$ với sức 
+chứa 7.500 nhân sự. Công trình mang đậm dấu ấn "Sài Gòn thu nhỏ" với 
+các sảnh Mây, Mưa, Sóng, Băng, cung cấp hệ sinh thái tiện ích nội khu 
+như khu thư giãn, nhà ăn, phòng y tế, và nhà trẻ, tạo môi trường làm việc 
+thúc đẩy sự sáng tạo. 
+• Tổ hợp F-Complex (Đà Nẵng): Dự án chiến lược tại miền Trung với sức 
+chứa lên tới 10.000 kỹ sư, hình thành một thung lũng công nghệ khép kín.
+2.2.2.3 Năng lực Công nghệ, Lĩnh vực chuyên môn và Tiêu chuẩn chất lượng
+FSoft đang cung cấp dịch vụ chuyển đổi số toàn diện cho hàng trăm khách hàng 
+thuộc danh sách Fortune Global 500. Các lĩnh vực mũi nhọn (Domain) bao gồm:
+• AI & Data Analytics: Triển khai các mô hình Machine Learning, Hệ
+thống khuyến nghị (Recommender Systems), Xử lý ngôn ngữ tự nhiên, và 
+Computer Vision.
+• Automotive (Công nghệ Ô tô): Sự ra đời của FPT Automotive chứng 
+minh năng lực lõi trong việc phát triển hệ thống thông tin giải trí (IVI) và 
+xe tự lái, hợp tác chặt chẽ với các hãng xe hơi lớn trên thế giới.
+• Cloud & Enterprise Solutions: Dịch chuyển hệ thống Legacy lên AWS, 
+Azure; tích hợp các giải pháp ERP quy mô lớn.
+Để duy trì năng lực cạnh tranh quốc tế, toàn bộ quy trình phát triển phần mềm 
+(SDLC) tại FSoft đều tuân thủ nghiêm ngặt các chứng chỉ khắt khe nhất thế giới: CMMI 
+Level 5 (Cấp độ cao nhất về đánh giá năng lực quy trình phần mềm), ISO 9001, và 
+ISO/IEC 27001 (Bảo mật thông tin).
+2.2.2.4 Cột mốc lịch sử
+Năm 2023, FPT Software đã đánh dấu một cột mốc lịch sử khi chính thức vượt 
+1 tỷ USD doanh thu dịch vụ CNTT từ thị trường nước ngoài. Thành tựu này là minh 
+chứng cho trí tuệ Việt Nam, tạo đà để công ty hướng tới mục tiêu 5 tỷ USD doanh thu 
+vào năm 2030, củng cố vị thế vững chắc trên bản đồ công nghệ toàn cầu. 
+
+PAGE 22
+11
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+2.2.3 Tính phù hợp của Đề tài nghiên cứu
+Trong phạm vi thực tập, MovieRS là bài tập nghiên cứu và xây dựng nguyên 
+mẫu. Việc quản lý dữ liệu, đánh giá mô hình và kiểm thử phần mềm giúp rèn luyện kỹ
+năng liên quan đến kỹ thuật dữ liệu và AI.
+Đề tài gắn với các năng lực về dữ liệu và phát triển ứng dụng của môi trường 
+thực tập. Tuy nhiên, pipeline của sinh viên không được mô tả như quy trình nội bộ hoặc 
+hệ thống sản xuất của FPT Software.
+2.3 MỤC TIÊU HOẠT ĐỘNG
+2.3.1 Sứ mệnh cốt lõi và Tầm nhìn chiến lược
+Sứ mệnh: "Mang trí tuệ Việt Nam ra thế giới" – đưa các giải pháp công nghệ, 
+năng lực sáng tạo và dịch vụ phần mềm chất lượng cao của kỹ sư Việt đến với các tập 
+đoàn đa quốc gia.
+Tầm nhìn: Trở thành nhà cung cấp dịch vụ chuyển đổi số và giải pháp công nghệ
+toàn diện đẳng cấp thế giới (World-Class Digital Transformation Provider), cạnh tranh 
+sòng phẳng với các đối thủ lớn đến từ Ấn Độ, Mỹ và Châu Âu.
+2.3.2 Mục tiêu Kinh doanh và Tăng trưởng Thị trường
+Cột mốc doanh thu 5 tỷ USD vào năm 2030: Sau khi xuất sắc vượt mốc 1 tỷ
+USD doanh thu từ thị trường nước ngoài vào năm 2023, FPT Software đặt mục tiêu 
+tham vọng đạt 5 tỷ USD doanh thu dịch vụ CNTT vào năm 2030, đưa FPT vào danh 
+sách các doanh nghiệp dịch vụ công nghệ cỡ lớn (Big Tech Services) trên thế giới.
+Mở rộng chuỗi Bàn giao Toàn cầu (Global Delivery Network): Tiếp tục đào 
+sâu và giữ vững thị phần tại các thị trường truyền thống như Nhật Bản, Bắc Mỹ, Châu 
+Âu; đồng thời mở rộng quy mô tại khu vực APAC (Hàn Quốc, Singapore, Úc). Công ty 
+đẩy mạnh mô hình Nearshore và Onsite để tăng cường khả năng phản hồi và thấu hiểu 
+khách hàng bản địa.
+2.3.3 Mục tiêu Chuyển dịch Công nghệ và Định hướng "AI-First"
+Dịch dịch chuyển chuỗi giá trị: Từng bước chuyển dịch từ mô hình gia công 
+phần mềm truyền thống (Outsourcing) sang tư vấn kiến trúc hệ thống, thiết kế giải pháp 
+end-to-end và phát triển sản phẩm công nghệ sở hữu trí tuệ (IP-based solutions).
+
+PAGE 23
+12
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Đề tài tiếp cận AI qua dữ liệu, mô hình và kiểm thử. Không dùng các tỷ lệ
+tăng năng suất hoặc quan hệ đối tác chưa có nguồn để suy ra tác động của 
+MovieRS.
+Phát triển các mảng công nghệ mũi nhọn: Tập trung nguồn lực xây dựng năng 
+lực chuyên sâu trong các lĩnh vực:
+• Automotive: Mở rộng FPT Automotive để trở thành nhà cung cấp phần 
+mềm hàng đầu cho các dòng xe thông minh và xe điện (Software-Defined 
+Vehicles).
+• Cloud & Security: Tư vấn dịch chuyển đám mây thế hệ mới và đảm bảo 
+an ninh mạng toàn diện cho các hệ thống tài chính, y tế khắt khe.
+• Semiconductor: Tham gia vào công đoạn thiết kế và kiểm thử vi mạch 
+bán dẫn.
+2.3.4 Mục tiêu Phát triển Nguồn nhân lực và Trách nhiệm Xã hội 
+Phát triển nguồn nhân lực công nghệ và đào tạo liên tục là bối cảnh liên quan 
+đến hoạt động thực tập; các mục tiêu nhân sự cụ thể không được dùng làm số liệu 
+thực nghiệm của đề tài.
+Tạo dựng môi trường làm việc hạnh phúc (Happy Workplace): Đầu tư không 
+gian làm việc đạt chuẩn quốc tế (Campus F-Town, F-Complex, FPT Tower), chú trọng 
+đào tạo liên tục (FPT Software Academy) và chăm sóc đời sống tinh thần cho nhân viên.
+Phát triển bền vững: Cam kết thực hiện các tiêu chuẩn về Môi trường - Xã hội 
+- Quản trị doanh nghiệp (ESG), giảm thiểu dấu chân carbon trong hạ tầng vận hành và 
+tích cực đóng góp cho các hoạt động giáo dục, cộng đồng tại Việt Nam.
+2.4 TỔ CHỨC HOẠT ĐỘNG
+Để quản lý và vận hành hiệu quả một hệ thống khổng lồ với hơn 30.000 nhân sự
+trên toàn cầu, phục vụ hàng nghìn dự án cùng lúc, FPT Software áp dụng cơ cấu tổ chức 
+ma trận (Matrix Organization) kết hợp với Mô hình bàn giao toàn cầu (Global Delivery 
+Model). Tổ chức hoạt động của công ty được thiết kế nhằm tối ưu hóa nguồn lực, chuyên 
+môn hóa năng lực công nghệ và đáp ứng nhanh chóng nhu cầu của khách hàng quốc tế.
+2.4.1 Cơ cấu tổ chức ma trận (Matrix Organization)
+Hoạt động của FPT Software được chia thành hai trục chính đan xen lẫn nhau:
+
+PAGE 24
+13
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+• Trục Khối Thị trường: Các chi nhánh, công ty con đặt tại nước ngoài 
+mang nhiệm vụ tiếp cận, mở rộng thị trường và quản lý quan hệ khách 
+hàng. Tiêu biểu như: FPT Japan (thị trường Nhật Bản), FPT Americas (thị
+trường Mỹ), FPT Europe (thị trường Châu Âu), và FPT APAC (khu vực 
+Châu Á - Thái Bình Dương). Đội ngũ tại đây thường bao gồm các Giám 
+đốc kinh doanh (Account Manager) và Kỹ sư cầu nối (BrSE).
+• Trục Khối Sản xuất: Các trung tâm phát triển phần mềm đóng vai trò 
+thực thi kỹ thuật, viết mã, kiểm thử và bàn giao sản phẩm. Khối sản xuất 
+chủ yếu đặt tại Việt Nam, chia theo các khu vực địa lý lớn như FHN (Hà 
+Nội), FHCM (TP. Hồ Chí Minh), FDN (Đà Nẵng),... và được phân bổ theo 
+các mảng công nghệ chuyên biệt.
+2.4.2 Mô hình Bàn giao Toàn cầu (Global Delivery Model)
+Đây là "vũ khí chiến lược" giúp FPT Software cạnh tranh với các đối thủ quốc 
+tế, đảm bảo dự án vận hành xuyên suốt 24/7 thông qua sự phối hợp của 3 tuyến:
+• Tuyến Onsite: Đội ngũ chuyên gia làm việc trực tiếp tại văn phòng của 
+khách hàng ở nước ngoài (Mỹ, Nhật, Châu Âu...). Họ chịu trách nhiệm lấy 
+yêu cầu (Requirement Gathering), tư vấn kiến trúc cấp cao và xử lý các 
+vấn đề khẩn cấp.
+• Tuyến Nearshore: Các trung tâm sản xuất được đặt tại những quốc gia 
+có cùng múi giờ hoặc vị trí địa lý gần với khách hàng (ví dụ: trung tâm tại 
+Costa Rica, Colombia phục vụ thị trường Mỹ; Romania, Slovakia phục vụ
+thị trường Châu Âu). Tuyến này giúp khách hàng dễ dàng giao tiếp, họp 
+bàn theo thời gian thực (real-time).
+• Tuyến Offshore: Các siêu trung tâm sản xuất quy mô lớn tại Việt Nam, 
+Ấn Độ,... đóng vai trò là động cơ cốt lõi thực thi các dự án phức tạp, cung 
+cấp lực lượng kỹ sư chất lượng cao với chi phí tối ưu.
+2.4.3 Các Trung tâm Chuyên môn và Công ty thành viên trực thuộc (Centers of 
+Excellence)
+Để chuyển dịch từ làm gia công (Outsourcing) sang tư vấn giải pháp, FPT 
+Software đã tổ chức lại lực lượng thành các trung tâm chuyên môn hóa sâu theo ngành 
+dọc (Domain) và công nghệ lõi:
+• FPT Automotive: Công ty thành viên chuyên trách về công nghệ ô tô (xe 
+tự lái, hệ thống thông tin giải trí IVI, chuẩn AUTOSAR).
+
+PAGE 25
+14
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+• Trung tâm Trí tuệ Nhân tạo (FPT Software AI Center): Nơi nghiên 
+cứu và ứng dụng các công nghệ Machine Learning, Generative AI, 
+MLOps, Data Analytics vào các sản phẩm thực tế cho khách hàng.
+• Khối Giải pháp Doanh nghiệp: Chuyên triển khai các hệ thống quản trị
+nguồn lực khổng lồ (ERP) như SAP, Oracle, Microsoft.
+• Học viện FPT Software: Đơn vị chuyên trách đào tạo tân binh (Fresher), 
+nâng cao năng lực cho nhân viên và tổ chức các kỳ thi lấy chứng chỉ quốc 
+tế.
+2.4.4 Quy trình sản xuất và Quản lý chất lượng 
+Để đáp ứng tiêu chuẩn của các thị trường khó tính nhất, FPT Software bắt buộc 
+tuân thủ các hệ thống quản lý chất lượng đẳng cấp thế giới:
+• Chứng chỉ CMMI Level 5 v2.0: Đây là cấp độ cao nhất về sự trưởng 
+thành trong quy trình sản xuất phần mềm, chứng minh khả năng đo lường, 
+kiểm soát và liên tục tối ưu hóa quy trình dự án.
+• Các phương pháp phát triển linh hoạt có thể hỗ trợ tổ chức dự án. 
+Báo cáo không khẳng định tỷ lệ áp dụng Agile trong doanh nghiệp khi 
+chưa có thống kê có thể đối chiếu.
+2.5 LĨNH VỰC HOẠT ĐỘNG
+Từ một đơn vị chuyên về gia công phần mềm truyền thống (IT Outsourcing), 
+FPT Software đã dịch chuyển mạnh mẽ sang vai trò nhà cung cấp dịch vụ Chuyển đổi 
+số toàn diện (End-to-End Digital Transformation). Các lĩnh vực hoạt động của công ty 
+trải dài trên nhiều ngành công nghiệp trọng điểm (Vertical Domains) và các giải pháp 
+công nghệ mũi nhọn (Technology Competencies).
+2.5.1 Trí tuệ Nhân tạo và Phân tích Dữ liệu (AI & Data Analytics)
+Đây được xác định là mũi nhọn chiến lược hàng đầu của FPT Software nhằm 
+nâng cao chuỗi giá trị dịch vụ:
+• Machine Learning & MLOps: Xây dựng, triển khai và tự động hóa vòng 
+đời các mô hình học máy (Machine Learning/Deep Learning) trên môi 
+trường sản xuất cho các bài toán phân tích hành vi khách hàng, thị trường 
+chứng khoán, và chăm sóc sức khỏe.
+• Hệ thống Khuyến nghị (Recommendation Systems): Phát triển các giải 
+pháp cá nhân hóa trải nghiệm người dùng trong các ngành bán lẻ (Retail), 
+
+PAGE 26
+15
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+thương mại điện tử (E-commerce), và truyền thông đa phương tiện 
+(OTT/Streaming).
+• Generative AI & Agentic AI: Ứng dụng AI tạo sinh vào quy trình tự
+động hóa viết mã nguồn, kiểm thử phần mềm tự động, và phát triển các 
+trợ lý ảo thông minh (Virtual Assistants/Chatbots) hỗ trợ doanh nghiệp.
+• Phân tích Dữ liệu lớn (Big Data Engineering): Xây dựng kho dữ liệu 
+(Data Warehouse, Data Lake), xử lý luồng dữ liệu thời gian thực và phân 
+tích dự báo (Predictive Analytics).
+2.5.2 Công nghệ Phần mềm Ô tô và Hệ thống Nhúng (Automotive & Embedded 
+Systems)
+Nhận thấy tiềm năng khổng lồ của xu hướng "xe thông minh định nghĩa bằng 
+phần mềm" (Software-Defined Vehicles), FPT Software đã thành lập công ty chuyên 
+trách FPT Automotive:
+• Hệ thống thông tin giải trí (In-Vehicle Infotainment - IVI): Xây dựng 
+giao diện màn hình lái, hệ thống định vị, và kết nối di động trên ô tô.
+• Hệ thống hỗ trợ lái xe nâng cao (ADAS & Autonomous Driving): Lập 
+trình các thuật toán nhận diện vật cản, tự động giữ làn đường, và đỗ xe 
+thông minh.
+• Kiến trúc phần mềm tiêu chuẩn (AUTOSAR): Phát triển các lớp phần 
+mềm chuẩn hóa cho các bộ điều khiển trung tâm (ECU) trên xe hơi.
+2.5.3 Dịch vụ Đám mây và Hiện đại hóa Hệ thống (Cloud & System 
+Modernization)
+FPT Software là đối tác cấp cao của các gã khổng lồ điện toán đám mây như 
+Amazon Web Services (AWS Premier Partner), Microsoft Azure, và Google Cloud 
+Platform (GCP):
+• Dịch chuyển lên mây (Cloud Migration): Tư vấn và thực hiện dịch 
+chuyển các hệ thống công nghệ cũ (Legacy Systems) của doanh nghiệp 
+lên hạ tầng Cloud an toàn và tối ưu chi phí.
+• Kiến trúc Cloud-Native: Xây dựng các ứng dụng microservices, 
+containerization (Docker, Kubernetes) giúp hệ thống có khả năng mở rộng 
+linh hoạt (Scalability) và chịu tải cao.
+
+PAGE 27
+16
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+2.5.4 Giải pháp Doanh nghiệp và Tự động hóa Quy trình (Enterprise Solutions & 
+Hyperautomation)
+Cung cấp các giải pháp quản trị toàn diện cho các tập đoàn thuộc danh sách 
+Fortune Global 500:
+• Hệ thống Quản trị Nguồn lực Doanh nghiệp (ERP): Tư vấn, triển khai 
+và bảo trì các gói giải pháp ERP hàng đầu thế giới như SAP (S/4HANA), 
+Oracle, và Microsoft Dynamics 365.
+• Quản lý Quan hệ Khách hàng (CRM): Triển khai nền tảng Salesforce 
+giúp tối ưu hóa quy trình bán hàng và chăm sóc khách hàng.
+• Tự động hóa bằng Robot (RPA & Low-Code): Sử dụng các công cụ
+như akaBot (sản phẩm do FPT phát triển), UiPath, OutSystems để tự động 
+hóa các tác vụ văn phòng lặp đi lặp lại, gia tăng năng suất vận hành.
+2.5.5 An ninh mạng và Internet kết nối vạn vật (Cybersecurity & IoT)
+An ninh mạng (Cybersecurity): Cung cấp các dịch vụ đánh giá lỗ hổng bảo 
+mật, giám sát an toàn thông tin (SOC), và đảm bảo tuân thủ các tiêu chuẩn bảo mật khắt 
+khe như ISO/IEC 27001, GDPR.
+Internet kết nối vạn vật (IoT): Phát triển các giải pháp Nhà máy thông minh 
+(Smart Factory), Giám sát chuỗi cung ứng thông qua kết nối cảm biến và thiết bị phần 
+cứng.
+2.6 CÁC SẢN PHẨM/PHƯƠNG ÁN/GIẢI PHÁP
+Để hiện thực hóa mục tiêu trở thành đối tác chuyển đổi số toàn diện (End-to-End 
+Digital Transformation Provider), FPT Software không chỉ cung cấp dịch vụ phát triển 
+phần mềm theo yêu cầu, mà còn đầu tư mạnh mẽ vào việc xây dựng hệ sinh thái sản 
+phẩm "Made by FPT", các giải pháp chuyên ngành và phương pháp luận triển khai độc 
+quyền.
+2.6.1 Hệ sinh thái Sản phẩm công nghệ sở hữu trí tuệ (IP - Intellectual Property)
+Thay vì làm lại từ đầu cho mỗi khách hàng, FPT Software đóng gói các công 
+nghệ lõi thành các sản phẩm bản quyền (Platform/Product), giúp khách hàng tăng tốc 
+độ triển khai và tối ưu chi phí. Nổi bật nhất là hệ sinh thái "aka" và các công cụ AI thế
+hệ mới:
+
+PAGE 28
+17
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+• akaBot (Tự động hóa quy trình bằng Robot - RPA): Là sản phẩm "ngôi 
+sao" của FPT Software, akaBot tích hợp Trí tuệ nhân tạo (AI) và Nhận 
+dạng ký tự quang học (OCR) để tự động hóa các tác vụ văn phòng có tính 
+lặp lại (kế toán, nhân sự, nhập liệu). akaBot hiện đang phục vụ hàng nghìn 
+doanh nghiệp toàn cầu và liên tục được vinh danh trong các báo cáo của 
+Gartner.
+• akaMES (Quản lý điều hành sản xuất thông minh): Nền tảng số hóa 
+toàn diện nhà máy, từ quản lý kho, theo dõi tiến độ sản xuất theo thời gian 
+thực đến kiểm soát chất lượng, giúp các nhà máy tiến tới mô hình "Nhà 
+máy thông minh" (Smart Factory).
+• Các công cụ hỗ trợ lập trình bằng AI là một hướng phát triển phần 
+mềm; phần giới thiệu này không xác nhận một mức tăng năng suất 
+hoặc quan hệ hợp tác cụ thể chưa có tài liệu tham chiếu.
+2.6.2 Các giải pháp chuyển đổi số chuyên ngành (Domain-specific Solutions)
+FPT Software thiết kế các gói giải pháp giải quyết trực diện "nỗi đau" (Pain 
+points) của từng ngành công nghiệp đặc thù:
+• Giải pháp Công nghệ Ô tô (Smart Automotive Solutions): Cung cấp 
+giải pháp phần mềm toàn diện cho các nhà sản xuất xe hơi, bao gồm hệ
+thống thông tin giải trí trên xe (IVI), nền tảng xe kết nối (Connected Car), 
+các thuật toán AI hỗ trợ xe tự lái (ADAS), và dịch vụ kiểm thử hệ thống 
+nhúng đáp ứng chuẩn an toàn ISO 26262.
+• Giải pháp Tài chính - Ngân hàng (BFSI Solutions): Cung cấp hệ thống 
+định danh khách hàng điện tử (eKYC) dựa trên công nghệ Computer 
+Vision, giải pháp chấm điểm tín dụng (Credit Scoring) và hệ thống phát 
+hiện gian lận (Fraud Detection) xử lý luồng dữ liệu lớn theo thời gian thực.
+• Giải pháp Hiện đại hóa Dữ liệu (Data Modernization & Analytics):
+Cung cấp các đường ống dữ liệu (Data Pipeline) đóng gói sẵn, giúp doanh 
+nghiệp dễ dàng gom dữ liệu từ nhiều nguồn về Data Lake/Data Warehouse 
+trên đám mây, từ đó tích hợp các mô hình Machine Learning/Hệ thống 
+khuyến nghị để khai thác giá trị kinh doanh.
+2.6.3 Phương án triển khai và Phương pháp luận (Methodologies)
+Chất lượng của các sản phẩm và giải pháp được bảo chứng bởi các phương án 
+tiếp cận và quy trình vận hành mang đậm dấu ấn FPT:
+
+PAGE 29
+18
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+• Phương pháp luận FPT Digital Kaizen: Đây là phương pháp chuyển đổi 
+số độc quyền của FPT, được đúc kết từ kinh nghiệm thực tiễn toàn cầu. 
+Phương pháp này dựa trên triết lý "Nghĩ lớn, Bắt đầu thông minh, Nhân 
+rộng tốc độ" (Think big, Start smart, Scale fast), giúp doanh nghiệp quy 
+hoạch lộ trình số hóa đi từ những điểm nghẽn nhỏ nhất nhưng mang lại 
+hiệu quả ROI (Tỷ suất hoàn vốn) cao nhất.
+• Phương án bàn giao kết hợp (Best-shore Delivery Model): Tối ưu hóa 
+bài toán chi phí và thời gian bằng cách kết hợp kỹ sư tại chỗ (Onsite) để
+thấu hiểu nghiệp vụ khách hàng, và lực lượng tại các trung tâm quốc tế
+(Offshore/Nearshore) để đảm bảo nguồn lực sản xuất quy mô lớn, vận 
+hành không ngừng nghỉ.
+• Quy trình DevOps và MLOps: Chuyển dịch từ việc phát triển phần mềm 
+thủ công sang ứng dụng CI/CD (Tích hợp và Triển khai liên tục). Đặc biệt 
+trong lĩnh vực Trí tuệ Nhân tạo, FPT Software áp dụng chuẩn MLOps để
+quản lý vòng đời mô hình học máy: từ khâu lấy dữ liệu, huấn luyện, đánh 
+giá, đến khi đưa lên môi trường thực tế (Production) và giám sát hiệu năng 
+liên tục.
+
+PAGE 30
+19
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+CHƯƠNG 3: THỰC TRẠNG HỆ THỐNG KHUYẾN 
+NGHỊ ĐA PHƯƠNG TIỆN
+3.1 Phân tích bối cảnh và vấn đề thực tế
+Sự chuyển dịch của ngành công nghiệp giải trí sang các nền tảng phát trực tuyến 
+(OTT/Streaming) đã tạo ra một kỷ nguyên bùng nổ nội dung số. Tuy nhiên, sự phong 
+phú này đồng thời mang lại những thách thức lớn cho cả nhà cung cấp dịch vụ lẫn người 
+dùng cuối. Thông qua quan sát hoạt động thực tế của các nền tảng lớn, có thể nhận thấy 
+các vấn đề cốt lõi sau:
+Hiện tượng "Nghịch lý của sự lựa chọn" (Paradox of Choice): Khi phải đối 
+mặt với hàng chục ngàn tựa phim hay bài hát, người dùng thường rơi vào trạng thái mệt 
+mỏi nhận thức, dẫn đến việc mất quá nhiều thời gian để tìm kiếm nội dung hoặc thậm 
+chí từ bỏ việc sử dụng dịch vụ.
+Sự thay đổi trong phương thức tương tác: Người dùng hiện đại có xu hướng 
+tiêu thụ nội dung một cách thụ động. Họ rất hiếm khi chủ động thực hiện các thao tác 
+đánh giá tường minh (Explicit Feedback) như chấm điểm 1-5 sao hay viết nhận xét.
+Khuyến nghị là một thành phần hỗ trợ khám phá nội dung. Đề tài chỉ đo 
+chất lượng offline và hợp đồng phần mềm; chưa đo retention, doanh thu hay quan 
+hệ nhân quả với hành vi sử dụng.
+3.2 Phát hiện những bất hợp lý và thách thức kỹ thuật
+Dù đóng vai trò quan trọng, các hệ thống khuyến nghị đang được vận hành hiện 
+nay vẫn bộc lộ nhiều điểm nghẽn và giới hạn về mặt kỹ thuật:
+Thách thức Dữ liệu thưa thớt (Data Sparsity): Đây là rào cản lớn nhất của các 
+thuật toán Lọc cộng tác (Collaborative Filtering). Trong một hệ thống có hàng triệu 
+người dùng và hàng trăm ngàn sản phẩm, một người dùng trung bình chỉ tương tác với 
+chưa tới 1% tổng kho nội dung. Sự thưa thớt này khiến việc tìm kiếm sự tương đồng 
+giữa các người dùng trở nên thiếu chính xác.
+Điểm mù "Khởi động lạnh" (Cold-Start Problem): Khi một nền tảng thu hút 
+được người dùng mới, hệ thống khuyến nghị lập tức bị "tê liệt" vì không có lịch sử hành 
+vi để phân tích. Hệ quả là người dùng mới thường phải nhận những gợi ý đại trà, không 
+phù hợp sở thích, làm tăng nguy cơ rời bỏ nền tảng ngay trong những ngày đầu trải 
+nghiệm (Churn Rate).
+
+PAGE 31
+20
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Độ trễ giữa feedback và model batch là một đánh đổi thiết kế. MovieRS ghi 
+dữ liệu và làm mới cache sau commit; việc huấn luyện lại chạy bằng worker thủ
+công để kiểm soát tài nguyên, không cam kết model học ngay mọi thay đổi sở thích.
+Rủi ro tạo ra "Bong bóng lọc" (Filter Bubble): Việc quá tối ưu hóa độ chính 
+xác (Accuracy) khiến nhiều thuật toán liên tục gợi ý những nội dung lặp đi lặp lại cùng 
+một thể loại. Điều này làm giảm tính đa dạng (Diversity) và đánh mất yếu tố bất ngờ
+(Serendipity) cần có trong trải nghiệm giải trí.
+3.3 Lý giải nguyên nhân của các vấn đề
+Những bất hợp lý và thách thức kỹ thuật nêu trên bắt nguồn từ các nguyên nhân 
+mang tính bản chất của dữ liệu và kiến trúc hệ thống:
+Hiệu ứng đuôi dài thể hiện sự không đồng đều của số tương tác giữa phim. 
+Phân phối này được kiểm tra trên rating đã có; không gọi số rating là số lượt xem 
+thực tế.
+Sự thiếu hụt dữ liệu đầu vào (Input Deficit): Vấn đề khởi động lạnh xảy ra do 
+giới hạn cố hữu của các thuật toán thuần Lọc cộng tác (CF), vốn chỉ phân tích ma trận 
+tương tác mà bỏ qua các thuộc tính nội tại của sản phẩm (như thể loại, đạo diễn, tóm tắt 
+nội dung) hoặc hồ sơ nhân khẩu học của người dùng.
+Khó khăn trong việc số hóa "Phản hồi ngầm" (Implicit Feedback): Vì người 
+dùng không chấm điểm, hệ thống phải thu thập các tín hiệu ngầm (số phút xem, tỷ lệ bỏ
+ngang, hành vi click). Nguyên nhân khiến các hệ thống chưa tối ưu được nguồn dữ liệu 
+này là do thiếu một công thức quy đổi chuẩn xác. Hành vi "bỏ ngang phim sau 10 phút" 
+có thể do phim dở, nhưng cũng có thể do người dùng bận việc đột xuất. Việc hệ thống 
+nhầm lẫn các tín hiệu nhiễu (Noise) này với sở thích thực sự làm giảm độ tin cậy của 
+thuật toán.
+Thiếu versioning và đối soát có thể làm kết quả khó tái lập. V2 dùng 
+snapshot/manifest, selection khóa trước TEST, source archive, gate và rollback; 
+chưa có hệ thống giám sát drift hoặc CI/CD production.
+
+PAGE 32
+21
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+CHƯƠNG 4: ĐỀ XUẤT GIẢI PHÁP
+4.1 Giới thiệu giải pháp tổng thể
+Để khắc phục những hạn chế của nền tảng giải trí đa phương tiện truyền thống, 
+giải pháp cốt lõi được đề xuất là xây dựng và tích hợp một Hệ thống Khuyến nghị
+Phim Cá nhân hóa (Personalization Engine). 
+Hệ thống này không can thiệp vào mã nguồn của trình phát video cốt lõi, mà hoạt 
+động độc lập dưới dạng một kiến trúc Client-Server hiện đại:
+• Phía Server (Backend): Một máy chủ cung cấp API (sử dụng FastAPI) 
+chịu trách nhiệm tính toán học máy và định tuyến dữ liệu gợi ý. 
+• Phía Client (Frontend): Một nguyên mẫu ứng dụng di động đa nền tảng 
+(phát triển bằng Flutter) làm điểm chạm để hiển thị phim và thu thập hành 
+vi người dùng. 
+Giải pháp sắp xếp phim chưa tương tác dựa trên model được chọn và sở thích 
+ứng dụng. Mức phù hợp là giả thuyết cần đo, không đồng nghĩa hệ thống tự hiểu chính 
+xác sở thích của người dùng.
+4.2 Cơ sở đề xuất
+Giải pháp được lựa chọn để kiểm chứng các bài toán sau ở quy mô nguyên mẫu:
+Hỗ trợ khám phá nội dung: rút gọn catalog thành danh sách Top-K có lý do 
+hiển thị. Lợi ích về mức hài lòng hoặc giữ chân người dùng cần đánh giá trực tuyến 
+riêng.
+Tận dụng nguồn "Dữ liệu ngầm" bị lãng phí: Trong thực tế, người dùng hiếm 
+khi chủ động chấm điểm sao cho phim. Nếu không có hệ thống theo dõi, toàn bộ các 
+hành vi như thời lượng xem phim hay thả tim sẽ bị lãng phí. 
+Vượt qua rào cản "Dữ liệu thưa thớt" (Data Sparsity): Tỷ lệ các cặp người 
+dùng và bộ phim có tương tác thực tế thường chỉ chiếm dưới 2% (nghĩa là ma trận dữ
+liệu trống tới hơn 98%). Hệ thống đa phương tiện thông thường không có năng lực toán 
+học để dự đoán sở thích từ một ma trận trống như vậy. 
+Xử lý "Điểm mù" với người dùng mới (Cold-Start): Người dùng mới đăng ký 
+chưa có bất kỳ dữ liệu lịch sử đánh giá nào, khiến họ dễ cảm thấy nhàm chán và rời bỏ
+ứng dụng ngay lần đầu truy cập. 
+
+PAGE 33
+22
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+4.3 Phương pháp tiếp cận
+Để hệ thống khuyến nghị thực sự giải quyết được các vấn đề nêu trên, dự án áp 
+dụng các cơ sở thuật toán và quy trình kỹ thuật cụ thể như sau:
+4.3.1 Thuật toán Phân rã ma trận
+Thay vì cố gắng tìm kiếm sự trùng lặp hành vi giữa các người dùng (vốn rất khó 
+vì ma trận trống 98%), giải pháp sử dụng thuật toán FunkSVD.
+Cơ chế: Thuật toán này phân rã ma trận khổng lồ để biểu diễn mỗi người dùng 
+và mỗi bộ phim thành các véc-tơ đặc trưng ẩn (Latent Factors). Mức độ phù hợp được 
+tính toán bằng cách đối chiếu (nhân vô hướng) véc-tơ của người dùng với véc-tơ của bộ
+phim. 
+Regularization hạn chế độ lớn tham số và hỗ trợ kiểm soát overfitting. Khả năng 
+khuyến nghị phim ít phổ biến phải được đo bằng baseline, cohort và coverage, không 
+suy ra chỉ từ việc dùng factorization.
+4.3.2 Cơ chế Khuyến nghị Lai (Hybrid) và Khởi động lạnh
+Hybrid nghiên cứu dùng trọng số theo lịch sử; cold user dùng fallback từ dữ liệu 
+fit. Luồng onboarding của ứng dụng là chức năng riêng, chưa có nhãn onboarding trong 
+MovieLens.
+• Khi đăng ký, giao diện cho chọn genre; API lưu sở thích và rerank danh 
+sách phục vụ. Không dùng nhãn TEST để giả lập sở thích này.
+• Số tương tác không tự quyết định chuyển sang SVD. Bundle serving hiện 
+chọn MostPopular từ VAL; worker mới có quyền fit và promote phiên bản 
+khác sau khi vượt gate.
+4.3.3 Số hóa phản hồi ngầm và Cập nhật tức thời
+Favorite tạo proxy 4,5; xem hoàn tất từ 95% tạo watch_complete 4,0 nếu 
+không có nguồn mạnh hơn. Xem dở không thành dislike. Explicit/legacy_unknown 
+ưu tiên hơn favorite, và favorite ưu tiên hơn watch_complete; bỏ favorite rút proxy 
+tương ứng.
+Sau commit, cache của user được làm mất hiệu lực. Callback cập nhật online 
+của nhánh SVD legacy chỉ có ý nghĩa khi nhánh đó được nạp; với bundle 
+MostPopular V2 không khẳng định có bước SGD làm thay đổi vector người dùng 
+tức thì.
+
+PAGE 34
+23
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+4.3.4 Tự động hóa bằng Quy trình MLOps
+Vòng đời được tách thành nghiên cứu và serving để việc thu thập phản hồi không 
+làm thay đổi benchmark đã khóa:
+• Feedback runtime được đọc vào dữ liệu fit phục vụ riêng; snapshot 
+nghiên cứu, validation và TEST không bị repartition hoặc bổ sung 
+nhãn ứng dụng.
+• Worker thủ công ngoài API có khóa một job, ngân sách RAM/thời 
+gian và trạng thái rõ ràng. API không có tiến trình auto-retrain chạy 
+nền; scheduling là hướng mở rộng.
+• Gate dùng validation chung với NDCG và guardrail 
+cohort/latency/rating phù hợp. Bundle được xác minh trước khi thay 
+con trỏ; reload cần admin token. Cơ chế snapshot giảm rủi ro gián 
+đoạn, không thay thế đo tải hoặc bảo đảm zero-downtime trong 
+production.
+4.4 Kiến trúc tách nghiên cứu và vận hành
+Nhánh nghiên cứu chỉ nhận raw ML-25M, config và snapshot có hash. Nhánh 
+ứng dụng ghi PostgreSQL, rồi worker dùng dữ liệu fit phục vụ riêng. Không có mũi tên 
+feedback quay vào TEST nghiên cứu.
+Mẫu research và các trial được giữ bất biến; các lần chạy khác code/config/data 
+không resume chung. Dashboard không tính delta giữa các run khác snapshot, split, tập 
+user hay protocol.
+
+PAGE 35
+24
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+CHƯƠNG 5: CƠ SỞ LÝ THUYẾT
+5.1 Giới thiệu ngôn ngữ Python
+5.1.1 Python là gì?
+Python là ngôn ngữ lập trình bậc cao, đa mục đích, được Guido van Rossum phát 
+triển và ra mắt lần đầu vào năm 1991. Python nổi bật với triết lý thiết kế hướng tới tính 
+dễ đọc (readability) - cú pháp trong sáng, ngắn gọn, sử dụng thụt lề (indentation) thay 
+vì dấu ngoặc nhọn để phân định khối lệnh.
+Python được chọn nhờ thư viện xử lý dữ liệu, sparse matrix, mô hình và API. 
+Phiên bản đã kiểm thử của dự án là Python 3.14.2 trên Windows, với dependency khóa; 
+không suy ra tính tương thích mọi OS/Python từ lần chạy này.
+5.1.2 Python hoạt động như thế nào?
+Python là ngôn ngữ thông dịch (interpreted language), hoạt động theo cơ chế ba 
+bước cơ bản. Đầu tiên, lập trình viên viết mã nguồn trong các tệp tin định dạng .py. Tiếp 
+theo, trình thông dịch CPython (phiên bản chuẩn) sẽ biên dịch mã nguồn này thành 
+bytecode - một dạng mã trung gian (intermediate code) và lưu trữ trong các tệp .pyc tại 
+thư mục pycache. Cuối cùng, tập lệnh bytecode này sẽ được đưa vào Máy ảo Python 
+(PVM) để đọc và thực thi từng lệnh trực tiếp trên hệ điều hành đích (Windows, macOS, 
+Linux).
+Mã nguồn Python có tính di động ở mức ngôn ngữ, nhưng phụ thuộc native như 
+Surprise và driver có thể cần bản build phù hợp. Vì vậy lock hiện tại gắn với môi trường 
+Windows đã được kiểm chứng.
+5.2 Giới thiệu Framework FastAPI
+5.2.1 FastAPI là gì?
+FastAPI là một framework hiện đại, hiệu năng cao dành cho Python, được thiết 
+kế chuyên biệt để xây dựng các RESTful API (Application Programming Interface). 
+FastAPI được phát triển bởi Sebastián Ramírez, ra mắt năm 2018, và nhanh chóng trở
+thành một trong những framework Python phát triển nhanh nhất trên GitHub.
+Các đặc điểm nổi bật của FastAPI:
+
+PAGE 36
+25
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+• FastAPI dựa trên ASGI/Starlette và dùng Pydantic để kiểm tra dữ
+liệu; hiệu năng thực tế phụ thuộc workload, I/O và cách triển khai, 
+không suy ra ưu thế tốc độ tuyệt đối từ tên framework [7].
+• Tự động sinh tài liệu API: FastAPI tự động tạo giao diện Swagger UI và 
+ReDoc từ mã nguồn, cho phép lập trình viên tương tác trực tiếp với API 
+mà không cần công cụ cấu hình bên ngoài.
+• Type Hints & Validation: Sử dụng hệ thống Type Hints của Python 3.6+ 
+kết hợp Pydantic để tự động kiểm tra, xác thực kiểu dữ liệu đầu vào và trả
+về thông báo lỗi rõ ràng.
+• Async/await hỗ trợ I/O bất đồng bộ; các tác vụ SQL và tính toán đồng 
+bộ được tổ chức phù hợp. Khả năng chịu tải đồng thời cần một thí 
+nghiệm tải riêng.
+5.2.2 FastAPI hoạt động như thế nào?
+Request từ Flutter được Uvicorn tiếp nhận, qua middleware xác thực/ownership 
+và định tuyến tới endpoint. CORS xử lý chính sách truy cập chéo nguồn của trình duyệt, 
+không thay thế xác thực hoặc phân quyền.
+Sau khi qua lớp Middleware, hệ thống định tuyến (Router) của FastAPI sẽ phân 
+tích URL để ánh xạ yêu cầu tới đúng hàm xử lý (endpoint) tương ứng. Ngay trước khi 
+hàm này được kích hoạt, thư viện Pydantic sẽ tự động đối chiếu và xác thực toàn bộ dữ
+liệu đầu vào theo các cấu trúc đã định nghĩa. Nếu dữ liệu không hợp lệ, hệ thống từ chối 
+và trả về lỗi ngay lập tức. Nếu hợp lệ, logic nghiệp vụ thực sự sẽ được thực thi - như gọi 
+đến dịch vụ đọc mô hình SVD, tính toán và xuất ra danh sách gợi ý. Cuối cùng, dữ liệu 
+kết quả được tuần tự hóa thành định dạng JSON và đẩy về cho Client kèm theo mã trạng 
+thái HTTP chuẩn xác.
+5.3 Giới thiệu về ngôn ngữ Dart và Framework Flutter
+5.3.1 Ngôn ngữ Dart là gì?
+Dart là ngôn ngữ lập trình hướng đối tượng, kiểu tĩnh (statically typed), được 
+Google phát triển và công bố lần đầu vào năm 2011. Dart được thiết kế để xây dựng các 
+ứng dụng có giao diện người dùng (UI) trên nhiều nền tảng: di động (Android, iOS), 
+web, và desktop.
+Các đặc điểm chính của Dart:
+
+PAGE 37
+26
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+• Kiểu dữ liệu tĩnh (Static Typing): Biến được khai báo kiểu dữ liệu tại 
+thời điểm biên dịch, giúp phát hiện lỗi sớm và tối ưu hiệu năng.
+• Sound Null Safety: Đảm bảo các biến không thể nhận giá trị null trừ khi 
+được khai báo tường minh, giảm thiểu triệt để lỗi ngoại lệ
+(NullPointerException) lúc chạy.
+• Hỗ trợ bất đồng bộ (Async/Await): Tích hợp lập trình bất đồng bộ gốc 
+thông qua Future và Stream, đặc biệt tối ưu cho các tác vụ I/O như gọi 
+API hay truy xuất cơ sở dữ liệu.
+5.3.2 Dart hoạt động như thế nào?
+Ngôn ngữ Dart sở hữu cơ chế hoạt động linh hoạt nhờ việc hỗ trợ hai chế độ biên 
+dịch khác nhau, tùy thuộc vào giai đoạn của vòng đời phần mềm.
+Trong giai đoạn phát triển (Development), Dart sử dụng cơ chế biên dịch tức thời 
+JIT (Just-In-Time). Mã nguồn sẽ được chạy trực tiếp trên Máy ảo Dart (Dart VM), cho 
+phép hệ thống chỉ biên dịch những phần mã thực sự cần thiết. Ưu điểm lớn nhất của cơ 
+chế này là tính năng Hot Reload, cho phép lập trình viên nhìn thấy sự thay đổi giao diện 
+ngay lập tức trên màn hình mô phỏng mỗi khi lưu tệp mã nguồn mà không cần phải biên 
+dịch lại toàn bộ ứng dụng.
+Khi phát hành mobile, Dart có thể biên dịch AOT; trên web có pipeline biên dịch 
+cho trình duyệt. Build web đã được kiểm chứng nhưng không thay cho thử nghiệm 
+Android/iOS vật lý.
+5.3.3 Framework Flutter là gì?
+Flutter là bộ công cụ phát triển giao diện người dùng (UI Toolkit) mã nguồn mở
+do Google phát triển, ra mắt phiên bản ổn định đầu tiên vào tháng 12/2018. Flutter cho 
+phép xây dựng ứng dụng đa nền tảng (cross-platform) - từ một cơ sở mã nguồn duy nhất 
+viết bằng Dart có thể biên dịch thành ứng dụng gốc cho Android, iOS, Web và Desktop.
+Các đặc điểm nổi bật của Flutter:
+• Kiến trúc dựa trên Widget (Widget-based): Mọi thành phần hiển thị, từ
+một nút bấm nhỏ cho đến cấu trúc nguyên một màn hình, đều là các 
+Widget được lồng ghép với nhau theo cấu trúc dạng cây.
+• Thiết kế đồng bộ: Tích hợp bộ thư viện giao diện chuẩn Material Design 
+(Android) và Cupertino (iOS).
+
+PAGE 38
+27
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+• Flutter kết xuất giao diện bằng engine tương ứng nền tảng. Báo cáo 
+không khẳng định 60–120 FPS vì chưa có phép đo hiệu năng khung 
+hình.
+Vai trò trong dự án MovieRS: Flutter đảm nhận việc xây dựng nguyên mẫu 
+ứng dụng di động, bao gồm hệ thống các màn hình tương tác phức tạp như: Onboarding, 
+Trang chủ gợi ý phim, Tìm kiếm, Chi tiết phim, Mô phỏng trình phát video và Hồ sơ 
+người dùng.
+5.3.4 Flutter hoạt động như thế nào?
+Kiến trúc vận hành của Flutter được chia thành ba tầng rõ rệt, kết nối chặt chẽ
+với nhau để tạo ra trải nghiệm người dùng mượt mà.
+Nằm ở vị trí trên cùng là Tầng Framework (viết bằng ngôn ngữ Dart). Đây là lớp 
+mà các lập trình viên làm việc trực tiếp, cung cấp kho thư viện đồ sộ gồm các Widget 
+thiết kế sẵn, hệ thống điều hướng, quản lý hoạt ảnh (Animation) và ghi nhận thao tác 
+vuốt chạm (Gestures).
+Ngay bên dưới Framework là Tầng Engine (được viết bằng C/C++). Tầng này là 
+"trái tim" của hệ thống, đóng vai trò tiếp nhận các lệnh từ Framework và sử dụng trình 
+kết xuất đồ họa (như Skia hoặc Impeller) để tính toán bố cục và vẽ trực tiếp các điểm 
+ảnh 2D. Tầng Engine cũng chứa môi trường thực thi ngôn ngữ Dart (Dart Runtime).
+Dưới cùng là Tầng Embedder. Tầng này có nhiệm vụ làm lớp vỏ bọc giao tiếp 
+giữa Engine của Flutter và hệ điều hành gốc của thiết bị (Android hoặc iOS). Nó quản 
+lý chu kỳ sống của ứng dụng, các luồng (threads) và tiếp nhận các sự kiện đầu vào từ
+phần cứng máy. Quy trình hiển thị một khung hình trong Flutter là sự phối hợp nhịp 
+nhàng giữa ba tầng này: Framework duyệt cây Widget để tìm sự thay đổi, tính toán kích 
+thước bố cục mới và ra lệnh cho Engine vẽ các điểm ảnh đó gửi lên GPU của thiết bị.
+5.4 Giới thiệu công cụ trực quan hóa Streamlit
+5.4.1 Streamlit là gì?
+Streamlit là một framework mã nguồn mở dành cho Python, cho phép xây dựng 
+các ứng dụng web tương tác phục vụ mục đích phân tích dữ liệu, trực quan hóa và quản 
+trị mô hình học máy — tất cả chỉ với mã Python thuần, hoàn toàn không cần can thiệp 
+HTML, CSS hay JavaScript.
+
+PAGE 39
+28
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Khác với các framework như Django hay Flask, Streamlit được sinh ra để phục 
+vụ nhóm Khoa học Dữ liệu (Data Science). Nhờ tính năng phản hồi tương tác tự động 
+và cú pháp khai báo đơn giản (st.dataframe, st.chart), nó cho phép chuyển đổi nhanh 
+chóng một tập lệnh phân tích thành một Web Dashboard chuyên nghiệp.
+5.4.2 Streamlit hoạt động như thế nào?
+Khác biệt hoàn toàn so với mô hình định tuyến của các framework web truyền 
+thống, Streamlit vận hành dựa trên cơ chế phản ứng đặc trưng gọi là "chạy lại tập lệnh" 
+(Script rerun).
+Mỗi khi người dùng truy cập vào bảng điều khiển qua trình duyệt, máy chủ
+Streamlit sẽ mở tệp mã nguồn Python và thực thi nó chạy một mạch từ dòng đầu tiên 
+đến dòng cuối cùng. Quá trình thực thi các hàm giao diện của Streamlit sẽ tự động sinh 
+ra cấu trúc HTML hiển thị lên trang web.
+V2 đọc artifact đã hoàn tất khi script rerun, không fit model hoặc gọi retrain khi 
+mở dashboard. Cache giao diện và dữ liệu không được dùng để che việc kiểm tra 
+checksum và tính tương thích run.
+5.5 Giới thiệu thuật toán SVD và thư viện Surprise
+5.5.1 Thuật toán SVD (Singular Value Decomposition) là gì?
+SVD trong Surprise là matrix factorization có bias học bằng SGD, thường được 
+gọi BiasedSVD. Cần phân biệt với phép phân rã UΣVᵀ của đại số tuyến tính; dữ liệu 
+thiếu không được điền bằng nhãn TEST [4].
+Mỗi user và phim đã biết có vector ẩn. Khi một phía chưa xuất hiện trong dữ liệu 
+fit, cách fallback của model ảnh hưởng kết quả; đây là lý do phải giữ cold user trong 
+đánh giá.
+Điểm dự đoán được tính toán thông qua công thức:
+rui = μ + bu + bi + pu
+Tqi
+μ là trung bình dữ liệu fit; b_u, b_i là bias; tích vô hướng giữa hai vector biểu 
+diễn phần tương tác. Sai số rating thấp không bảo đảm ranking tốt khi cạnh tranh với 
+toàn catalog chưa tương tác.
+
+PAGE 40
+29
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+5.5.2 Thư viện Surprise và cách SVD hoạt động trong dự án
+Surprise (Simple Python Recommendation System Engine) là thư viện mã nguồn 
+mở chuyên biệt để xây dựng và đánh giá hệ thống khuyến nghị. Surprise cung cấp sẵn 
+các thuật toán tối ưu hóa cao cùng bộ công cụ đo lường sai số chuẩn xác (như RMSE, 
+MAE).
+Khi chọn siêu tham số, Surprise fit trên 990.073 rating TRAIN. Sau khi khóa 
+selection, từng seed refit trên 1.113.832 rating TRAIN+VAL rồi chấm cùng TEST. VAL 
+chọn 32 factors, 15 epochs và regularization 0,02.
+Trọng số được học qua các epoch SGD đã cấu hình, không khẳng định hội tụ tối 
+ưu toàn cục. Source archive, seed, môi trường và metric được lưu để tái lập; model 
+nghiên cứu không tự được deploy dựa trên TEST.
+5.6 Lấy mẫu user và đánh giá theo thời gian
+Quét nguồn theo chunk 250.000 dòng, thu ID rồi sắp theo digest SHA256 của 
+chuỗi seed:userId; chọn N ID đầu và giữ mọi rating của họ. Các profile lồng nhau: smoke 
+1.000, dev 4.000, research 8.000, extended 12.000 user. Tất cả dùng cùng cutoff, không 
+tự đổi thời gian để development nhìn thấy tương lai.
+Đánh giá tại đầu cửa sổ tương lai: lịch sử là dữ liệu trước cutoff; fit TRAIN, chọn 
+VAL, ghi selection bền vững rồi mới đọc TEST; refit TRAIN+VAL cho mọi model cần 
+fit. Toàn catalog fit trừ phim đã tương tác là candidate set; tie-break score giảm và movie 
+ID tăng.
+Positive là rating≥3,5; user cần ít nhất một positive trong cửa sổ. Positive ngoài 
+catalog vẫn nằm trong relevant chính, user không có positive phục vụ được nhận 0. 
+Conditional-on-servable là phép đo phụ có mẫu số riêng. Không lấy 99/999 item âm tính 
+để thay metric chính [5,6].
+5.7 Baseline và thiết kế hybrid
+MostPopular đếm rating trong dữ liệu fit; BayesianItemMean dùng trung bình co 
+về mean toàn cục với prior strength 5. GlobalMean và regularized user/item bias là đối 
+chứng rating. GenreContent dùng vector genre chuẩn hóa và hồ sơ từ các rating≥3,5 đã 
+biết; ItemKNN dùng positive co-occurrence/cosine, shrinkage và top-neighbor sparse.
+
+PAGE 41
+30
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Hybrid dùng percentile điểm trên cùng candidate set. Với n rating trước cutoff, 
+trọng số SVD là w=n/(n+tau); điểm bằng w×SVD chuẩn hóa cộng (1−w)×[beta×genre 
+chuẩn hóa+(1−beta)×Bayesian chuẩn hóa]. Nếu thiếu profile genre, beta hiệu lực bằng 
+0; cold user dùng Bayesian fallback. FixedHybrid, không genre và SVDSharedFallback 
+giúp tách đóng góp.
+VAL chọn tau=20, beta=0,75; SVD 32 factors/15 epochs/reg=0,02; ItemKNN 50 
+neighbors/shrinkage10. MMR chọn trọng số 0 vì mục tiêu selection là NDCG; bảng thử
+trọng số MMR vẫn lưu để phân tích đánh đổi.
+wᵤ = nᵤ / (nᵤ + τ)
+5.8 Định nghĩa metric và khoảng tin cậy
+Metric chính là macro NDCG@10 theo user; DCG dùng relevance nhị phân và 
+chiết khấu log₂(rank+1), IDCG dùng min(K, số positive). Precision chia K, Recall chia 
+tổng positive của user, HitRate là có ít nhất một hit. K=5/20 chỉ là phân tích phụ. 
+RMSE/MAE chỉ áp dụng model dự đoán rating; model chỉ ranking hiển thị N/A.
+Coverage là tỷ lệ catalog được khuyến nghị; diversity dùng khoảng cách genre 
+trong danh sách và novelty dựa trên tần suất fit. Các metric này đo đặc tính danh sách, 
+không phải cảm nhận hoặc satisfaction thực tế.
+Mô hình ngẫu nhiên dùng seed 42/43/44. Trung bình theo user qua seed trước khi 
+bootstrap ghép cặp 2.000 lần cho CI95 của delta; không coi user×seed là quan sát độc 
+lập. Baseline chính được chọn bằng VAL. CI phụ thuộc sample/cutoff; ablation là thăm 
+dò chưa hiệu chỉnh nhiều so sánh.
+5.9 PostgreSQL và ranh giới xác thực
+Schema moviers chỉ được backend truy cập qua SQL, bật RLS và thu hồi quyền 
+public/anon/authenticated. API quản lý bearer opaque, chỉ lưu digest, hỗ trợ logout và 
+ownership. Kết nối owner có thể bypass RLS nên không coi RLS tự xác thực token 
+FastAPI [8].
+Transaction ghi favorite+feedback và progress+watch_complete nguyên tử. 
+Idempotency-Key được hash cùng payload, có hiệu lực 24 giờ; replay cùng request 
+không đảo trạng thái mới, đổi payload dùng lại key trả 409. Mất DB trả lỗi, không 
+fallback ghi CSV.
+
+PAGE 42
+31
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+CHƯƠNG 6: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+6.1 Khảo sát hệ thống
+6.1.1 Mô tả bài toán
+MovieRS gồm ứng dụng Flutter, API FastAPI, dashboard nghiên cứu và 
+worker/pipeline riêng. PostgreSQL giữ dữ liệu ứng dụng; ML-25M, snapshot nghiên 
+cứu và model lớn nằm ở artifact local.
+• Ứng dụng di động (Frontend - Flutter): Đóng vai trò là điểm chạm 
+tương tác với người dùng cuối. Ứng dụng cung cấp không gian để người 
+dùng khám phá danh mục phim, thực hiện các thao tác đánh giá (chấm 
+sao, thả tim) và trải nghiệm trình phát video mô phỏng.
+• Máy chủ xử lý (Backend API - FastAPI): Đóng vai trò là "trái tim" của 
+hệ thống, chịu trách nhiệm xử lý toàn bộ logic nghiệp vụ, phục vụ các 
+luồng gợi ý cá nhân hóa, tiếp nhận và lưu trữ phản hồi từ thiết bị đầu cuối, 
+cũng như quản lý định danh người dùng.
+• Dashboard Streamlit đọc dữ liệu nguồn gốc, so sánh model/CI, 
+ablation và trạng thái vận hành. Nó không trực tiếp kích hoạt huấn 
+luyện; người vận hành chạy CLI worker có khóa job.
+6.1.2 Xác định tác nhân (Actors)
+Dựa trên yêu cầu nghiệp vụ, hệ thống được thiết kế để phục vụ 3 nhóm tác nhân 
+chính:
+ST
+T
+Tác nhân Vai trò Giao diện
+1 Người dùng Khám phá, chấm sao, favorite, mô phỏng xem; 
+chỉ đọc/ghi dữ liệu của mình. Flutter
+2
+Người nghiên 
+cứu và vận hành
+Xem benchmark/dashboard, chạy CLI, kiểm 
+tra gate và rollback. Streamlit và CLI
+3 Worker hệ thống
+Thực thi job có khóa sau lệnh thủ công; ghi 
+trạng thái và bundle.
+Tiến trình riêng ngoài 
+API
+6.1.3 Xác định yêu cầu chức năng
+Các chức năng của hệ thống được phân rã chi tiết theo từng nhóm tác nhân như 
+sau:
+
+PAGE 43
+32
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+ST
+T
+Chức năng Tác nhân Mô tả
+1 Tài khoản và phiên Người dùng Đăng ký, login, xác minh phiên, logout; token có hạn 
+và kiểm tra ownership.
+2 Trang chủ Người dùng Model chọn trên VAL, onboarding rerank, loại phim 
+đã tương tác.
+3
+Catalog và tìm 
+kiếm
+Người dùng Danh sách/phổ biến/từ khóa/chi tiết từ metadata.
+4 Sao explicit Người dùng 0,5–5 sao; ưu tiên hơn proxy; idempotency khi ghi.
+5 Favorite Người dùng Một request cập nhật danh sách và proxy trong 
+transaction.
+6 Player mô phỏng Người dùng Heartbeat 5 giây, resume, xem xong từ 95%, kiểm tra 
+lỗi lưu.
+7 Hồ sơ và sở thích Người dùng Lịch sử explicit, favorite và genre của chính tài khoản.
+8
+Provenance và dữ
+liệu
+Nghiên cứu Audit, mẫu toàn lịch sử, tính đại diện và split có hash.
+9 Benchmark và CI Nghiên cứu
+Cùng candidate/user, paired bootstrap, cohort và 
+ablation.
+10 Serving job Vận hành Worker thủ công, khóa một job, validation gate và 
+bundle.
+11 Health và rollback Vận hành Kiểm tra model/database; reload có admin token, 
+rollback có checksum.
+6.1.4 Bảng thiết kế API Endpoints
+Bảng sau liệt kê các nhóm endpoint thực tế của V2 và ranh giới truy cập. Các 
+route tương thích cũ được giữ nhưng client dùng endpoint favorite thống nhất để tránh 
+gửi hai lần.
+S
+T
+T
+Metho
+d
+Endpoint Mục đích và truy cập
+1 POST /api/auth/register Tạo tài khoản và phiên; công khai
+2 POST /api/auth/login Xác thực, cấp bearer; công khai
+
+PAGE 44
+33
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+S
+T
+T
+Metho
+d
+Endpoint Mục đích và truy cập
+3
+GET / 
+POST /api/auth/me; /api/auth/logout Xác minh / thu hồi phiên; bearer
+4 GET /api/movies; /api/movies/popular Catalog / thống kê phim; công khai
+5 GET /api/movies/search; 
+/api/movies/{movie_id} Tìm kiếm / chi tiết; công khai
+6 GET /api/recommendations/{user_id} User app cần bearer/ownership; ID 
+MovieLens là demo lịch sử
+7 POST /api/interactions/rating Explicit, bearer/ownership; Idempotency￾Key
+8 POST /api/users/{user_id}/favorites Favorite và proxy cùng transaction; bearer
+9 POST /api/interactions/favorite; 
+/api/interactions/watch
+Alias tương thích; không gọi trùng 
+endpoint chính
+1
+0
+PUT /api/watch/progress Heartbeat/resume; bearer/ownership
+1
+1
+GET /api/watch/progress/{user_id}[/{movi
+e_id}] Tiến độ toàn user hoặc một phim; bearer
+1
+2
+DELE
+TE
+/api/watch/progress/{user_id}/{movie
+_id} Xóa tiến độ thuộc user; bearer
+1
+3
+GET /api/users/{user_id}/profile; 
+/favorites; /ratings Hồ sơ/favorite/lịch sử explicit; ownership
+1
+4
+PUT /api/users/{user_id}/preferences Cập nhật genre; ownership
+1
+5
+POST /api/recommendations/reload Yêu cầu X-Admin-Token; không là thao 
+tác mobile
+1
+6
+GET /api/health; /api/health/database Readiness model/catalog và database; 
+không tạo schema
+
+PAGE 45
+34
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.2 Biểu đồ ca sử dụng (Use Case Diagram)
+6.2.1 Biểu đồ ca sử dụng tổng quát
+Biểu đồ dưới đây mô tả bức tranh toàn cảnh về sự tương tác giữa 3 tác nhân với 
+toàn bộ hệ thống MovieRS.
+Hình 1 Biểu đồ ca sử dụng tổng quát
+6.3 Biểu đồ lớp (Class Diagram)
+Biểu đồ lớp dưới đây định nghĩa cấu trúc đối tượng tĩnh của hệ thống, bao gồm 
+các thuộc tính, phương thức và mối quan hệ cardinality giữa các thực thể cốt lõi như 
+User, Movie, mô hình AI và các Service nghiệp vụ.
+
+PAGE 46
+35
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Hình 2 Biểu đồ lớp
+6.4 Thiết kế cơ sở dữ liệu
+6.4.1 Sơ đồ Mô hình Quan hệ Thực thể (ERD)
+V2 đã tích hợp PostgreSQL trên Supabase trong schema riêng moviers. Dữ liệu 
+tài khoản, phiên, phản hồi, favorite và watch progress có FK/unique/check; không 
+upload toàn bộ ML-25M vào database ứng dụng.
+
+PAGE 47
+36
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Hình 3 Sơ đồ quan hệ thực thể
+6.4.2 Từ điển dữ liệu (Data Dictionary)
+6.4.2.1 Bảng app_users
+Lưu trữ thông tin định danh và tùy chọn cấu hình sở thích của người dùng.
+Trường Kiểu Ràng buộc Mô tả
+user_id bigint PK, identity ≥200000 Không trùng miền ID MovieLens
+username text unique lower, 3–50 Tên đăng nhập không là khóa chính
+password_hash text NOT NULL Argon2id cho mật khẩu mới; legacy 
+nâng sau login hợp lệ
+
+PAGE 48
+37
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Trường Kiểu Ràng buộc Mô tả
+salt text NOT NULL Tương thích hash legacy; Argon2 có 
+salt trong chuỗi mã hóa
+genres text[] NOT NULL, {} Thể loại onboarding; không suy ra từ
+TEST
+created_at timestamp
+tz DEFAULT now() Dấu thời gian có múi giờ
+6.4.2.2 Bảng Movies
+Catalog giữ movie_id gốc, title/genre canonical và metadata TMDb khi có; thiếu 
+enrichment không làm mất phim khỏi catalog. Điểm TMDb không là feature lịch sử của 
+benchmark.
+Trường Kiểu Ràng buộc Mô tả
+movie_id bigint PK >0 ID MovieLens canonical
+title text NOT NULL Tiêu đề gốc vẫn giữ khi thiếu TMDb
+genres text[] NOT NULL, {} Mảng genre trong SQL
+tmdb_id bigint nullable ID enrichment nếu có
+poster_path / 
+overview text DEFAULT trống Metadata hiển thị
+vote_average / 
+vote_count
+numeric / 
+bigint 0–10 / ≥0 Điểm cộng đồng hiển thị, không là 
+feature benchmark
+runtime_minutes integer >0, DEFAULT 
+100 Giá trị mặc định chỉ dùng mô phỏng
+release_date / 
+release_year date / integer nullable / 0–9999 Thông tin phát hành
+6.4.2.3 Bảng feedback
+Mỗi cặp user–movie có một phản hồi hiệu lực và source. Đây không phải event 
+log lưu mọi thay đổi; explicit và proxy được phân biệt trước khi đưa vào fit serving.
+Trường Kiểu Ràng buộc Mô tả
+user_id, movie_id bigint PK ghép; hai FK Một phản hồi hiệu lực mỗi cặp
+
+PAGE 49
+38
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Trường Kiểu Ràng buộc Mô tả
+rating numeric(2,1) 0,5–5,0 Giá trị explicit hoặc proxy có 
+source
+source text
+CHECK nguồn hợp 
+lệ
+explicit, legacy_unknown, 
+favorite, watch, watch_complete
+updated_at timestamptz DEFAULT now() Thời điểm cập nhật hiệu lực
+6.4.2.4 Bảng Favorites
+Quản lý trạng thái bộ sưu tập phim yêu thích, phục vụ riêng cho UI hiển thị danh 
+sách yêu thích cá nhân.
+Trường Kiểu Ràng buộc Mô tả
+user_id, movie_id bigint PK ghép; hai FK Cặp tài khoản và phim đã lưu
+added_at timestamptz DEFAULT now() Favorite và feedback ghi cùng 
+transaction
+6.4.2.5 Bảng Watch Progress 
+Lưu vết tiến độ xem phim để phục vụ tính năng "Tiếp tục xem" (Continue 
+Watching) và quy đổi tỷ lệ xem (Watch Ratio).
+Trường Kiểu Ràng buộc Mô tả
+user_id, movie_id bigint PK ghép; hai FK Một tiến độ mỗi cặp
+position_seconds bigint 0 ≤ position ≤ 
+duration Vị trí resume
+duration_seconds bigint >0 Thời lượng mô phỏng
+ratio double 
+precision
+GENERATED 
+STORED
+position / duration, không ghi từ
+client
+status text
+GENERATED 
+STORED
+finished nếu ratio≥0,95; ngược lại 
+in_progress
+updated_at timestamptz DEFAULT now() Heartbeat gần nhất
+6.4.2.6 Registry model dạng artifact local
+Registry serving nằm trong thư mục bundle/manifest và current.json, không phải 
+bảng SQL. Dataset, validation gate, spec, checksum và previous version xác định khả
+năng rollback.
+
+PAGE 50
+39
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Artifact Định 
+dạng
+Ràng buộc Nội dung
+current.json JSON Con trỏ atomic version và hash manifest
+manifest.json JSON status=ready, files 
+hash
+dataset/spec/previous và checksum 
+bundle
+model.joblib Joblib Nguồn tin cậy, verify 
+hash
+Model, lịch sử fit và catalog phục 
+vụ
+gate.json JSON Validation chung Candidate/incumbent, cohort, 
+latency/rating guards
+job.json JSON Trạng thái job started/completed, family, reload 
+result
+resource_usage.json JSON Budget đã khai báo Thời gian và RSS quan sát
+6.5 Bảng sessions và idempotency_keys
+Hai bảng bổ sung quản lý phiên và retry, đều có FK tới app_users và index phục 
+vụ truy vấn thời hạn. schema_version ghi phiên bản migration.
+Bảng Khóa và trường Hợp đồng
+sessions token_hash PK; user_id FK; 
+expires_at; created_at
+SHA256 digest của token opaque, 
+không lưu bearer thô; TTL12 giờ, 
+logout xóa phiên
+idempotency_keys PK(user_id,key_hash); 
+payload_hash; expires_at
+Ledger commit cùng nghiệp vụ, 
+TTL24 giờ; payload khác cùng key bị
+từ chối
+schema_version version PK; applied_at Ghi marker sau khi migration hoàn tất
+6.6 Migration và bảo toàn dữ liệu
+Dry-run kiểm đếm và FK; apply backup nguyên trạng, cách ly orphan và import 
+trong transaction. Chạy lại không ghi đè dữ liệu runtime mới. Timestamp naive legacy 
+dùng Asia/Ho_Chi_Minh; timestamp có offset được giữ nguyên.
+Đối soát ngày 16/10/2026 có 7 accounts, 62.423 movies, 41 feedback, 13 
+favorites, 20 watch progress; 1 favorite không có tài khoản được cách ly, không tạo user 
+
+PAGE 51
+40
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+giả. Export rollback có checksum được đọc lại bằng adapter file; sessions không export 
+nên cần đăng nhập lại. ML-25M và model lớn vẫn local.
+6.7 Biểu đồ hoạt động
+6.7.1 Luồng hoạt động Đăng ký tài khoản
+Hình 4 Luồng hoạt động đăng kí tài khoản
+
+PAGE 52
+41
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.7.2 Luồng hoạt động Đăng nhập
+Hình 5 Luồng hoạt động đăng nhập
+
+PAGE 53
+42
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.7.3 Luồng hoạt động Tìm kiếm danh mục phim
+Hình 6 Luòng hoạt động tìm kiếm danh mục phim
+
+PAGE 54
+43
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.7.4 Luồng thu thập Đánh giá sao 
+Hình 7 Luồng thu thập Đánh giá sao
+
+PAGE 55
+44
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.7.5 Luồng thu thập Yêu thích phim 
+Hình 8 Luồng thu thập Yêu thích phim
+
+PAGE 56
+45
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.7.6 Luồng Xem phim mô phỏng & Đo lường Watch Ratio
+Hình 9 Luồng Xem phim mô phỏng & Đo lường Watch Ratio
+
+PAGE 57
+46
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.7.7 Luồng Trích xuất Gợi ý Cá nhân hóa (Trang chủ)
+Hình 10 Luồng Trích xuất Gợi ý Cá nhân hóa
+
+PAGE 58
+47
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.7.8 Luồng Vận hành MLOps: Tái huấn luyện mô hình (Retrain)
+Hình 11 Tái huấn luyện mô hình
+
+PAGE 59
+48
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.8 Biểu đồ tuần tự
+6.8.1 Tuần tự Khám phá dữ liệu 
+Hình 12 Tuần tự Khám phá dữ liệu
+
+PAGE 60
+49
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.8.2 Tuần tự Đánh giá sao 
+Hình 13 Tuần tự Đánh giá sao
+
+PAGE 61
+50
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.8.3 Tuần tự Tiến trình Xem phim & Ghi nhận ngầm
+Hình 14 Tuần tự Tiến trình Xem phim & Ghi nhận ngầm
+
+PAGE 62
+51
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.8.4 Tuần tự phân phối gợi ý
+Hình 15 Tuần tự phân phối gợi ý
+
+PAGE 63
+52
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+6.8.5 Tuần tự Vòng lặp Học máy 
+Hình 16 Tuần tự vòng lặp học máy
+
+PAGE 64
+53
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+CHƯƠNG 7: CÀI ĐẶT VÀ KẾT QUẢ THỬ NGHIỆM
+7.1 Yêu cầu phần cứng và hệ điều hành
+Thành phần Máy và cấu hình đã quan sát Giới hạn hoặc diễn giải
+Hệ điều hành Windows; Python 3.14.2 Lock gắn với môi trường đã kiểm thử
+RAM Hệ thống báo 13,81 GiB; còn ≥3 GiB 
+trước job
+Research peak 940,2 MiB nội bộ; 
+budget 2 GiB
+CPU 16 logical CPU; giới hạn job 4 thread Một job tại một thời điểm
+Ổ đĩa Raw, Parquet snapshots, bundles và 
+backup local
+Dung lượng phụ thuộc số run; không 
+ghi như mức tối thiểu đã chứng minh
+Client Flutter widget tests và build web đạt
+Chưa kiểm thử thiết bị Android/iOS 
+vật lý
+7.2 Môi trường phát triển
+7.2.1 Môi trường Backend & ML Pipeline
+Thành phần Công nghệ Phiên bản khóa Vai trò
+Ngôn ngữ Python 3.14.2 Môi trường Windows đã kiểm thử
+API FastAPI 0.136.3 REST và Pydantic
+ASGI Uvicorn 0.48.0 API port 8000
+Model scikit-surprise 1.1.5 BiasedSVD nghiên cứu
+SQL Psycopg / pool 3.3.6 / 3.3.3 PostgreSQL runtime trên Supabase
+Config python-dotenv 1.2.2 .env backend; research dùng TOML
+7.2.2 Môi trường Mobile App
+Thành phần Công nghệ Phiên bản hoặc nguồn Vai trò
+Framework Flutter Theo flutter --version của 
+máy Widget/service tests và build web
+Ngôn ngữ Dart Ràng buộc SDK ^3.10.7 Không đồng nhất với bản SDK 
+đang cài
+
+PAGE 65
+54
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Thành phần Công nghệ Phiên bản hoặc nguồn Vai trò
+Dependency pubspec.lock Bản resolved trong repo Khóa thư viện mobile
+Thiết bị Android/iOS Chưa kiểm thử vật lý Không suy ra từ web build
+7.2.3 Môi trường Dashboard quản trị
+Thành phần Công nghệ Phiên bản Vai trò
+Dashboard Streamlit 1.53.1 7 trang đọc artifacts V2
+Biểu đồ Altair 6.0.0 CI, so sánh metric; tách đơn vị
+Dữ liệu Pandas / PyArrow 2.3.3 / 23.0.0 JSON/CSV/Parquet
+Cổng HTTP local 8501 Mặc định khi chạy Streamlit
+7.2.4 Công cụ hỗ trợ
+Công cụ Mô tả
+Git Version code; source archive và hashes ghi trong manifest
+Ngrok tùy chọn Tunnel khi cần; đồng bộ AppConfig bằng công cụ cập nhật URL
+CLI worker Chạy job phục vụ thủ công, ngoài tiến trình API
+Notebook tùy chọn Phân tích thăm dò; không thay evaluator đã khóa
+7.2.5 Các Extension hỗ trợ trên VS Code
+Extension Nhà phát 
+triển Mô tả
+Python Microsoft Hỗ trợ IntelliSense, debug, linting cho Python
+Pylance Microsoft Hỗ trợ gợi ý code, kiểm tra kiểu dữ liệu Python 
+nâng cao
+Flutter Dart Code Hỗ trợ phát triển Flutter: Hot Reload, Widget 
+Inspector, Dart DevTools
+Dart Dart Code Hỗ trợ cú pháp, gợi ý code, refactoring cho ngôn 
+ngữ Dart
+REST Client (tùy chọn) Huachao Mao Gửi HTTP request trực tiếp từ VS Code để kiểm 
+thử API
+
+PAGE 66
+55
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Extension Nhà phát 
+triển Mô tả
+Markdown Preview 
+Mermaid Matt Bierner Render biểu đồ Mermaid trong file Markdown
+7.3 Thư viện và Công nghệ sử dụng
+7.3.1 Frontend — Flutter Mobile App
+Thư viện Phiên bản Vai trò
+http xem 
+pubspec.lock
+Gọi API, bearer và Idempotency-Key; lỗi truyền 
+riêng
+shared_preferences xem 
+pubspec.lock
+Lưu token/thời hạn; Splash xác minh phiên với API, 
+logout xóa local
+cached_network_imag
+e
+xem 
+pubspec.lock Cache poster; không tải video
+flutter_rating_bar xem 
+pubspec.lock Chọn sao explicit và chỉ báo thành công sau response
+cupertino_icons xem 
+pubspec.lock Biểu tượng giao diện
+7.3.2 Backend — Python API & ML Pipeline 
+Thư viện
+Phiên bản 
+khóa Vai trò
+fastapi 0.136.3 Router/validation và kiểm tra ownership
+uvicorn 0.48.0 ASGI API; không chạy retrain nền
+pydantic 2.12.5 Request/config schema
+scikit-surprise 1.1.5 BiasedSVD fit và score
+scipy 1.17.1 Sparse ItemKNN theo block
+pandas 2.3.3 Audit/transform DataFrame
+numpy 2.4.6 Score vector hóa
+pyarrow 23.0.0 Snapshot và per-user Parquet
+
+PAGE 67
+56
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Thư viện
+Phiên bản 
+khóa Vai trò
+streamlit 1.53.1 Dashboard đọc artifact
+altair 6.0.0 Biểu đồ cùng đơn vị và CI
+psycopg 3.3.6 SQL transaction và tham số hóa
+psycopg-pool 3.3.3 Pool/queue/timeout có giới hạn
+argon2-cffi 25.1.0 Password hashing Argon2id
+joblib 1.5.3 Serialize payload tin cậy có checksum
+psutil 7.2.2 Giám sát cây tiến trình và deadline
+python-dotenv 1.2.2 .env backend, không là config nghiên cứu
+7.3.3 Công cụ phát triển và kiểm thử
+Công cụ
+Phiên bản hoặc 
+nguồn
+Vai trò
+pytest 9.1.1 Unit/protocol và integration opt-in
+httpx 0.28.1 FastAPI TestClient
+Streamlit AppTest 1.53.1 Smoke 7 trang
+flutter_test Flutter SDK Widget và service tests
+flutter_lints pubspec.lock Phân tích tĩnh
+Jupyter / Locust Nhóm dependency tùy 
+chọn
+Chưa là bằng chứng load test V2
+7.4 Cấu hình biến môi trường (.env)
+Backend đọc .env gốc cho secrets và môi trường runtime; pipeline nghiên cứu 
+đọc configs/research.toml. Flutter dùng AppConfig hoặc --dart-define=API_URL, 
+không đọc .env. Không chèn URI có mật khẩu, API key hoặc bearer token thật vào báo 
+cáo.
+
+PAGE 68
+57
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Biến hoặc file Giá trị cấu hình Ý nghĩa
+DATABASE_URL Không hiển thị
+URI PostgreSQL có password; không 
+dùng API key/MCP OAuth thay thế
+MOVIERS_STORAGE files hoặc postgres
+Chọn một nguồn; sau migration dùng 
+postgres
+DATABASE_POOL_SIZE 4; tối đa 8 Giới hạn kết nối và queue
+DATABASE_STATEMEN
+T_TIMEOUT_MS 15000 SET LOCAL trong mỗi transaction qua 
+pooler
+DATABASE_LOCK_TIME
+OUT_MS 5000 Chặn chờ lock quá lâu
+DATABASE_SSLMODE require Giữ verify-full nếu URI cấu hình
+DATABASE_CONNECT_
+TIMEOUT 5 Giới hạn mở kết nối
+MOVIERS_SERVING_POI
+NTER
+artifacts/serving/curre
+nt.json Bundle đã qua gate
+ADMIN_API_TOKEN Không hiển thị
+Bảo vệ reload quản trị; không đưa vào 
+Flutter
+API_HOST / API_PORT 127.0.0.1 / 8000 Địa chỉ API demo
+API_RELOAD 0 Tắt reloader khi demo ổn định
+AUTO_RETRAIN 0
+V2 luôn worker riêng; biến legacy không 
+bật job trong API
+TMDB_API_KEY Không hiển thị
+Tùy chọn enrichment metadata, không 
+cần cho benchmark
+NGROK_URL Tùy phiên tunnel Flutter vẫn phải dùng AppConfig/--dart￾define
+configs/research.toml Không phải secret 
+.env
+Data/protocol/seeds/search/resources; 
+nguồn config nghiên cứu
+
+PAGE 69
+58
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+7.5 Kết quả thử nghiệm
+7.5.1 Đăng nhập/ Đăng kí tài khoản
+Ảnh là giao diện nguyên mẫu trước 
+refactor và chỉ minh họa bố cục. V2 dùng user_id làm khóa chính, username duy 
+nhất không phân biệt hoa thường; mật khẩu tối thiểu 8 ký tự, băm Argon2id. 
+Login/register cấp bearer token có hạn 12 giờ; Splash xác minh phiên với API trước 
+khi vào ứng dụng.
+Hình 17 Đăng kí Hình 18 Đăng nhập
+
+PAGE 70
+59
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+7.5.2 Trang chủ
+Hình 20 Trang chủ (2) của nguyên mẫu trước 
+refactor
+Trang chủ phân biệt gợi ý theo onboarding và lịch sử đã biết. Ở V2, model đang 
+phục vụ là MostPopular được chọn trên VAL, kết hợp rerank theo genre; lịch sử đã 
+tương tác bị loại khỏi candidate.
+Nhãn “gợi ý SVD” trong ảnh nguyên mẫu là nhãn V1, không đại diện model V2. 
+Client hiện nhận strategy, stage, history_count, candidate_count và reason từ API; 
+ranking score không được tự hiển thị như xác suất thích hoặc số sao dự đoán khi model 
+chỉ ranking.
+Khi sở thích hoặc feedback thay đổi, cache theo user/chế độ được invalidation 
+sau commit. Cache tối đa 5 phút; lỗi API có trạng thái thử lại riêng, không bị đổi thành 
+danh sách rỗng.
+Hình 19 Trang chủ
+
+PAGE 71
+60
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Không còn quy tắc “đủ 5 tương tác thì retrain nền” hoặc hai learning rate 
+0,15/0,005 như mô tả cũ. Worker thủ công chọn model bằng validation và giữ nguồn 
+research tách biệt khỏi dữ liệu ứng dụng.
+7.5.3 Tìm kiếm phim
+Hình 21 Tìm kiếm phim của nguyên mẫu trước refactor
+Tìm kiếm hỗ trợ từ khóa tên phim và bộ lọc theo API; mỗi trang mặc định tối đa 
+20 kết quả. Lỗi mạng và trạng thái không tìm thấy được phân biệt. Ảnh giữ để minh họa 
+giao diện nguyên mẫu.
+
+PAGE 72
+61
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+7.5.4 Trang yêu thích
+Hình 22 Trang yêu thích của nguyên mẫu trước refactor
+Favorite phục vụ danh sách lưu và đồng thời tạo proxy theo quy tắc ưu tiên. Client 
+chỉ gửi một request; database cập nhật favorite cùng feedback trong transaction. Bỏ tim 
+rút proxy, không ghi rating âm.
+
+PAGE 73
+62
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+7.5.5 Trang hồ sơ
+Hình 23 Trang hồ sơ của nguyên mẫu trước refactor
+Hồ sơ hiển thị thông tin tài khoản, thể loại đã chọn và thống kê. Lịch sử đánh giá 
+sao chỉ gồm explicit; watch_complete không được đếm như một đánh giá chủ động. 
+Người dùng không truy cập hồ sơ của tài khoản khác.
+
+PAGE 74
+63
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+7.5.6 Trang chi tiết phim
+Hình 24 Trang chi tiết phim của nguyên mẫu trước refactor
+Trang chi tiết cho phép đánh giá sao, thêm/bỏ favorite và mở player mô phỏng. 
+Bộ đếm chạy 1 giây thực bằng 1 giây phim, gửi heartbeat mỗi 5 giây, hỗ trợ resume và 
+xác nhận lưu khi thoát; không phát video thật.
+Phản hồi explicit là số sao người dùng chủ động chọn. Favorite là hành vi do 
+người dùng thực hiện nhưng chỉ được mô hình hóa thành proxy, không là một rating 
+explicit.
+Tiến độ xem là tín hiệu vận hành mô phỏng. Chỉ tỷ lệ từ 95% mới tạo 
+watch_complete 4,0 nếu không có nguồn mạnh hơn; dưới ngưỡng không ghi dislike. 
+Watch/favorite không ghi đè sao chủ động.
+
+PAGE 75
+64
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+7.6 Dữ liệu thực nghiệm và chất lượng mẫu
+Benchmark V2 dùng snapshot 0bf8337c28f8baeb49a9 và 
+run_20261015T235317064101Z. Raw ratings có SHA256 
+9c85525758597dca76e8d98cebb9c13e018c2317b09a0878b6d383179526e385; ZIP 
+MD5 khớp checksum GroupLens 6b51fb2759a8657d3bfcbfc42b592ada.
+Quét 25.000.095 dòng không phát hiện null cột bắt buộc, rating ngoài miền/bước 
+0,5, cặp trùng hoặc movie ID ngoài catalog. Checksum và kiểm tra schema chứng minh 
+tính toàn vẹn/kỹ thuật; không chứng minh mọi rating là sở thích khách quan.
+Mẫu có 27.498 phim được chấm, trung vị 71 rating/user, min20 trên toàn lịch sử; 
+TV distance số sao so nguồn 0,002337. Dashboard còn so năm, hoạt động user, genre 
+và long-tail, tách mẫu số theo user/rating/phim. Nguồn có thiên lệch tự chọn và thiếu 
+exposure/demographic; không gọi mẫu là đại diện toàn bộ khán giả.
+Tập User / rating Vai trò
+Nguồn ML-25M 162.541 / 25.000.095 Audit toàn nguồn, catalog62.423
+Mẫu research 8.000 / 1.237.592 Giữ toàn lịch sử user được chọn
+TRAIN 990.073 rating Fit và mọi thống kê trước T1
+VAL 123.759 rating Chọn cấu hình, không dùng TEST
+TEST 123.760 rating Chấm sau refit TRAIN+VAL
+User TEST / ranking 903 / 900 3 user không có positive bị loại có 
+công bố
+Known / cold trong 
+TEST 342 / 561 Khoảng75,29% rating TEST từ cold
+Catalog TEST và 
+unavailable 22.821 / khoảng7,30% positive Positive ngoài catalog vẫn ở mẫu số
+chính
+7.7 So sánh mô hình theo giao thức chung
+Bảng dưới tổng hợp cùng snapshot, cutoff, candidate policy và 900 user ranking. 
+SVD/hybrid báo trung bình seed42/43/44; baseline xác định không nhân bản seed để
+tăng cỡ mẫu. Điểm RMSE thấp nhất không đồng nghĩa xếp hạng tốt nhất.
+
+PAGE 76
+65
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Mô hình NDCG@10 RMSE MAE
+MostPopular 0,280358 N/A N/A
+SparseItemKNN 0,157700 N/A N/A
+RegularizedBias 0,146360 0,963670 0,728643
+SVDSharedFallback 0,121020 N/A N/A
+AdaptiveWithoutGenre 0,120240 N/A N/A
+BayesianItemMean 0,118847 0,985963 0,751015
+AdaptiveHybrid 0,118589 N/A N/A
+AdaptiveMMR 0,118589 N/A N/A
+FixedHybrid 0,116170 N/A N/A
+GenreContent 0,107684 N/A N/A
+GlobalMean 0,054245 1,048255 0,814795
+BiasedSVD 0,027047 0,955751 0,725198
+
+PAGE 77
+66
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Hình 20 So sánh NDCG trên mẫu research V2
+So sánh chính AdaptiveHybrid − MostPopular: delta NDCG=-0,161770, tương 
+đối -57,70%, CI95 [-0,175655; -0,147796], n=900. Có bằng chứng giảm chất lượng xếp 
+hạng theo giao thức này. Không dùng kết quả âm để đổi seed, candidate hoặc threshold 
+sau khi xem TEST.
+BiasedSVD đạt RMSE0,955751 nhưng NDCG0,027047; MostPopular đạt 
+NDCG0,280358. Chênh lệch cho thấy bài toán tối ưu rating và ranking khác nhau trên 
+mẫu/cửa sổ này. Tỷ trọng cold user cao cần được xem cùng cohort; kết quả không chứng 
+minh SVD luôn kém mọi tình huống.
+7.8 Ablation và đánh đổi của hybrid
+Các đối chứng sau so cùng user sau trung bình seed. Đây là phân tích thăm dò, 
+chưa điều chỉnh đa kiểm định; không dùng nhãn “có cải tiến” cho mọi CI dương riêng 
+lẻ.
+Đối chứng Delta NDCG CI95 Diễn giải
+BiasedSVD 0,091542 [0,082123; 0,100679] Gain có thể chủ yếu từ
+cold fallback
+
+PAGE 78
+67
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Đối chứng Delta NDCG CI95 Diễn giải
+SVDSharedFallback -0,002432 [-0,006067; 0,000926] Chưa chứng minh thêm 
+lợi ích ngoài fallback
+FixedHybrid 0,002419 [0,001075; 0,003877] Lợi ích nhỏ của thích 
+ứng; thăm dò
+AdaptiveWithoutGenre -0,001651 [-0,005154; 0,001642] Chưa chứng minh genre 
+cải thiện
+AdaptiveMMR trùng AdaptiveHybrid vì VAL chọn MMR=0; không bỏ nhánh 
+này khỏi báo cáo. Trọng số MMR>0 làm tăng diversity nhưng giảm NDCG trên VAL. 
+Genre diversity và coverage là proxy danh sách, không thay A/B test.
+7.9 Chi phí tài nguyên và khả năng tái lập
+Run chính mất 611,779 giây, peak RSS nội bộ 940,2 MiB, dưới budget2 GiB/120 
+phút. Run độc lập trước đó có cùng metric cả12 family, split hash, user hash và delta 
+chính; peak watchdog ngoài925,94 MiB thuộc run trước, không gán cho run chính.
+Payload được đo độc lập với selection khóa, fit TRAIN+VAL và Joblib nén 
+mức3, không gồm cache evaluator. Seed42 có MostPopular64.134 byte, SVD 
+khoảng14,78 MB và hybrid16,08 MB. Thời gian fit riêng hybrid không bao gồm fit 
+backbone dùng chung.
+Các bản sửa timeout/idempotency/checkpoint/UI sau benchmark có hash ở biên 
+bản kiểm thử. Source archive trong run giữ đúng code đã tạo metric; không sửa manifest 
+cũ để gán kết quả cho code mới.
+7.10 Dashboard nghiên cứu và truy vết số liệu
+Bảy trang gồm tổng quan, provenance, tính đại diện, so sánh mô hình, phân tích 
+đóng góp, khuyến nghị minh họa và vận hành. Loader chỉ nhận run complete, xác minh 
+checksum và kiểm tra compatibility trước delta; missing không được tự đổi thành0.
+Biểu đồ tách NDCG, rating error và diversity theo đơn vị. CI của từng model và 
+paired CI của delta có ý nghĩa khác nhau. Trang minh họa dùng lịch sử trước cutoff và 
+danh sách đã lưu; điểm thành phần chỉ hiện khi payload xác minh được tái tạo đúng 
+danh sách.
+
+PAGE 79
+68
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Đã kiểm tra20 danh sách thực của MostPopular và AdaptiveHybrid tái tạo đúng 
+từ payload; đây là kiểm tra tính nhất quán kỹ thuật, không là một lần lựa chọn lại model 
+trên TEST.
+7.11 Kiểm thử phần mềm và database
+Biên bản ngày16/10/2026 ghi lệnh python scripts/verify_refactor.py --database -
+-flutter, exit code, thời gian và100 source hashes. Đây là kết quả đã lưu của lần nghiệm 
+thu, không khẳng định vừa chạy lại trong ngày cập nhật báo cáo.
+Hạng mục Kết quả ghi nhận Phạm vi kiểm chứng
+Python 66 passed; 9 DB test 
+skip ở lượt mặc định
+Protocol, metric, leakage, artifact, feedback, 
+watchdog, gate
+PostgreSQL opt-in 9 passed trên DB thật
+Ownership, transaction rollback, 
+concurrency, pool, timeout, replay/ledger
+HTTP smoke 8 route đọc200; 
+auth401; reload403
+Uvicorn thật, SHA256 đầu vào trước/sau 
+không đổi
+Dashboard 7 trang không exception AppTest và kiểm tra artifacts/compatibility
+Flutter analyze No issues found Phân tích tĩnh
+Flutter tests 9 passed Phiên, lỗi API, favorite một request, player 
+resume/lưu lỗi
+Flutter web Build thành công Không thay thử nghiệm Android/iOS vật lý
+Migration và rollback Đối soát/export/bundle 
+rollback đạt
+File nguồn và live serving pointer không đổi
+7.12 Quy trình chạy lại và kịch bản demo
+Tại repo root, tạo môi trường đúng phiên bản và cài requirements.lock.txt, sau đó 
+pip install --no-deps -e .; dependency lock hiện gắn với Windows/Python3.14.2. Không 
+đưa secrets vào config nghiên cứu.
+Chuẩn bị và chạy: python -m src.experiments prepare --profile research; python 
+-m src.experiments run --profile research. Đây là full pipeline từ raw local; cần giữ đúng 
+config/source và đủ RAM trước job.
+
+PAGE 80
+69
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+Mở dashboard bằng streamlit run dashboard/app.py, API bằng python 
+api/main.py. Worker: python -m src.pipeline.worker --snapshot <snapshot_folder> --
+selection <run_folder>/selection.json. Chỉ chọn bundle đã qua gate; TEST không kích 
+hoạt deployment.
+Demo theo thứ tự: provenance → tính đại diện → bảng so sánh/CI → ablation 
+→ danh sách minh họa → health; sau đó đăng nhập app, cập nhật genre/rating/favorite, 
+mô phỏng xem và kiểm tra resume. Không dùng demo ghi để thay benchmark nghiên 
+cứu.
+Nguồn các bảng kết quả, dataset, tài nguyên và kiểm thử trong mục này: artifacts 
+và hồ sơ nghiệm thu MovieRS V2 [11,12]. Các metric đã được làm tròn khi trình bày; 
+JSON/Parquet giữ độ chính xác gốc.
+KIẾN NGHỊ VÀ KẾT LUẬN
+1. Kết luận về những kết quả đạt được
+Đề tài đã xây dựng được quy trình nghiên cứu và nguyên mẫu ứng dụng có thể
+kiểm tra. Thành công của refactor được đánh giá bằng tính đúng đắn, truy vết dữ liệu và 
+luồng vận hành; không lấy giả định hybrid phải thắng làm điều kiện kết luận.
+Về mặt nghiên cứu và cơ sở lý thuyết:
+• Hệ thống hóa thành công các kiến thức chuyên sâu về Hệ thống Khuyến 
+nghị (Recommender Systems), đặc biệt là phương pháp Lọc cộng tác 
+(Collaborative Filtering) và kỹ thuật Phân rã ma trận (Matrix Factorization 
+- SVD).
+• Tìm hiểu và làm rõ cách thức xử lý các bài toán kinh điển trong hệ gợi ý 
+như: Hiện tượng dữ liệu thưa thớt (Data Sparsity), vấn đề "Khởi động 
+lạnh" (Cold-Start) và phương pháp số hóa phản hồi ngầm (Implicit 
+Feedback).
+• Tổ chức vòng đời model với worker riêng, validation gate, artifact version, 
+checksum và rollback; không khẳng định tự động hóa production hoàn 
+toàn.
+• Tìm hiểu sâu sắc về các chỉ số đánh giá mô hình học máy như RMSE, 
+MAE cũng như các tham số như lr (Learning rate),... trong học máy.
+Về mặt thực tiễn và xây dựng phần mềm:
+
+PAGE 81
+70
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+• Thiết kế và lập trình thành công nguyên mẫu ứng dụng di động đa nền 
+tảng bằng Flutter, mang lại trải nghiệm mượt mà với các tính năng: khám 
+phá nội dung, tìm kiếm, đánh giá sao, và mô phỏng trình phát video.
+• Phân biệt mục tiêu tối ưu rating và ranking; kiểm tra cold fallback, genre 
+và trọng số bằng ablation cùng giao thức thay vì chỉ so một chỉ số RMSE.
+• API cung cấp catalog 62.423 phim và cache gợi ý. HTTP smoke xác nhận 
+hợp đồng đọc và bảo toàn input; chưa có load test đủ để khẳng định latency 
+trung bình dưới 800 ms hoặc SLA cho nhiều người dùng.
+• PostgreSQL đã được migration/đối soát; feedback transaction và 
+idempotency được kiểm thử trên database thật. Worker thủ công ngoài 
+API thực hiện fit serving, gate và reload có bảo vệ quản trị.
+• Dashboard nghiên cứu bảy trang đọc artifact thật, từ chối delta giữa các 
+run khác protocol/dataset/user và hiển thị CI, cohort, chi phí cùng kết quả
+âm.
+Về mặt phát triển kỹ năng cá nhân:
+• Áp dụng quy trình làm việc chuyên nghiệp, rèn luyện tư duy thiết kế hệ
+thống hướng đối tượng và kỹ năng lập trình full-stack (từ giao diện Flutter 
+đến máy chủ Python).
+• Tích lũy kinh nghiệm quý báu khi được trải nghiệm môi trường làm việc 
+thực tế, hiểu rõ cách thức phân tích yêu cầu bài toán từ góc độ trải nghiệm 
+người dùng và hiệu quả kinh doanh.
+2. Những điểm còn hạn chế
+Mặc dù đã đạt được những kết quả khả quan, do giới hạn về mặt thời gian và tài 
+nguyên phần cứng, hệ thống vẫn còn tồn tại một số điểm cần khắc phục:
+• Giới hạn dữ liệu: mẫu user-cluster vẫn có thiên lệch MovieLens, thiếu
+exposure/demographic; genre là snapshot hồi cứu. Các tỷ lệ giống 
+nguồn không chứng minh đại diện mọi khán giả.
+• Giới hạn mô hình: hybrid chưa vượt MostPopular; phần lợi ích so 
+SVD thuần chưa tách được khỏi cold fallback. Chưa có bằng chứng 
+riêng cho genre và chưa có xác nhận trên nhiều cửa sổ hoặc mẫu độc 
+lập.
+• Giới hạn kiểm chứng: chưa có A/B test, khảo sát người dùng, thiết bị
+Android/iOS vật lý, drift monitor hay load test production. Player là 
+
+PAGE 82
+71
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+mô phỏng; độ tin cậy proxy xem xong chưa được xác thực bằng hành 
+vi xem thực.
+3. Kiến nghị thực hiện giải pháp và hướng phát triển
+Các hướng sau là công việc tương lai, không được mô tả như kết quả đã triển 
+khai. Ưu tiên mở rộng bằng thí nghiệm có nguồn dữ liệu và tiêu chí xác nhận rõ ràng.
+Kiến nghị đối với việc nâng cấp hạ tầng (Infrastructure)
+• Duy trì PostgreSQL hiện có: theo dõi truy vấn/pool, kiểm thử restore 
+từ backup và quản lý migration. Không cần lặp lại đề xuất chuyển từ
+CSV vì V2 đã hoàn tất cutover và diễn tập export.
+• Chỉ cân nhắc Redis khi đo được bottleneck hoặc triển khai nhiều 
+process; cache in-memory hiện đủ cho demo. Mốc latency mục tiêu 
+phải gắn với workload, tỷ lệ cache hit và kết quả đo mới.
+• Có thể bổ sung đóng gói/deployment và load test khi mở rộng. Các 
+dịch vụ cloud, Docker/CI/CD và tính sẵn sàng 24/7 chưa thuộc bằng 
+chứng của lần nghiệm thu này.
+Kiến nghị đối với việc nâng cấp Trí tuệ Nhân tạo
+• Ưu tiên mục tiêu tối ưu ranking, đối chứng BPR/ALS và cửa sổ xác 
+nhận mới. Hybrid genre đã triển khai nhưng chưa cho thấy ưu thế
+chính; thêm TF-IDF/embedding là giả thuyết nghiên cứu, không bảo 
+đảm giải quyết triệt để cold-start.
+• Thu thập nhãn để kiểm tra độ tin cậy proxy, mô hình hóa exposure 
+và cân nhắc propensity/bias. Muốn tuyên bố nhiều so sánh cần đăng 
+ký và hiệu chỉnh đa kiểm định; không điều chỉnh trọng số trên TEST 
+hiện tại.
+TÀI LIỆU THAM KHẢO
+[1] FPT Corporation và FPT Software. Giới thiệu doanh nghiệp. https://fpt.com/en/about-us ; 
+https://fptsoftware.com/about-us . Truy cập 18/10/2026.
+[2] GroupLens Research. MovieLens 25M README và điều kiện sử dụng. 
+https://files.grouplens.org/datasets/movielens/ml-25m-README.html . Truy cập 18/10/2026.
+[3] Harper, F. M. và Konstan, J. A. (2015). The MovieLens Datasets History and Context. ACM 
+TiiS 5(4), Article19. https://doi.org/10.1145/2827872 .
+
+PAGE 83
+72
+Khoa Khoa học Máy tính – Lớp 24GITe Nguyễn Thanh Chiến
+[4] Hug, N. (2020). Surprise A Python library for recommender systems. JOSS5(52),2174. 
+https://doi.org/10.21105/joss.02174 . Tài liệu SVD: 
+https://surprise.readthedocs.io/en/stable/matrix_factorization.html .
+[5] Krichene, W. và Rendle, S. (2020). On Sampled Metrics for Item Recommendation. KDD. 
+https://research.google/pubs/on-sampled-metrics-for-item-recommendation/ .
+[6] Ji, Y., Sun, A., Zhang, J. và Li, C. (2023). A Critical Study on Data Leakage in 
+Recommender System Offline Evaluation. ACM TOIS. https://arxiv.org/abs/2010.11060 .
+[7] FastAPI. Features và tài liệu framework. https://fastapi.tiangolo.com/features/ . Truy 
+cập18/10/2026.
+[8] Supabase. Row Level Security. https://supabase.com/docs/guides/database/postgres/row￾level-security . Truy cập18/10/2026.
+[9] Koren, Y., Bell, R. và Volinsky, C. (2009). Matrix Factorization Techniques for 
+Recommender Systems. Computer42(8),30–37. https://doi.org/10.1109/MC.2009.263 .
+[10] Flutter và Streamlit. Tài liệu chính thức: https://docs.flutter.dev/ ; https://docs.streamlit.io/ 
+.
+[11] MovieRS. Hồ sơ thực nghiệm V2, ngày16/10/2026: configs/research.toml; 
+report/experiments/v2/ gồm metrics, selection, comparisons, intervals, ablations, quality và 
+per_user_metrics; nguồn nội bộ dự án.
+[12] MovieRS. Biên bản kỹ thuật: report/REFACTOR_ACCEPTANCE.md; 
+report/refactor/verification_v2.json; runtime_reconciliation.json; final_audit.json; 
+dashboard_explanations.json. Ngày kiểm chứng16/10/2026; nguồn nội bộ dự án.

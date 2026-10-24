@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-18",
+  "status": "passed",
+  "output": "D:\\Users\\BT\\N3_K1\\ThucTapThucTe\\sản phẩm\\TTTT_NguyenThanhChien_24ITE020_CapNhat_MovieRS_V2.docx",
+  "output_sha256": "888984976e254b802766000a5de130b8e6dfdd372b7f8f12f939ec2f871f2f1d",
+  "original_unchanged": true,
+  "pages": 84,
+  "sections_geometry_preserved": 3,
+  "preserved_parts": 43,
+  "field_begin_end": [
+    183,
+    183
+  ],
+  "relationships_valid": true,
+  "model_families_ndcg_verified": 12,
+  "field_error_strings_absent": true,
+  "visual_review": {
+    "all_pages_clean": true,
+    "review_method": "53 trang giống từng pixel với bản đã xem; 31 trang đổi đã xem ở kích thước gốc",
+    "renderer": "Microsoft Word ExportAsFixedFormat và render_docx.py đóng gói"
+  }
+}

@@ -1,15 +1,15 @@
 """
 auth.py — Endpoints đăng ký / đăng nhập người dùng
 
-Prototype: xác thực bằng username + mật khẩu, trả về user_id để app lưu local.
-Không dùng token phiên (giữ gọn cho prototype).
+Xác thực bằng username + mật khẩu Argon2id và phiên opaque có hạn dùng.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from api.logging_config import get_logger
 from api.services.user_store import register_user, authenticate
+from api.security import issue_session,revoke_session
 
 logger = get_logger(__name__)
 
@@ -18,7 +18,7 @@ router = APIRouter()
 
 class RegisterRequest(BaseModel):
     username: str = Field(..., min_length=3, max_length=50, description="Tên đăng nhập")
-    password: str = Field(..., min_length=4, max_length=100, description="Mật khẩu")
+    password: str = Field(..., min_length=8, max_length=100, description="Mật khẩu")
     genres: list[str] = Field(default_factory=list, description="Thể loại phim yêu thích (Cold-Start)")
 
 
@@ -28,8 +28,8 @@ class LoginRequest(BaseModel):
 
 
 @router.post("/auth/register", status_code=201)
-async def register(req: RegisterRequest):
-    """Đăng ký tài khoản mới; trả về user_id dùng cho mọi API call sau đó."""
+def register(req: RegisterRequest):
+    """Đăng ký và cấp token phiên; user_id không thay thế xác thực."""
     try:
         user = register_user(req.username, req.password, req.genres)
     except ValueError as e:
@@ -39,12 +39,13 @@ async def register(req: RegisterRequest):
         "user_id": user["user_id"],
         "username": user["username"],
         "genres": user["genres"],
+        **issue_session(user['user_id']),
     }
 
 
 @router.post("/auth/login")
-async def login(req: LoginRequest):
-    """Đăng nhập; trả về user_id nếu tên đăng nhập + mật khẩu đúng."""
+def login(req: LoginRequest):
+    """Đăng nhập và cấp phiên có thể thu hồi, chỉ lưu digest phía máy chủ."""
     user = authenticate(req.username, req.password)
     if user is None:
         raise HTTPException(status_code=401, detail="Tên đăng nhập hoặc mật khẩu không đúng")
@@ -53,4 +54,16 @@ async def login(req: LoginRequest):
         "user_id": user["user_id"],
         "username": user["username"],
         "genres": user["genres"],
+        **issue_session(user['user_id']),
     }
+
+
+@router.get('/auth/me')
+def current_session(request: Request):
+    return {'user_id':request.state.user_id}
+
+
+@router.post('/auth/logout')
+def logout(request: Request):
+    revoke_session(request.state.access_token)
+    return {'status':'success'}

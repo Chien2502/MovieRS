@@ -1,0 +1,48 @@
+version = 2
+source_dir = "data/raw"
+snapshot_dir = "data/snapshots"
+run_dir = "artifacts/runs"
+sample_seed = 20261015
+chunk_rows = 250000
+t1 = "2016-07-25T17:31:14Z"
+t2 = "2018-01-23T19:51:49Z"
+seeds = [42, 43, 44]
+ranking_users = 1000
+validation_users = 200
+threshold = 3.5
+k = 10
+bootstrap_samples = 2000
+expected_source_sha256 = "9c85525758597dca76e8d98cebb9c13e018c2317b09a0878b6d383179526e385"
+expected_archive_md5 = "6b51fb2759a8657d3bfcbfc42b592ada"
+
+[resources]
+max_rss_gib = 2.0
+min_available_gib = 3.0
+threads = 4
+
+[profiles.smoke]
+users = 1000
+expected_rows = 157183
+minutes = 5
+
+[profiles.dev]
+users = 4000
+expected_rows = 602364
+minutes = 20
+
+[profiles.research]
+users = 8000
+expected_rows = 1237592
+minutes = 120
+
+[profiles.extended]
+users = 12000
+expected_rows = 1874092
+minutes = 180
+
+[search]
+svd = [[32,15,0.02], [32,20,0.05], [64,15,0.05], [64,20,0.1]]
+knn = [[50,10], [100,10], [100,50]]
+tau = [5.0,20.0]
+beta = [0.0,0.25,0.5,0.75]
+mmr = [0.0,0.05,0.1,0.2]

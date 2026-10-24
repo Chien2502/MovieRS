@@ -1,164 +1,126 @@
-"""
-evaluate.py — Module đánh giá chất lượng hệ khuyến nghị toàn diện
+"""Đánh giá rating và Top-K trên toàn bộ ứng viên TRAIN chưa tương tác.
 
-Bao gồm:
-  1. Độ chính xác dự đoán (Prediction Accuracy): RMSE, MAE.
-  2. Độ chính xác xếp hạng (Ranking Accuracy): Precision@K, Recall@K, NDCG@K.
-  3. Chỉ số chất lượng gợi ý: Catalog Coverage, Diversity, Novelty.
-  4. Đánh giá theo nhóm người dùng (User Group Evaluation): Cold, Warm, Heavy users.
+Lấy mẫu người dùng để giới hạn chi phí, không lấy mẫu phim âm tính.
+Khoảng tin cậy bootstrap người dùng chỉ phản ánh bất định trên mẫu cố định.
 """
 
 from collections import defaultdict
+from itertools import combinations
+
 import numpy as np
-import pandas as pd
+
+from src.models.hybrid import genre_profile, rank_hybrid
 
 
-def get_top_n(predictions, n=10):
-    """Lấy ra Top-N khuyến nghị cho mỗi user từ danh sách dự đoán.
-    
-    predictions: List of tuples (userId, movieId, real_rating, est_rating)
-    """
-    top_n = defaultdict(list)
-    for uid, mid, true_r, est_r in predictions:
-        top_n[uid].append((mid, est_r, true_r))
-
-    # Sắp xếp các đề xuất của từng user theo điểm dự đoán giảm dần
-    for uid, user_ratings in top_n.items():
-      user_ratings.sort(key=lambda x: x[1], reverse=True)
-      top_n[uid] = user_ratings[:n]
-
-    return top_n
-
-
-def precision_recall_at_k(predictions, k=10, threshold=3.5):
-    """Tính Precision@K và Recall@K.
-    
-    threshold: điểm rating được coi là user thích phim đó.
-    """
-    user_est_true = defaultdict(list)
-    for uid, _, true_r, est_r in predictions:
-        user_est_true[uid].append((est_r, true_r))
-
-    precisions = dict()
-    recalls = dict()
-
-    for uid, user_ratings in user_est_true.items():
-        # Sắp xếp theo điểm ước lượng giảm dần
-        user_ratings.sort(key=lambda x: x[0], reverse=True)
-        
-        # Số lượng phim thực sự thích
-        n_rel = sum((true_r >= threshold) for (_, true_r) in user_ratings)
-        
-        # Số lượng phim được đề xuất trong top K và thực sự thích
-        n_rec_k = sum((true_r >= threshold) for (_, true_r) in user_ratings[:k])
-        
-        # Precision@K = số phim thích được recommend / số phim được recommend
-        precisions[uid] = n_rec_k / k if k > 0 else 0
-        
-        # Recall@K = số phim thích được recommend / tổng số phim thích thực sự
-        recalls[uid] = n_rec_k / n_rel if n_rel > 0 else 1.0
-
-    mean_precision = np.mean(list(precisions.values()))
-    mean_recall = np.mean(list(recalls.values()))
-    
-    return mean_precision, mean_recall
+def rating_metrics(model, train_df, evaluation_df):
+    """RMSE/MAE và nhóm user thực sự chưa xuất hiện, ít và nhiều lịch sử."""
+    if evaluation_df.empty:
+        raise ValueError('Tập đánh giá không được rỗng')
+    counts = train_df.userId.value_counts().to_dict()
+    groups = defaultdict(list)
+    errors = []
+    unknown_items = set(evaluation_df.movieId) - set(train_df.movieId)
+    for row in evaluation_df.itertuples():
+        error = float(row.rating) - float(model.predict(int(row.userId), int(row.movieId)))
+        if not np.isfinite(error):
+            raise ValueError('Dự đoán không hữu hạn')
+        errors.append(error)
+        count = counts.get(row.userId, 0)
+        group = 'cold_0' if count == 0 else ('sparse_1_4' if count < 5 else ('warm_5_20' if count <= 20 else 'heavy_21_plus'))
+        groups[group].append(error)
+    def summarize(values):
+        values = np.asarray(values)
+        return {'RMSE': float(np.sqrt(np.mean(values ** 2))), 'MAE': float(np.mean(np.abs(values))), 'ratings': len(values)}
+    return {**summarize(errors), 'groups': {g: summarize(v) for g, v in groups.items()},
+            'cold_item_ratings': int(evaluation_df.movieId.isin(unknown_items).sum())}
 
 
-def ndcg_at_k(predictions, k=10):
-    """Tính NDCG@K (Normalized Discounted Cumulative Gain) trên tập dự đoán."""
-    user_est_true = defaultdict(list)
-    for uid, _, true_r, est_r in predictions:
-        user_est_true[uid].append((est_r, true_r))
-
-    ndcgs = []
-
-    for uid, user_ratings in user_est_true.items():
-        # Sắp xếp theo ước lượng
-        user_ratings.sort(key=lambda x: x[0], reverse=True)
-        top_k_ratings = [true_r for (_, true_r) in user_ratings[:k]]
-        
-        # Sắp xếp lý tưởng (để tính IDCG)
-        ideal_ratings = sorted([true_r for (_, true_r) in user_ratings], reverse=True)[:k]
-        
-        # DCG@K
-        dcg = sum(rel / np.log2(i + 2) for i, rel in enumerate(top_k_ratings))
-        # IDCG@K
-        idcg = sum(rel / np.log2(i + 2) for i, rel in enumerate(ideal_ratings))
-        
-        ndcg = dcg / idcg if idcg > 0 else 0.0
-        ndcgs.append(ndcg)
-        
-    return np.mean(ndcgs)
+def ranking_metrics(recommended, relevant, k):
+    """Relevance nhị phân; user không có positive không được tính Recall=1."""
+    if k < 1:
+        raise ValueError('K phải lớn hơn 0')
+    if not relevant:
+        return {'precision': 0.0, 'recall': 0.0, 'ndcg': 0.0, 'hit_rate': 0.0}
+    hits = np.array([mid in relevant for mid in recommended[:k]], dtype=float)
+    dcg = float(np.sum(hits / np.log2(np.arange(len(hits)) + 2)))
+    idcg = float(np.sum(1 / np.log2(np.arange(min(k, len(relevant))) + 2)))
+    return {'precision': float(hits.sum() / k), 'recall': float(hits.sum() / len(relevant)),
+            'ndcg': dcg / idcg, 'hit_rate': float(hits.any())}
 
 
-def catalog_coverage(top_n_recommendations, total_movies_in_catalog):
-    """Tính Catalog Coverage: tỉ lệ phần trăm các phim trong catalog được recommend ít nhất 1 lần."""
-    recommended_movies = set()
-    for uid, recommendations in top_n_recommendations.items():
-        for mid, _, _ in recommendations:
-            recommended_movies.add(mid)
-            
-    coverage = len(recommended_movies) / total_movies_in_catalog if total_movies_in_catalog > 0 else 0.0
-    return coverage, len(recommended_movies)
+def _bootstrap(values, seed=42, samples=1000):
+    values = np.asarray(values, dtype=float)
+    if not len(values):
+        return None
+    rng = np.random.default_rng(seed)
+    means = np.mean(values[rng.integers(0, len(values), size=(samples, len(values)))], axis=1)
+    return [float(x) for x in np.quantile(means, [0.025, 0.975])]
 
 
-def evaluate_model_pipeline(model, train_df: pd.DataFrame, test_df: pd.DataFrame) -> dict:
-    """Đánh giá toàn diện mô hình (tính toán tất cả các độ đo)."""
-    # 1. Dự đoán trên tập test
-    test_predictions = []
-    for _, row in test_df.iterrows():
-        uid = int(row['userId'])
-        mid = int(row['movieId'])
-        real = row['rating']
-        est = model.predict(uid, mid)
-        test_predictions.append((uid, mid, real, est))
-        
-    # 2. Tính RMSE, MAE
-    real_arr = np.array([p[2] for p in test_predictions])
-    est_arr = np.array([p[3] for p in test_predictions])
-    errors = real_arr - est_arr
-    rmse = np.sqrt(np.mean(errors ** 2))
-    mae = np.mean(np.abs(errors))
-    
-    # 3. Tính Precision@10, Recall@10, NDCG@10
-    precision10, recall10 = precision_recall_at_k(test_predictions, k=10, threshold=3.5)
-    ndcg10 = ndcg_at_k(test_predictions, k=10)
-    
-    # 4. Tính Catalog Coverage
-    # Lấy top 10 khuyến nghị cho mỗi user trong tập test
-    top_10_recs = get_top_n(test_predictions, n=10)
-    total_catalog = train_df['movieId'].nunique()
-    coverage, num_recommended = catalog_coverage(top_10_recs, total_catalog)
-    
-    # 5. Phân tích lỗi theo nhóm độ thưa (Sparsity Group)
-    # Đếm số rating của từng user ở tập Train
-    user_counts = train_df['userId'].value_counts().to_dict()
-    
-    group_errors = defaultdict(list)
-    for uid, _, real, est in test_predictions:
-        count = user_counts.get(uid, 0)
-        
-        # Phân nhóm user
-        if count < 5:
-            group = "Cold Users (<5 ratings)"
-        elif count <= 20:
-            group = "Warm Users (5-20 ratings)"
-        else:
-            group = "Heavy Users (>20 ratings)"
-            
-        group_errors[group].append((real - est) ** 2)
-        
-    group_rmse = {}
-    for group, squared_errs in group_errors.items():
-        group_rmse[group] = np.sqrt(np.mean(squared_errs))
-        
-    return {
-        "RMSE": rmse,
-        "MAE": mae,
-        "Precision@10": precision10,
-        "Recall@10": recall10,
-        "NDCG@10": ndcg10,
-        "Catalog_Coverage": coverage,
-        "Unique_Recommended_Movies": num_recommended,
-        "Group_RMSE": group_rmse
-    }
+def evaluate_ranking(model, train_df, evaluation_df, movie_genres, *, k=10, threshold=3.5,
+                     max_users=300, seed=42, genre_weight=0.0, diversity_weight=0.0,
+                     exclude_df=None):
+    """Dùng cùng ứng viên, user, threshold cho mọi mô hình; không nhìn nhãn tương lai."""
+    if max_users < 1 or k < 1:
+        raise ValueError('Số user và K phải lớn hơn 0')
+    catalog = sorted(set(int(mid) for mid in train_df.movieId))
+    catalog_set = set(catalog)
+    histories = {int(uid): list(zip(group.movieId.astype(int), group.rating.astype(float)))
+                 for uid, group in train_df.groupby('userId', sort=False)}
+    exclusions = {uid: {mid for mid, _ in history} for uid, history in histories.items()}
+    if exclude_df is not None:
+        for uid, group in exclude_df.groupby('userId'):
+            exclusions.setdefault(int(uid), set()).update(int(mid) for mid in group.movieId)
+    truth = {}
+    positive_count, unavailable = 0, 0
+    for uid, group in evaluation_df[evaluation_df.rating >= threshold].groupby('userId'):
+        positives = set(int(mid) for mid in group.movieId) - exclusions.get(int(uid), set())
+        positive_count += len(positives)
+        unavailable += len(positives - catalog_set)
+        relevant = positives & catalog_set
+        if relevant:
+            truth[int(uid)] = relevant
+    eligible = np.array(sorted(truth), dtype=int)
+    if not len(eligible):
+        raise ValueError('Không có user có positive trong danh mục TRAIN để đánh giá xếp hạng')
+    users = sorted(np.random.default_rng(seed).choice(eligible, size=min(max_users, len(eligible)), replace=False).tolist())
+    item_counts = train_df.movieId.value_counts().to_dict()
+    total = len(train_df)
+    rows, recommended_union = [], set()
+    for uid in users:
+        history = histories.get(uid, [])
+        candidates = [mid for mid in catalog if mid not in exclusions.get(uid, set())]
+        scores = model.score_items(uid, candidates) if hasattr(model, 'score_items') else [model.predict(uid, mid) for mid in candidates]
+        profile = genre_profile(history, movie_genres)
+        ranked = rank_hybrid(candidates, scores, movie_genres, profile, n=k,
+                             genre_weight=genre_weight, diversity_weight=diversity_weight)
+        ids = [item['movieId'] for item in ranked]
+        metrics = ranking_metrics(ids, truth[uid], k)
+        distances = []
+        for a, b in combinations(ids, 2):
+            ga, gb = movie_genres.get(a, frozenset()), movie_genres.get(b, frozenset())
+            distances.append(1 - len(ga & gb) / max(1, len(ga | gb)))
+        metrics['diversity'] = float(np.mean(distances)) if distances else 0.0
+        metrics['novelty'] = float(np.mean([-np.log2(item_counts[mid] / total) for mid in ids])) if ids else 0.0
+        metrics.update(user_id=uid, group='cold_0' if not history else 'known_user')
+        rows.append(metrics)
+        recommended_union.update(ids)
+    names = ['precision', 'recall', 'ndcg', 'hit_rate', 'diversity', 'novelty']
+    result = {name: float(np.mean([row[name] for row in rows])) for name in names}
+    result.update(k=k, threshold=threshold, users=len(users), eligible_users=len(eligible),
+                  sampled_user_ids=users, candidate_policy='all_train_items_minus_prior_history',
+                  catalog_size=len(catalog), coverage=len(recommended_union) / len(catalog),
+                  unavailable_positive_fraction=unavailable / positive_count if positive_count else 0,
+                  ci95={name: _bootstrap([row[name] for row in rows], seed) for name in names},
+                  groups={group: {'users': len(group_rows), **{
+                      name: float(np.mean([r[name] for r in group_rows])) for name in names}}
+                      for group in ['cold_0', 'known_user'] if (group_rows := [r for r in rows if r['group'] == group])})
+    return result
+
+
+def evaluate_model_pipeline(model, train_df, test_df, movie_genres=None, max_users=300):
+    """Tương thích mã gọi cũ, sử dụng giao thức Top-K đã sửa."""
+    rating = rating_metrics(model, train_df, test_df)
+    ranking = evaluate_ranking(model, train_df, test_df, movie_genres or {}, max_users=max_users)
+    return {**rating, 'Precision@10': ranking['precision'], 'Recall@10': ranking['recall'],
+            'NDCG@10': ranking['ndcg'], 'Catalog_Coverage': ranking['coverage'], 'ranking': ranking}

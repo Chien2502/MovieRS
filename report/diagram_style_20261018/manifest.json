@@ -1,0 +1,29 @@
+{
+  "source": "D:\\Users\\BT\\N3_K1\\ThucTapThucTe\\sản phẩm\\TTTT_NguyenThanhChien_24ITE020_CapNhat_MovieRS_V2.docx",
+  "output": "D:\\Users\\BT\\N3_K1\\ThucTapThucTe\\sản phẩm\\TTTT_NguyenThanhChien_24ITE020_CapNhat_MovieRS_V2_SoDo.docx",
+  "source_sha256": "006d9b4cbcce059a96c6d50c1c49a2aa1a77d852773588ff4a06084e41daab66",
+  "output_sha256": "402dc1a2bfd2571211a349d884e4209a4efbe6c19e492ac29ec8ba0175906fa3",
+  "changed_media": [
+    "word/media/image2.png",
+    "word/media/image3.png",
+    "word/media/image4.png",
+    "word/media/image5.png",
+    "word/media/image6.png",
+    "word/media/image7.png",
+    "word/media/image8.png",
+    "word/media/image9.png",
+    "word/media/image10.png",
+    "word/media/image11.png",
+    "word/media/image12.png",
+    "word/media/image13.png",
+    "word/media/image14.png",
+    "word/media/image15.png",
+    "word/media/image16.png",
+    "word/media/image17.png",
+    "word/media/image26.png"
+  ],
+  "drawings": 16,
+  "charts": 1,
+  "xml_changes": "Chỉ tăng chiều cao hai ảnh diagram-15 và diagram-16 lên 18 cm",
+  "drawing_diagnostics": []
+}

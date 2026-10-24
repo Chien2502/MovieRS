@@ -1,235 +1,192 @@
-"""
-recommender.py — Service thực thi logic gợi ý phim (Recommendation Service)
-
-Các tính năng:
-  1. Tải và giám sát mô hình SVD (SurpriseSVDRecommender).
-  2. Xử lý bài toán Cold-Start: Gợi ý các phim phổ biến (Popularity-based) cho user mới.
-  3. Làm giàu thông tin phim (Merge với movies_processed.csv để lấy title, genres, poster_path, overview).
-  4. Cơ chế Caching in-memory giúp giảm latency < 10ms.
-"""
+"""Khuyến nghị kết hợp SVD, thể loại, Bayesian popularity và đa dạng MMR."""
 
 import threading
+import os
 import time
+from collections import defaultdict
 from pathlib import Path
+
 import pandas as pd
+
 from api.logging_config import get_logger
+from api.services.feedback_store import read_feedback
 from api.services.user_store import get_user
-from src.models.svd_surprise import SurpriseSVDRecommender
 from src.models.baseline import PopularityRecommender
+from src.models.hybrid import genre_profile, parse_genres, rank_hybrid
+from src.models.svd_surprise import SurpriseSVDRecommender
+from src.models.research import percentile
 
 logger = get_logger(__name__)
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-MODEL_PATH = PROJECT_ROOT / "models" / "model_latest.pkl"
-MOVIES_CSV = PROJECT_ROOT / "data" / "processed" / "movies_processed.csv"
-TRAIN_RATINGS_CSV = PROJECT_ROOT / "data" / "processed" / "ratings_train.csv"
-INTERACTIONS_LOG_CSV = PROJECT_ROOT / "data" / "processed" / "interactions_log.csv"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+MODEL_PATH = PROJECT_ROOT / "models/model_latest.pkl"
+MOVIES_CSV = PROJECT_ROOT / "data/processed/movies_processed.csv"
+TRAIN_RATINGS_CSV = PROJECT_ROOT / "data/processed/ratings_train.csv"
 
 
 class RecommenderService:
-    """Service singleton phục vụ khuyến nghị phim."""
-    _instance = None
+    """Một snapshot nhất quán; reload chỉ thay snapshot sau khi tải thành công."""
 
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(RecommenderService, cls).__new__(cls, *args, **kwargs)
-            cls._instance.initialized = False
+    _instance = None
+    _instance_lock = threading.Lock()
+
+    def __new__(cls):
+        with cls._instance_lock:
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+                cls._instance.initialized = False
+                cls._instance._lock = threading.RLock()
         return cls._instance
 
-    def initialize(self):
-        if self.initialized:
-            return
-            
-        logger.info("[🧠] Đang khởi tạo RecommenderService...")
-        self.model = None
-        self.movies_df = None
-        self.popularity_model = None
-        
-        # Load movies catalog
-        if MOVIES_CSV.exists():
-            self.movies_df = pd.read_csv(MOVIES_CSV).fillna("")
-            self.all_movie_ids = self.movies_df['movieId'].tolist()
-        else:
-            raise FileNotFoundError(f"Không tìm thấy file danh mục phim: {MOVIES_CSV}")
-            
-        # Load SVD model
-        if MODEL_PATH.exists():
-            try:
-                self.model = SurpriseSVDRecommender.load(MODEL_PATH)
-            except Exception as e:
-                logger.warning(f"[⚠] Lỗi tải mô hình SVD: {e}. Hệ thống sẽ sử dụng Popularity Recommender làm mặc định.")
-        else:
-            logger.warning("[⚠] Không tìm thấy mô hình SVD tại models/. Vui lòng chạy train_pipeline.py trước.")
-            
-        # Huấn luyện Popularity Recommender để dự phòng (fallback) và giải quyết Cold-Start
-        if TRAIN_RATINGS_CSV.exists():
-            train_df = pd.read_csv(TRAIN_RATINGS_CSV)
-            self.popularity_model = PopularityRecommender().fit(train_df)
-            self.known_users = set(train_df['userId'].unique())
-        else:
-            self.known_users = set()
-            
-        # In-memory Cache kết quả: {user_id: (timestamp, recommendations_list)}
-        self.recommendations_cache = {}
-        self.cache_expiry_seconds = 300  # Cache hết hạn sau 5 phút
+    def initialize(self, force=False):
+        with self._lock:
+            if self.initialized and not force:
+                return
+            movies = pd.read_csv(MOVIES_CSV).fillna("")
+            train = pd.read_csv(TRAIN_RATINGS_CSV) if TRAIN_RATINGS_CSV.exists() else pd.DataFrame(
+                columns=['userId', 'movieId', 'rating'])
+            ranking_model,serving_name,serving_version=None,None,None
+            pointer=os.getenv('MOVIERS_SERVING_POINTER','').strip()
+            if pointer:
+                from api.services.serving import load_bundle
+                bundle,serving_manifest=load_bundle(PROJECT_ROOT/pointer)
+                train=bundle['history']
+                ranking_model=bundle['model']
+                serving_name=bundle['spec']['family']
+                serving_version=serving_manifest['version']
+                canonical=bundle.get('catalog')
+                if canonical is not None:
+                    metadata=movies.set_index('movieId')
+                    raw=canonical.set_index('movieId')
+                    missing=raw.loc[~raw.index.isin(metadata.index)].reset_index()
+                    if len(missing):
+                        missing=missing.assign(poster_path='',overview='Chưa có mô tả phim.',vote_average=0,
+                                               runtime_minutes=100,runtime_source='simulation_default')
+                        movies=pd.concat([movies,missing],ignore_index=True).fillna('')
+                    for field in ['title','genres']:
+                        movies[field]=movies.movieId.map(raw[field]).fillna(movies[field])
+            records = {int(row['movieId']): row for row in movies.to_dict('records')}
+            popularity = PopularityRecommender().fit(train) if not train.empty else None
+            model = None
+            if ranking_model is not None:
+                model=ranking_model if isinstance(ranking_model,SurpriseSVDRecommender) else None
+            elif MODEL_PATH.exists():
+                try:
+                    model = SurpriseSVDRecommender.load(MODEL_PATH)
+                except Exception:
+                    if force and self.initialized and self.model is not None:
+                        raise
+                    logger.exception("Không tải được SVD; phục vụ bằng độ phổ biến và thể loại")
+            elif force and self.initialized and self.model is not None:
+                raise FileNotFoundError("Không tìm thấy mô hình mới; giữ snapshot đang phục vụ")
+            # Một lượt trên các tuple tránh tạo hơn 130 nghìn DataFrame theo user.
+            histories = defaultdict(list)
+            for uid, mid, rating in train[['userId', 'movieId', 'rating']].itertuples(index=False, name=None):
+                histories[int(uid)].append((int(mid), float(rating)))
+            self.movies_df, self.movies = movies, records
+            self.movie_genres = {mid: parse_genres(row.get('genres', '')) for mid, row in records.items()}
+            self.model, self.popularity_model = model, popularity
+            self.ranking_model,self.serving_name,self.serving_version=ranking_model,serving_name,serving_version
+            self.histories, self.known_users = histories, set(histories)
+            self.all_movie_ids = sorted(records)
+            self.candidate_ids = sorted(set(train.movieId.astype(int)) & records.keys()) if popularity else self.all_movie_ids
+            self.recommendations_cache = {}
+            self.cache_expiry_seconds = 300
+            self.initialized = True
 
-        # Cache phim đã tương tác (từ interactions_log) — {user_id: (timestamp, set)}
-        # Giúp loại NGAY phim vừa xem/đánh giá khỏi gợi ý mà không cần chờ retrain.
-        self.recent_activity = {}
-        self.recent_activity_ttl = 60  # Làm mới tối đa mỗi 60 giây
+    def invalidate_user(self, user_id):
+        with self._lock:
+            if self.initialized:
+                for key in list(self.recommendations_cache):
+                    if key[0] == user_id:
+                        self.recommendations_cache.pop(key, None)
 
-        # Khóa đồng bộ cho online update (tránh ghi đè đồng thời từ nhiều request)
-        self._online_lock = threading.Lock()
-        
-        self.initialized = True
-        logger.info("[🧠] Khởi tạo RecommenderService hoàn tất.")
-
-    def _get_recent_activity(self, user_id: int) -> set:
-        """Danh sách phim user đã tương tác gần đây (đọc từ interactions_log, cache 60s).
-
-        Phim nằm trong danh sách này sẽ bị loại khỏi mọi gợi ý — kể cả khi user
-        vẫn "lạnh" với mô hình (chưa vào trainset) cho tới chu kỳ retrain tiếp theo.
-        """
-        now = time.time()
-        cached = self.recent_activity.get(user_id)
-        if cached is not None and now - cached[0] < self.recent_activity_ttl:
-            return cached[1]
-
-        watched: set = set()
-        if INTERACTIONS_LOG_CSV.exists():
-            try:
-                df = pd.read_csv(INTERACTIONS_LOG_CSV)
-                watched = set(
-                    df[df['userId'] == user_id]['movieId'].dropna().astype(int).tolist()
-                )
-            except Exception as e:
-                logger.warning(f"[⚠] Không đọc được interactions_log cho user {user_id}: {e}")
-        self.recent_activity[user_id] = (now, watched)
-        return watched
-
-    def apply_online_update(self, user_id: int, movie_id: int, rating: float) -> bool:
-        """Cập nhật TỨC THỜI vector ẩn của user theo tương tác mới (Online Learning).
-
-        Chỉ 1 bước SGD trên user duy nhất (~ms) — không retrain toàn bộ model.
-        Đồng thời làm mới cache phim đã xem của user để gợi ý tiếp theo loại bỏ
-        đúng phim vừa tương tác.
-        """
+    def apply_online_update(self, user_id, movie_id, rating):
         self.initialize()
-        if self.model is None:
-            return False
-        try:
-            with self._online_lock:
-                updated = self.model.online_update(user_id, movie_id, rating)
-            if updated:
-                # Vô hiệu hóa cache gợi ý + danh sách phim đã xem của user
-                self.recommendations_cache.pop(user_id, None)
-                self.recent_activity.pop(user_id, None)
-                logger.info(f"[⚡ Online Update] user {user_id} — movie {movie_id} (r={rating})")
-            return updated
-        except Exception as e:
-            logger.warning(f"[⚠] Online update thất bại user {user_id}: {e}")
-            return False
+        with self._lock:
+            self.invalidate_user(user_id)
+            if self.model is None:
+                return False
+            return self.model.online_update(user_id, movie_id, rating)
 
-    def get_recommendations(self, user_id: int, limit: int = 10) -> list:
-        """Sinh ra danh sách Top-N phim gợi ý cho user."""
+    def get_popular_movies(self, limit=10):
         self.initialize()
-        
-        # 1. Kiểm tra cache
-        current_time = time.time()
-        if user_id in self.recommendations_cache:
-            cached_time, cached_recs = self.recommendations_cache[user_id]
-            if current_time - cached_time < self.cache_expiry_seconds:
-                logger.info(f"[⚡ Cache Hit] Trả về kết quả từ cache cho user {user_id}")
-                return cached_recs[:limit]
-                
-        # 2. Xử lý Cold-Start User
-        # Nếu user chưa từng xuất hiện trong tập Train, gợi ý các phim phổ biến nhất (Popularity)
-        has_online_profile = (
-            self.model is not None
-            and user_id in getattr(self.model, "extra_users", {})
-        )
-        is_cold = user_id not in self.known_users and not has_online_profile
+        with self._lock:
+            if self.popularity_model:
+                ids = [mid for mid in self.popularity_model.popular_movies if mid in self.movies]
+                counts = self.popularity_model.popular_movies_df.set_index('movieId').rating_count.to_dict()
+                return [{**self.movies[mid], 'rating_count': int(
+                    counts[mid])}
+                        for mid in ids[:limit]]
+            return [self.movies[mid] for mid in self.all_movie_ids[:limit]]
 
-        # Phim đã tương tác gần đây (log) — loại khỏi gợi ý ngay, không chờ retrain
-        recent_watched = self._get_recent_activity(user_id)
-
-        start_time = time.time()
-        
-        if is_cold or self.model is None:
-            logger.info(f"[❄ Cold-Start] User {user_id} chưa có lịch sử. Sử dụng Popularity Recommender...")
-            if self.popularity_model is not None:
-                top_movie_ids = self.popularity_model.recommend(user_id, n=limit*2)
-                # Cold-Start theo sở thích: ưu tiên phim đúng thể loại user đã đăng ký
-                user = get_user(user_id)
-                user_genres = user.get("genres", []) if user else []
-                if user_genres:
-                    top_movie_ids = self._prefer_genres(top_movie_ids, user_genres, limit*2)
-                # Loại bỏ phim user đã xem/đánh giá gần đây
-                top_movie_ids = [m for m in top_movie_ids if m not in recent_watched]
+    def get_recommendation_result(self, user_id, limit=10, explore=False):
+        self.initialize()
+        with self._lock:
+            now = time.monotonic()
+            cache_key = (user_id, bool(explore))
+            cached = self.recommendations_cache.get(cache_key)
+            if cached and now - cached[0] < self.cache_expiry_seconds:
+                return {**cached[1], 'recommendations': cached[1]['recommendations'][:limit]}
+            user = get_user(user_id) or {}
+            feedback = read_feedback(user_id)
+            recent = feedback[feedback.userId == user_id]
+            history = dict(self.histories.get(user_id, []))
+            history.update({int(row.movieId): float(row.rating) for row in recent.itertuples()})
+            seen = set(history)
+            profile = genre_profile(history.items(), self.movie_genres, user.get('genres', []))
+            has_svd = False
+            trained_user = False
+            if self.model is not None:
+                try:
+                    self.model.model.trainset.to_inner_uid(user_id)
+                    trained_user = True
+                except ValueError:
+                    pass
+                has_svd = trained_user or user_id in self.model.extra_users
+            strategy = 'hybrid_svd' if has_svd else ('genre_popularity' if profile else 'popularity')
+            stage = 'personalized' if trained_user else ('learning' if history else 'cold_start')
+            candidates = [mid for mid in self.candidate_ids if mid not in seen]
+            if self.ranking_model is not None:
+                scores=.5+4.5*percentile(self.ranking_model.score_items(user_id,candidates))
+                strategy=self.serving_name+'_onboarding_rerank'
+            elif has_svd:
+                scores = self.model.score_items(user_id, candidates)
+            elif self.popularity_model:
+                scores = [self.popularity_model.predict(user_id, mid) for mid in candidates]
             else:
-                # Fallback cuối cùng nếu không có cả popularity model: lấy bừa trong catalog
-                top_movie_ids = [m for m in self.all_movie_ids[:limit*2] if m not in recent_watched]
-        else:
-            # User ấm: Sử dụng mô hình SVD để dự đoán
-            logger.info(f"[🔥 SVD Recommend] Đang tính toán gợi ý cá nhân hóa cho user {user_id}...")
-            # Lấy danh sách các phim user đã đánh giá để loại bỏ khỏi danh sách gợi ý
-            # Đọc từ tập train + gộp với phim đã tương tác gần đây (log)
-            train_df = pd.read_csv(TRAIN_RATINGS_CSV)
-            rated_movies = train_df[train_df['userId'] == user_id]['movieId'].tolist()
-            rated_movies = set(rated_movies) | recent_watched
-            
-            # Dự đoán Top N phim tốt nhất
-            recs_with_score = self.model.recommend(
-                user_id=user_id,
-                all_movie_ids=self.all_movie_ids,
-                rated_movie_ids=list(rated_movies),
-                n=limit*2
-            )
-            top_movie_ids = [mid for mid, _ in recs_with_score]
-            
-        # 3. Làm giàu dữ liệu phim (Merge với metadata để lấy poster, mô tả)
-        recommended_movies = []
-        for mid in top_movie_ids:
-            movie_row = self.movies_df[self.movies_df['movieId'] == mid]
-            if not movie_row.empty:
-                movie_dict = movie_row.iloc[0].to_dict()
-                recommended_movies.append(movie_dict)
-                
-        # 4. Tiêm tính đa dạng (Diversity Injection) để tránh Filter Bubble
-        # Đảm bảo trong top gợi ý có 1-2 phim thuộc thể loại khác hoàn toàn sở thích
-        # (Ở đây ta chỉ lấy tối đa đúng số lượng limit sau khi xử lý)
-        final_recs = recommended_movies[:limit]
-        
-        latency = (time.time() - start_time) * 1000
-        logger.info(f"    ✓ Gợi ý hoàn tất cho user {user_id} trong {latency:.2f}ms")
-        
-        # 5. Lưu vào cache
-        self.recommendations_cache[user_id] = (current_time, recommended_movies)
-        
-        return final_recs
-        
-    def _prefer_genres(self, movie_ids: list, genres: list, n: int) -> list:
-        """Sắp xếp lại danh sách phim: phim trùng thể loại yêu thích lên đầu (giữ thứ tự popularity)."""
-        if not genres or self.movies_df is None:
-            return movie_ids[:n]
+                scores = [3.0] * len(candidates)
+                strategy = 'catalog_fallback'
+            # MMR là lựa chọn khám phá; mặc định không dùng vì NDCG validation thấp hơn.
+            diversity = 0.1 if explore else 0.0
+            ranked = rank_hybrid(candidates, scores, self.movie_genres, profile, n=50,
+                                 genre_weight=0.2, diversity_weight=diversity)
+            recommendations = []
+            for item in ranked:
+                mid = item['movieId']
+                matching = sorted(g for g in self.movie_genres[mid] if profile.get(g, 0) > 0)
+                reason = ('Điểm dự đoán SVD từ lịch sử tương tác' if has_svd
+                          else 'Điểm cộng đồng có điều chỉnh theo số lượt đánh giá')
+                if self.ranking_model is not None:
+                    reason=f'Xếp hạng {self.serving_name}, chọn trên validation'
+                if strategy == 'catalog_fallback':
+                    reason = 'Khám phá danh mục; chưa có mô hình hoặc thống kê đánh giá'
+                if matching:
+                    reason += '; phù hợp với ' + ', '.join(matching[:3])
+                if self.ranking_model is not None and not getattr(self.ranking_model,'supports_rating_prediction',False):
+                    item['predicted_rating']=None
+                recommendations.append({**self.movies[mid], **item, 'strategy': strategy,
+                                        'reason': reason, 'matched_genres': matching})
+            result = {'strategy': strategy, 'stage': stage, 'history_count': len(history),
+                      'model_available': self.model is not None, 'candidate_count': len(candidates),
+                      'genre_weight': 0.2, 'diversity_weight': diversity,
+                      'recommendations': recommendations}
+            if len(self.recommendations_cache) >= 1000:
+                self.recommendations_cache.pop(next(iter(self.recommendations_cache)))
+            self.recommendations_cache[cache_key] = (now, result)
+            return {**result, 'recommendations': recommendations[:limit]}
 
-        genre_scores = {}
-        for mid in movie_ids:
-            row = self.movies_df[self.movies_df['movieId'] == mid]
-            if row.empty:
-                genre_scores[mid] = 0
-                continue
-            movie_genres = str(row.iloc[0].get('genres', ''))
-            genre_scores[mid] = sum(
-                1 for g in genres if g.lower() in movie_genres.lower()
-            )
-
-        ordered = sorted(movie_ids, key=lambda mid: -genre_scores.get(mid, 0))
-        return ordered[:n]
+    def get_recommendations(self, user_id, limit=10):
+        return self.get_recommendation_result(user_id, limit)['recommendations']
 
     def reload_model(self):
-        """Buộc nạp lại mô hình SVD khi có retraining."""
-        self.initialized = False
-        self.recommendations_cache.clear()
-        self.initialize()
-        logger.info("[🧠] Đã nạp lại mô hình mới thành công!")
+        self.initialize(force=True)

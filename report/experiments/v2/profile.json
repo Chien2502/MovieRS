@@ -1,0 +1,111 @@
+{
+  "created_at": "2026-10-16T00:06:50.105317+00:00",
+  "run_id": "run_20261015T235317064101Z",
+  "dataset_id": "0bf8337c28f8baeb49a9",
+  "selection_sha256": "6105b17eb615db164d8435198b878a8828b57c78be39cd1516bc3d5829ab074d",
+  "purpose": "Independent resource profiling, not another TEST selection",
+  "training": "TRAIN+VAL, no app feedback",
+  "measurements": [
+    {
+      "model": "GlobalMean",
+      "seed": null,
+      "fit_seconds": 0.0246,
+      "serialized_bytes": 140,
+      "sha256": "9d6d003f8f3edd89dc9f7e8c864c0dc0642e1d72abec52f91a19aab5d8cf99f6",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "RegularizedBias",
+      "seed": null,
+      "fit_seconds": 0.8567,
+      "serialized_bytes": 280746,
+      "sha256": "30625b3d9a6b1517dbaa6e2a825c47d22e884ef8e34fb0aea6f9ac70a58cda0c",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "MostPopular",
+      "seed": null,
+      "fit_seconds": 0.0266,
+      "serialized_bytes": 64134,
+      "sha256": "b139b64de0039bf9781c4627592201d611bcce44ae666b594f2604b218039ef7",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "BayesianItemMean",
+      "seed": null,
+      "fit_seconds": 0.0265,
+      "serialized_bytes": 126149,
+      "sha256": "2b7be82716ca23fdb395ce75198becf457716d4d82d6cc35cc7fa30f3dbeede1",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "GenreContent",
+      "seed": null,
+      "fit_seconds": 0.6912,
+      "serialized_bytes": 1139068,
+      "sha256": "cdae2f8ac490c0a0ddd34f2d2ba58b6d28aef643d4acb97bcf18544e0d2485d6",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "SparseItemKNN",
+      "seed": null,
+      "fit_seconds": 6.4587,
+      "serialized_bytes": 4521787,
+      "sha256": "0ad9782862e2806b5fec64c36372e650d4eae9dc27a995b8bf162ede9d9ba64e",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "BiasedSVD",
+      "seed": 42,
+      "fit_seconds": 4.124,
+      "serialized_bytes": 14780494,
+      "sha256": "9a80aef0a5620a063d21fd62bee8d4337cefb74cc8698f64b9900ac0b56b8e6e",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "AdaptiveHybrid",
+      "seed": 42,
+      "fit_seconds": 0.0122,
+      "serialized_bytes": 16080065,
+      "sha256": "5c94febab0ffb7dc70f99b4dc267b96fe648165a9d53015cd85350e3214f43d6",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "BiasedSVD",
+      "seed": 43,
+      "fit_seconds": 3.6036,
+      "serialized_bytes": 14780387,
+      "sha256": "304f5a18f1729e8005d712df8141d6f70d0bcef078dde949fef93eade3299a6c",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "AdaptiveHybrid",
+      "seed": 43,
+      "fit_seconds": 0.0127,
+      "serialized_bytes": 16080102,
+      "sha256": "15f7c1b4abde0873132c083c51f1fcaae5c65f66a8ff630fc7c8d5bd640d1f41",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "BiasedSVD",
+      "seed": 44,
+      "fit_seconds": 3.7101,
+      "serialized_bytes": 14780388,
+      "sha256": "28c410e28c5903a912c752822d71f3b7f141fa83cf3312757c50bbb6e6474e6b",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    },
+    {
+      "model": "AdaptiveHybrid",
+      "seed": 44,
+      "fit_seconds": 0.0131,
+      "serialized_bytes": 16080241,
+      "sha256": "c455302174c9a8f0b04d5945bf7c21f3a6b7ad8d0ea0120709160aa5943a082a",
+      "serialization": "joblib_compress_3_excluding_evaluation_score_cache"
+    }
+  ],
+  "resources": {
+    "elapsed_seconds": 75.515,
+    "peak_process_tree_rss_mib": 877.32,
+    "budget_exceeded": null
+  }
+}

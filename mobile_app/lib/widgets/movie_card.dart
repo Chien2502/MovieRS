@@ -39,11 +39,10 @@ class MovieCard extends StatelessWidget {
                   height: height,
                   color: AppColors.cardBackground,
                 ),
-                errorWidget: (context, url, error) => Image.network(
-                  'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500',
+                errorWidget: (context, url, error) => SizedBox(
                   width: width,
                   height: height,
-                  fit: BoxFit.cover,
+                  child: const Icon(Icons.movie_outlined, size: 40),
                 ),
               ),
             ),
@@ -66,7 +65,9 @@ class MovieCard extends StatelessWidget {
                 const Icon(Icons.star, color: AppColors.ratingStar, size: 14),
                 const SizedBox(width: 4),
                 Text(
-                  movie.voteAverage > 0 ? movie.voteAverage.toStringAsFixed(1) : '7.0',
+                  movie.voteAverage > 0
+                      ? '${movie.voteAverage.toStringAsFixed(1)}/10 · TMDb'
+                      : 'Chưa có điểm TMDb',
                   style: const TextStyle(
                     fontSize: 12,
                     height: 1.2,

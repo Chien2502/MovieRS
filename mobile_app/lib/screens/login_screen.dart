@@ -92,6 +92,14 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   Future<void> _submitRegister() async {
     final username = _usernameController.text.trim();
     final password = _passwordController.text;
+    if (username.length < 3 || username.length > 50) {
+      _showMessage('Tên đăng nhập cần từ 3 đến 50 ký tự.', isError: true);
+      return;
+    }
+    if (password.length < 8 || password.length > 100) {
+      _showMessage('Mật khẩu cần từ 8 đến 100 ký tự.', isError: true);
+      return;
+    }
 
     if (username.isEmpty || password.isEmpty) {
       _showMessage('Vui lòng nhập tên đăng nhập và mật khẩu!', isError: true);
@@ -225,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           const SizedBox(height: 16),
           _buildTextField(_usernameController, 'Tên đăng nhập', Icons.person_outline),
           const SizedBox(height: 14),
-          _buildTextField(_passwordController, 'Mật khẩu (tối thiểu 4 ký tự)', Icons.lock_outline, obscure: true),
+          _buildTextField(_passwordController, 'Mật khẩu (tối thiểu 8 ký tự)', Icons.lock_outline, obscure: true),
           const SizedBox(height: 20),
           Wrap(
             spacing: 10,

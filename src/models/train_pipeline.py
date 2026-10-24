@@ -1,170 +1,149 @@
-"""
-train_pipeline.py — Quy trình huấn luyện, đánh giá và so sánh tất cả các mô hình
+"""Thực nghiệm tái lập: dữ liệu cố định → validation → test → báo cáo có nguồn.
 
-Quy trình hoạt động:
-  1. Tải các tập dữ liệu ratings (Train/Val/Test) và thông tin phim đã xử lý.
-  2. Huấn luyện mô hình Mean, Popularity, KNN (Baselines).
-  3. Huấn luyện mô hình SVD tự viết (NumPy) và SVD thư viện (Surprise).
-  4. Đánh giá chất lượng của từng mô hình bằng các metric: RMSE, MAE, Precision@10, Recall@10, NDCG@10, Catalog Coverage.
-  5. In ra bảng so sánh kết quả trực quan.
-  6. Lưu mô hình SVD (Surprise) tối ưu nhất làm mô hình production phục vụ API.
-
-Sử dụng:
-  python src/models/train_pipeline.py
+Mặc định không ghi đè model đang phục vụ hay bất kỳ CSV dữ liệu nào.
+Chạy từ gốc: python src/models/train_pipeline.py --seeds 42 43 44
 """
 
+import argparse
+import importlib.metadata
+import json
 import os
+import platform
+import subprocess
 import sys
+import time
+from datetime import datetime, timezone
 from pathlib import Path
+
+import numpy as np
 import pandas as pd
 
-# Thêm thư mục gốc dự án vào sys.path
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.models.baseline import MeanRecommender, PopularityRecommender, SurpriseKNNRecommender
-from src.models.svd_numpy import NumPyFunkSVD
+from src.data.protocol import file_fingerprint, frame_fingerprint, temporal_split
+from src.models.baseline import MeanRecommender, PopularityRecommender
+from src.models.evaluate import evaluate_ranking, rating_metrics
+from src.models.hybrid import HybridRatingModel, parse_genres
 from src.models.svd_surprise import SurpriseSVDRecommender
-from src.models.evaluate import evaluate_model_pipeline
-from src.pipeline.registry import write_metadata
 
-PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
-MODEL_DIR = PROJECT_ROOT / "models"
-MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
-# Siêu tham số SVD — lấy từ .env (fallback về giá trị mặc định đã tuning)
-SVD_N_FACTORS = int(os.getenv("SVD_N_FACTORS", "50"))
-SVD_LR_ALL = float(os.getenv("SVD_LR_ALL", "0.005"))
-SVD_REG_ALL = float(os.getenv("SVD_REG_ALL", "0.05"))
-SVD_N_EPOCHS = int(os.getenv("SVD_N_EPOCHS", "20"))
+def run_experiment(data_dir, output_dir, seeds=(42, 43, 44), ranking_users=300, epochs=20, factors=50):
+    """Chọn trọng số trên VAL; chỉ sau đó đọc kết quả TEST để báo cáo."""
+    if not seeds or ranking_users < 1 or epochs < 1 or factors < 1:
+        raise ValueError('Cấu hình thực nghiệm không hợp lệ')
+    started = time.monotonic()
+    base_path, movies_path = data_dir / 'ratings_processed.csv', data_dir / 'movies_processed.csv'
+    train, val, test = temporal_split(pd.read_csv(base_path))
+    movies = pd.read_csv(movies_path)
+    movie_genres = {int(row.movieId): parse_genres(row.genres) for row in movies.itertuples()}
+    results, selection = {}, {}
+    popularity = PopularityRecommender().fit(train)
+    for seed in seeds:
+        print(f'[Thực nghiệm] SVD seed={seed}; train={len(train):,}', flush=True)
+        model = SurpriseSVDRecommender(n_factors=factors, n_epochs=epochs, reg_all=0.05, random_state=seed).fit(train)
+        hybrid = HybridRatingModel(model, popularity, train.userId.unique())
+        configurations = [(0.0, 0.0), (0.2, 0.0), (0.2, 0.1)]
+        validation = []
+        for alpha, diversity in configurations:
+            ranking = evaluate_ranking(model if alpha == 0 else hybrid, train, val, movie_genres, max_users=ranking_users,
+                                       genre_weight=alpha, diversity_weight=diversity)
+            validation.append({'genre_weight': alpha, 'diversity_weight': diversity, 'ranking': ranking})
+        best = max(validation, key=lambda row: row['ranking']['ndcg'])
+        selection[str(seed)] = {'criterion': 'validation_ndcg@10', 'configurations': validation,
+                                'selected_genre_weight': best['genre_weight'],
+                                'selected_diversity_weight': best['diversity_weight']}
+        val_rating = rating_metrics(model, train, val)
+        test_rating = rating_metrics(model, train, test)
+        hybrid_val_rating = rating_metrics(hybrid, train, val)
+        hybrid_test_rating = rating_metrics(hybrid, train, test)
+        for name, alpha, diversity in [('SVD', 0.0, 0.0),
+                                       ('SVD+Genres', 0.2, 0.0),
+                                       ('SVD+Genres+MMR', 0.2, 0.1)]:
+            print(f'[TEST] {name}; seed={seed}', flush=True)
+            results[f'{name}/seed={seed}'] = {
+                'family': name, 'seed': seed, 'validation_rating': val_rating if name == 'SVD' else hybrid_val_rating,
+                'test_rating': test_rating if name == 'SVD' else hybrid_test_rating,
+                'test_ranking': evaluate_ranking(model if name == 'SVD' else hybrid, train, test, movie_genres, max_users=ranking_users,
+                                                genre_weight=alpha, diversity_weight=diversity, exclude_df=val)}
+    for name, model in [('Mean', MeanRecommender().fit(train)), ('BayesianPopularity', PopularityRecommender().fit(train))]:
+        print(f'[TEST] {name}', flush=True)
+        results[name] = {'family': name, 'seed': None, 'validation_rating': rating_metrics(model, train, val),
+                         'test_rating': rating_metrics(model, train, test),
+                         'test_ranking': evaluate_ranking(model, train, test, movie_genres,
+                                                         max_users=ranking_users, exclude_df=val)}
+    summaries = {}
+    for family in sorted({row['family'] for row in results.values()}):
+        entries = [row for row in results.values() if row['family'] == family]
+        measurements = {name: [row['test_ranking'][name] for row in entries]
+                        for name in ['precision', 'recall', 'ndcg', 'coverage', 'diversity', 'novelty']}
+        measurements['RMSE'] = [row['test_rating']['RMSE'] for row in entries]
+        measurements['MAE'] = [row['test_rating']['MAE'] for row in entries]
+        summaries[family] = {name: {'mean': float(np.mean(values)),
+                                    'std_across_seeds': float(np.std(values, ddof=1)) if len(values) > 1 else None}
+                              for name, values in measurements.items()}
+    try:
+        git_head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=PROJECT_ROOT, text=True).strip()
+        dirty = bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=PROJECT_ROOT, text=True).strip())
+    except (OSError, subprocess.CalledProcessError):
+        git_head, dirty = None, None
+    source_paths = ['src/models/train_pipeline.py', 'src/models/evaluate.py', 'src/models/hybrid.py',
+                    'src/models/svd_surprise.py', 'src/models/baseline.py', 'src/data/protocol.py']
+    payload = {
+        'schema_version': 1, 'created_at': datetime.now(timezone.utc).isoformat(),
+        'protocol': {'split': 'global_temporal_80_10_10_timestamp_ties_stay_together',
+                     'ranking_candidates': 'all_train_items_minus_train_and_validation_history_for_test',
+                     'negative_item_sampling': False, 'user_sampling': 'uniform_without_replacement_seed_42',
+                     'threshold': 3.5, 'k': 10, 'ranking_users_limit': ranking_users,
+                     'unobserved_items': 'treated_as_nonrelevant_offline_not_as_true_dislikes',
+                     'onboarding_preferences': 'not_available_in_MovieLens_not_inferred_from_test',
+                     'implicit_feedback': 'excluded_from_academic_experiment',
+                     'hybrid_cold_start': 'Bayesian_popularity_same_as_serving',
+                     'ci95': 'percentile_user_bootstrap_1000_resamples_conditional_on_fixed_user_sample'},
+        'dataset': {'ratings_sha256': file_fingerprint(base_path), 'movies_sha256': file_fingerprint(movies_path),
+                    'ratings': int(len(train) + len(val) + len(test)), 'catalog_movies': len(movies),
+                    'splits': {name: {'rows': len(df), 'users': int(df.userId.nunique()), 'items': int(df.movieId.nunique()),
+                                     'start': str(df.timestamp.min()), 'end': str(df.timestamp.max()),
+                                     'sha256': frame_fingerprint(df)} for name, df in [('train', train), ('val', val), ('test', test)]}},
+        'environment': {'python': platform.python_version(), 'platform': platform.platform(), 'git_head': git_head,
+                        'working_tree_dirty': dirty, 'source_sha256': {p: file_fingerprint(PROJECT_ROOT / p) for p in source_paths},
+                        'packages': {p: importlib.metadata.version(p) for p in ['numpy', 'pandas', 'scikit-surprise']}},
+        'parameters': {'seeds': list(seeds), 'n_factors': factors, 'n_epochs': epochs, 'reg_all': 0.05, 'lr_all': 0.005},
+        'validation_selection': selection, 'results': results, 'summary': summaries,
+        'duration_seconds': round(time.monotonic() - started, 2),
+        'limitations': ['Đánh giá hồi cứu trên MovieLens; chưa đo hài lòng người dùng thật.',
+                        'Lấy mẫu user cho ranking; RMSE/MAE dùng toàn bộ split.',
+                        'Hai biến thể hybrid dùng cùng bộ dự đoán SVD/popularity nên RMSE/MAE giống nhau; chỉ khác thứ tự Top-K.',
+                        'MMR dùng pool 200 ứng viên; toàn bộ danh mục TRAIN được chấm trước khi lấy pool.',
+                        'Phim chưa có ở TRAIN không phục vụ được; báo cáo tỷ lệ positive ngoài danh mục.',
+                        'Bộ dữ liệu processed đã qua lấy mẫu/lọc toàn cục; chưa tái tạo lọc chỉ bằng TRAIN từ raw.',
+                        'Không suy ra kết luận SVD giải quyết cold-start hay hybrid luôn tốt hơn baseline.']}
+    output_dir.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+    serialized = json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False)
+    (output_dir / f'experiment_{timestamp}.json').write_text(serialized, encoding='utf-8')
+    tmp = output_dir / 'latest.json.tmp'
+    tmp.write_text(serialized, encoding='utf-8')
+    tmp.replace(output_dir / 'latest.json')
+    rows = [{'model': name, **{metric: value['mean'] for metric, value in metrics.items()}}
+            for name, metrics in summaries.items()]
+    table = pd.DataFrame(rows)
+    table.to_csv(output_dir / 'summary.csv', index=False)
+    print(table.to_string(index=False), flush=True)
+    return payload
 
 
 def main():
-    print(f"{'='*60}")
-    print("  MovieRS — Pipeline Huấn luyện & Đánh giá Mô hình")
-    print(f"{'='*60}")
-    
-    # 1. Đọc dữ liệu
-    train_path = PROCESSED_DIR / "ratings_train.csv"
-    val_path = PROCESSED_DIR / "ratings_val.csv"
-    test_path = PROCESSED_DIR / "ratings_test.csv"
-    
-    if not train_path.exists() or not test_path.exists():
-        print("[✗] Không tìm thấy dữ liệu split trong data/processed/!")
-        print("    Vui lòng chạy script split trước: python src/data/split.py")
-        sys.exit(1)
-        
-    train_df = pd.read_csv(train_path)
-    val_df = pd.read_csv(val_path) if val_path.exists() else None
-    test_df = pd.read_csv(test_path)
-    
-    print(f"[✓] Đã tải dữ liệu:")
-    print(f"    - Train size: {len(train_df):,}")
-    print(f"    - Test size: {len(test_df):,}")
-    
-    results = {}
-    
-    # --------------------------------------------------------
-    # Huấn luyện & Đánh giá các Baselines
-    # --------------------------------------------------------
-    # 1. Mean Recommender
-    print(f"\n{'─'*50}")
-    print("1. Huấn luyện Mean Recommender (Baseline)...")
-    mean_model = MeanRecommender().fit(train_df)
-    results["Mean Recommender"] = evaluate_model_pipeline(mean_model, train_df, test_df)
-    
-    # 2. Popularity Recommender
-    print(f"\n{'─'*50}")
-    print("2. Huấn luyện Popularity Recommender (Baseline)...")
-    pop_model = PopularityRecommender().fit(train_df)
-    results["Popularity Recommender"] = evaluate_model_pipeline(pop_model, train_df, test_df)
-    
-    # 3. KNN Recommender
-    print(f"\n{'─'*50}")
-    print("3. Huấn luyện KNN Recommender (Baseline)...")
-    try:
-        knn_model = SurpriseKNNRecommender(user_based=True, k=40).fit(train_df)
-        results["KNN (User-based)"] = evaluate_model_pipeline(knn_model, train_df, test_df)
-    except Exception as e:
-        print(f"    [⚠] Không thể train KNN: {e}")
-        
-    # --------------------------------------------------------
-    # Huấn luyện & Đánh giá mô hình Matrix Factorization
-    # --------------------------------------------------------
-    # 4. NumPy FunkSVD (Tự viết)
-    print(f"\n{'─'*50}")
-    print("4. Huấn luyện FunkSVD (NumPy tự viết)...")
-    numpy_svd = NumPyFunkSVD(n_factors=30, lr=0.005, reg=0.05, n_epochs=15)
-    numpy_svd.fit(train_df, val_df)
-    results["FunkSVD (NumPy - Custom)"] = evaluate_model_pipeline(numpy_svd, train_df, test_df)
-    
-    # 5. Surprise SVD (Thư viện)
-    print(f"\n{'─'*50}")
-    print("5. Huấn luyện SVD (Surprise)...")
-    surprise_svd = SurpriseSVDRecommender(
-        n_factors=SVD_N_FACTORS,
-        lr_all=SVD_LR_ALL,
-        reg_all=SVD_REG_ALL,
-        n_epochs=SVD_N_EPOCHS,
-    )
-    surprise_svd.fit(train_df)
-    results["SVD (Surprise)"] = evaluate_model_pipeline(surprise_svd, train_df, test_df)
-    
-    # --------------------------------------------------------
-    # Hiển thị bảng so sánh kết quả
-    # --------------------------------------------------------
-    print(f"\n{'='*70}")
-    print("               BẢNG SO SÁNH KẾT QUẢ ĐÁNH GIÁ OFFLINE")
-    print(f"{'='*70}")
-    
-    metrics_to_show = ["RMSE", "MAE", "Precision@10", "Recall@10", "NDCG@10", "Catalog_Coverage"]
-    
-    # Tạo bảng
-    rows = []
-    for model_name, metrics in results.items():
-        row = {"Model": model_name}
-        for m in metrics_to_show:
-            val = metrics.get(m, 0.0)
-            if m == "Catalog_Coverage":
-                row[m] = f"{val*100:.2f}%"
-            else:
-                row[m] = f"{val:.4f}"
-        rows.append(row)
-        
-    results_df = pd.DataFrame(rows)
-    print(results_df.to_string(index=False))
-    
-    # Hiển thị phân tích theo nhóm User Sparsity
-    print(f"\n{'─'*50}")
-    print("Phân tích lỗi RMSE theo nhóm người dùng (Sparsity Analysis):")
-    print(f"{'─'*50}")
-    for model_name, metrics in results.items():
-        if "Group_RMSE" in metrics:
-            print(f" * {model_name}:")
-            for group, rmse in metrics["Group_RMSE"].items():
-                print(f"    - {group:30s}: RMSE = {rmse:.4f}")
-                
-    # 6. Lưu mô hình tốt nhất phục vụ API (SVD Surprise)
-    print(f"\n{'─'*50}")
-    model_output_path = MODEL_DIR / "model_latest.pkl"
-    surprise_svd.save(model_output_path)
-    svd_metrics = results.get("SVD (Surprise)", {})
-    write_metadata(
-        version_file=model_output_path,
-        metrics=svd_metrics,
-        params={
-            "n_factors": SVD_N_FACTORS,
-            "lr_all": SVD_LR_ALL,
-            "reg_all": SVD_REG_ALL,
-            "n_epochs": SVD_N_EPOCHS,
-        },
-        promoted=True,
-        train_rows=int(len(train_df)),
-        save_path=MODEL_DIR / "model_latest.json",
-    )
-    print(f"[✓] Đã deploy mô hình thành công lên production!")
-    print("    Bước tiếp theo: Xây dựng FastAPI server phục vụ mô hình.")
+    parser = argparse.ArgumentParser(description='Thực nghiệm MovieRS; không thay model hoặc dữ liệu phục vụ')
+    parser.add_argument('--data-dir', type=Path, default=PROJECT_ROOT / 'data/processed')
+    parser.add_argument('--output-dir', type=Path, default=PROJECT_ROOT / 'report/experiments')
+    parser.add_argument('--seeds', type=int, nargs='+', default=[42, 43, 44])
+    parser.add_argument('--ranking-users', type=int, default=300)
+    parser.add_argument('--epochs', type=int, default=int(os.getenv('SVD_N_EPOCHS', '20')))
+    parser.add_argument('--factors', type=int, default=int(os.getenv('SVD_N_FACTORS', '50')))
+    args = parser.parse_args()
+    run_experiment(args.data_dir, args.output_dir, args.seeds, args.ranking_users, args.epochs, args.factors)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

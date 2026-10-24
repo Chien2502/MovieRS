@@ -1,0 +1,22 @@
+{
+  "kind": "compact_report_bundle",
+  "source_run": "run_20261015T235317064101Z",
+  "source_manifest_sha256": "d30af92fef79286ec17c11f533b0c5e938d587859dc825d361e35cd0203e62a9",
+  "files": {
+    "ablations.json": "ab94dc77b877dec4052701182d88170e732070536ab598ba97b1b07ea776a15c",
+    "comparisons.json": "d928b236e22f1554c2081e33bde3ab0e10a37e4eb9325e5b1b421483b552d97e",
+    "data_card.md": "5d1ccfbf384f26aa87c686379c7b31b3e7f86ff8033323c11524aac11ab354c8",
+    "intervals.json": "92e14ab0da3d30b60440c434b211e5eb9b0364bf63c0c176aaa8ca913850b77e",
+    "metrics.json": "9c3ae0d4347a77d6df4d74d4c468d5ac42de88f7db11f5d22aa995658cb088eb",
+    "per_user_metrics.parquet": "a2eaf7cda20454a2ef74a595314f9920580cb35a2dd9713b784204cec4ba0918",
+    "profile.json": "68129547ee4150287322f905a9150bac28630c62459ed34550f571aff0b03dcd",
+    "quality.json": "a63ab838c3ea2649807d250f128858e52db6770ed199d5eecd7972e459ec8542",
+    "reproducibility.json": "1f12d10a53efc9b282a262f1a9dd0f84748cfb8628c8cc295ff35c2dd45d4688",
+    "resource_usage.json": "28116e557c7fc451f82e031c5f243662af35a4c07bd3594c76826c72034727a5",
+    "run_manifest.json": "d30af92fef79286ec17c11f533b0c5e938d587859dc825d361e35cd0203e62a9",
+    "selection.json": "6105b17eb615db164d8435198b878a8828b57c78be39cd1516bc3d5829ab074d",
+    "snapshot_manifest.json": "daf32a29a05b9939ac9f52b1d6278a59f74a8ccfe26af4e4298a179cbaa9a753",
+    "source_code.zip": "4270a6439bff21e4dae42a99eec2dc7394f575aacf78e8e526badeb7a443f228",
+    "summary.csv": "eceef0a22121f3391c244a7e865505cd5dcc3e1fa88354af1b6bbf2511517695"
+  }
+}

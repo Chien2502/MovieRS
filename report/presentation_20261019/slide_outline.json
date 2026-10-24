@@ -1,0 +1,132 @@
+[
+  {
+    "number": 1,
+    "section": "Giới thiệu",
+    "title": "MovieRS"
+  },
+  {
+    "number": 2,
+    "section": "Nội dung trình bày",
+    "title": "Mục lục",
+    "source": ""
+  },
+  {
+    "number": 3,
+    "section": "01   Tổng quan",
+    "title": "Bài toán lựa chọn phim",
+    "source": ""
+  },
+  {
+    "number": 4,
+    "section": "01   Tổng quan",
+    "title": "Mục tiêu và phạm vi của MovieRS",
+    "source": ""
+  },
+  {
+    "number": 5,
+    "section": "02   Đối tượng nghiên cứu",
+    "title": "Mẫu từ toàn bộ MovieLens 25M",
+    "source": ""
+  },
+  {
+    "number": 6,
+    "section": "02   Đối tượng nghiên cứu",
+    "title": "Giao thức đánh giá theo thời gian",
+    "source": ""
+  },
+  {
+    "number": 7,
+    "section": "02   Đối tượng nghiên cứu",
+    "title": "Mô hình lai theo độ dài lịch sử",
+    "source": ""
+  },
+  {
+    "number": 8,
+    "section": "03   Công nghệ sử dụng",
+    "title": "Các công nghệ và vai trò",
+    "source": ""
+  },
+  {
+    "number": 9,
+    "section": "04   Phân tích thiết kế",
+    "title": "Kiến trúc ứng dụng và model serving",
+    "source": ""
+  },
+  {
+    "number": 10,
+    "section": "04   Phân tích thiết kế",
+    "title": "Tác nhân và ranh giới truy cập",
+    "source": ""
+  },
+  {
+    "number": 11,
+    "section": "04   Phân tích thiết kế",
+    "title": "Mô hình dữ liệu runtime",
+    "source": ""
+  },
+  {
+    "number": 12,
+    "section": "04   Phân tích thiết kế",
+    "title": "Quy trình nghiên cứu có thể tái lập",
+    "source": ""
+  },
+  {
+    "number": 13,
+    "section": "04   Phân tích thiết kế",
+    "title": "Luồng ghi phản hồi nhất quán",
+    "source": ""
+  },
+  {
+    "number": 14,
+    "section": "04   Phân tích thiết kế",
+    "title": "Phát hành model và rollback",
+    "source": ""
+  },
+  {
+    "number": 15,
+    "section": "05   Sản phẩm",
+    "title": "Nguyên mẫu ứng dụng phim",
+    "source": ""
+  },
+  {
+    "number": 16,
+    "section": "05   Sản phẩm",
+    "title": "Dashboard nghiên cứu V2",
+    "source": ""
+  },
+  {
+    "number": 17,
+    "section": "05   Sản phẩm",
+    "title": "MostPopular tốt hơn hybrid trên protocol hiện tại",
+    "source": ""
+  },
+  {
+    "number": 18,
+    "section": "05   Sản phẩm",
+    "title": "Ablation và giới hạn của đóng góp hybrid",
+    "source": ""
+  },
+  {
+    "number": 19,
+    "section": "05   Sản phẩm",
+    "title": "Độ tin cậy dữ liệu và giới hạn suy luận",
+    "source": ""
+  },
+  {
+    "number": 20,
+    "section": "05   Sản phẩm",
+    "title": "Kiểm thử và nghiệm thu",
+    "source": ""
+  },
+  {
+    "number": 21,
+    "section": "05   Sản phẩm",
+    "title": "Kịch bản trình diễn",
+    "source": ""
+  },
+  {
+    "number": 22,
+    "section": "Kết luận",
+    "title": "Kết luận và hướng phát triển"
+  }
+]

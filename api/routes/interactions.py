@@ -1,156 +1,95 @@
-"""
-interactions.py — Ghi nhận hành vi và phản hồi từ người dùng (MLOps feedback loop)
+"""Ghi phản hồi có nguồn; tín hiệu xem không thay thế đánh giá chủ động."""
 
-Feedback được lưu vào data/processed/interactions_log.csv (tách khỏi train set).
-Đầu chu kỳ retrain, merge_interactions.py sẽ gộp log này vào dữ liệu và tái chia split.
-"""
-
-from datetime import datetime
-from pathlib import Path
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException,Request
 from pydantic import BaseModel, Field
-import pandas as pd
 
 from api.logging_config import get_logger
+from api.routes.movies import get_movies_df
+from api.services.feedback_store import write_feedback
 from api.services.recommender import RecommenderService
 from api.services.user_store import get_user
 
-logger = get_logger(__name__)
-
 router = APIRouter()
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-INTERACTIONS_LOG_CSV = PROJECT_ROOT / "data" / "processed" / "interactions_log.csv"
+logger = get_logger(__name__)
 
 
 class RatingInteraction(BaseModel):
-    user_id: int = Field(..., alias="userId", description="ID của người dùng")
-    movie_id: int = Field(..., alias="movieId", description="ID của bộ phim")
-    rating: float = Field(..., ge=0.5, le=5.0, description="Đánh giá từ 0.5 đến 5.0 sao")
+    user_id: int = Field(..., alias='userId', ge=1)
+    movie_id: int = Field(..., alias='movieId', ge=1)
+    rating: float = Field(..., ge=0.5, le=5.0, multiple_of=0.5, allow_inf_nan=False)
 
 
 class FavoriteInteraction(BaseModel):
-    user_id: int = Field(..., alias="userId")
-    movie_id: int = Field(..., alias="movieId")
-    is_favorite: bool = Field(..., alias="isFavorite")
+    user_id: int = Field(..., alias='userId', ge=1)
+    movie_id: int = Field(..., alias='movieId', ge=1)
+    is_favorite: bool = Field(..., alias='isFavorite')
 
 
 class WatchInteraction(BaseModel):
-    user_id: int = Field(..., alias="userId")
-    movie_id: int = Field(..., alias="movieId")
-    watch_duration_seconds: int = Field(..., alias="watchDurationSeconds")
-    total_duration_seconds: int = Field(..., alias="totalDurationSeconds")
+    user_id: int = Field(..., alias='userId', ge=1)
+    movie_id: int = Field(..., alias='movieId', ge=1)
+    watch_duration_seconds: int = Field(..., alias='watchDurationSeconds', ge=0)
+    total_duration_seconds: int = Field(..., alias='totalDurationSeconds', ge=1)
 
 
-def _invalidate_recommendation_cache(user_id: int):
-    """Xóa cache gợi ý của user để nhận kết quả mới ngay sau khi có tương tác."""
-    service = RecommenderService()
-    # Cache chỉ tồn tại sau khi RecommenderService.initialize() được gọi (lần đầu có request gợi ý)
-    cache = getattr(service, "recommendations_cache", None)
-    if cache is None:
-        return
-    removed = cache.pop(user_id, None)
-    if removed is not None:
-        logger.info(f"Đã xóa cache gợi ý cho user {user_id} sau khi có tương tác mới.")
+def require_movie(movie_id):
+    """Không đưa ID phim không tồn tại vào dữ liệu huấn luyện."""
+    if not (get_movies_df().movieId == movie_id).any():
+        raise HTTPException(status_code=404, detail='Không tìm thấy phim')
 
 
-def _write_interaction(user_id: int, movie_id: int, rating: float):
-    """Append/upsert một rating vào interactions_log.csv (không đụng vào train set)."""
-    new_row = {
-        "userId": user_id,
-        "movieId": movie_id,
-        "rating": rating,
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    }
-
-    if INTERACTIONS_LOG_CSV.exists():
-        df = pd.read_csv(INTERACTIONS_LOG_CSV)
-        mask = (df['userId'] == user_id) & (df['movieId'] == movie_id)
-        if mask.any():
-            df.loc[mask, 'rating'] = rating
-            df.loc[mask, 'timestamp'] = new_row['timestamp']
-            logger.info(f"Đã cập nhật interaction user {user_id} - movie {movie_id} (rating={rating})")
-        else:
-            df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-            logger.info(f"Đã thêm interaction mới user {user_id} - movie {movie_id} (rating={rating})")
-        df.to_csv(INTERACTIONS_LOG_CSV, index=False)
-    else:
-        pd.DataFrame([new_row]).to_csv(INTERACTIONS_LOG_CSV, index=False)
-        logger.info(f"Đã tạo interactions_log.csv và ghi interaction user {user_id} - movie {movie_id}")
+def _invalidate_recommendation_cache(user_id):
+    RecommenderService().invalidate_user(user_id)
 
 
-@router.post("/interactions/rating")
-async def record_rating(interaction: RatingInteraction):
-    """Ghi nhận đánh giá sao tường minh (Explicit Feedback).
+def _write_interaction(user_id, movie_id, rating, source='explicit',idempotency_key=None):
+    return write_feedback(user_id, movie_id, rating, source,idempotency_key)
 
-    Rating mới được lưu vào interactions_log.csv, chu kỳ retrain tiếp theo sẽ
-    merge log này vào dữ liệu huấn luyện (xem src/data/merge_interactions.py).
+
+def record_feedback(user_id, movie_id, rating, source='explicit',idempotency_key=None):
+    """Việc lưu bền vững quyết định thành công; cập nhật online là best effort."""
+    if get_user(user_id) is None:
+        raise HTTPException(status_code=404, detail='Người dùng chưa đăng ký')
+    require_movie(movie_id)
+    changed = _write_interaction(user_id, movie_id, rating, source,idempotency_key)
+    _invalidate_recommendation_cache(user_id)
+    if changed:
+        try:
+            RecommenderService().apply_online_update(user_id, movie_id, rating)
+        except Exception:
+            logger.exception('Đã lưu phản hồi; chưa cập nhật được SVD trực tuyến')
+    return {'status': 'success', 'changed': changed, 'source': source,
+            'message': 'Đã ghi nhận phản hồi' if changed else 'Giữ phản hồi đã lưu có độ ưu tiên cao hơn hoặc tương đương'}
+
+
+@router.post('/interactions/rating')
+def record_rating(interaction: RatingInteraction,request:Request):
+    """Sao người dùng chủ động nhập luôn ưu tiên hơn các tín hiệu mô phỏng."""
+    return record_feedback(interaction.user_id, interaction.movie_id, interaction.rating,idempotency_key=request.headers.get('Idempotency-Key'))
+
+
+@router.post('/interactions/favorite')
+def record_favorite(interaction: FavoriteInteraction,request:Request):
+    """Tương thích client cũ; dùng cùng thao tác lưu yêu thích của hồ sơ."""
+    from api.routes.users import FavoriteRequest, set_favorite
+    return set_favorite(interaction.user_id, FavoriteRequest(
+        movieId=interaction.movie_id, isFavorite=interaction.is_favorite),request)
+
+
+@router.post('/interactions/watch')
+def record_watch_history(interaction: WatchInteraction,request:Request):
+    """Quy tắc proxy cho demo: chỉ lượt xem >=95% là tín hiệu dương yếu.
+
+    Không suy ra không thích từ việc rời màn hình hoặc kéo thanh tiến độ.
+    Đây không phải nhãn sở thích thật hay mô hình học implicit feedback.
     """
-    # Chỉ user đã đăng ký mới được ghi dữ liệu vào vòng lặp MLOps
     if get_user(interaction.user_id) is None:
-        raise HTTPException(status_code=404, detail="Người dùng chưa đăng ký")
-
-    try:
-        _write_interaction(interaction.user_id, interaction.movie_id, interaction.rating)
-        _invalidate_recommendation_cache(interaction.user_id)
-        # Online Learning: cập nhật tức thời vector ẩn của user để khuyến nghị
-        # phản ánh đúng hành vi mới nhất mà không cần chờ chu kỳ retrain.
-        RecommenderService().apply_online_update(
-            interaction.user_id, interaction.movie_id, interaction.rating
-        )
-        return {"status": "success", "message": "Đã ghi nhận đánh giá thành công."}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Lỗi hệ thống khi lưu rating: {str(e)}")
-
-
-@router.post("/interactions/favorite")
-async def record_favorite(interaction: FavoriteInteraction):
-    """Ghi nhận hành động nhấn Yêu thích/Bỏ thích (Implicit Feedback).
-
-    Quy đổi hành vi:
-      - is_favorite = True  -> Quy đổi tương đương rating = 4.5 sao
-      - is_favorite = False -> Quy đổi tương đương rating = 2.5 sao
-      Thành phần Implicit Feedback được convert thành Explicit Rating để huấn luyện SVD.
-    """
-    mapped_rating = 4.5 if interaction.is_favorite else 2.5
-
-    rating_payload = RatingInteraction(
-        userId=interaction.user_id,
-        movieId=interaction.movie_id,
-        rating=mapped_rating
-    )
-    return await record_rating(rating_payload)
-
-
-@router.post("/interactions/watch")
-async def record_watch_history(interaction: WatchInteraction):
-    """Ghi nhận lịch sử xem phim và tính toán Implicit Feedback dựa trên thời lượng xem.
-
-    Công thức quy đổi Confidence Score sang Rating:
-      - Watch Ratio >= 80% -> rating = 5.0 sao
-      - Watch Ratio >= 50% -> rating = 4.0 sao
-      - Watch Ratio >= 20% -> rating = 3.0 sao
-      - Watch Ratio < 20%  -> rating phạt 1.5 sao
-    """
-    if interaction.total_duration_seconds <= 0:
-        raise HTTPException(status_code=400, detail="Thời lượng phim không hợp lệ.")
-
-    watch_ratio = interaction.watch_duration_seconds / interaction.total_duration_seconds
-
-    if watch_ratio >= 0.8:
-        mapped_rating = 5.0
-    elif watch_ratio >= 0.5:
-        mapped_rating = 4.0
-    elif watch_ratio >= 0.2:
-        mapped_rating = 3.0
-    else:
-        mapped_rating = 1.5  # Phạt
-
-    logger.info(f"User {interaction.user_id} xem phim {interaction.movie_id} được {watch_ratio*100:.1f}%. Quy đổi rating = {mapped_rating}")
-
-    rating_payload = RatingInteraction(
-        userId=interaction.user_id,
-        movieId=interaction.movie_id,
-        rating=mapped_rating
-    )
-    return await record_rating(rating_payload)
+        raise HTTPException(status_code=404, detail='Người dùng chưa đăng ký')
+    require_movie(interaction.movie_id)
+    if interaction.watch_duration_seconds > interaction.total_duration_seconds:
+        raise HTTPException(status_code=422, detail='Vị trí xem vượt quá thời lượng')
+    ratio = interaction.watch_duration_seconds / interaction.total_duration_seconds
+    if ratio < 0.95:
+        return {'status': 'success', 'changed': False, 'source': 'watch',
+                'message': 'Xem dở không được quy thành đánh giá sao'}
+    return record_feedback(interaction.user_id, interaction.movie_id, 4.0, 'watch_complete',request.headers.get('Idempotency-Key'))

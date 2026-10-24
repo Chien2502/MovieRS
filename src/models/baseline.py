@@ -63,11 +63,12 @@ class PopularityRecommender:
         )
         
         # Sắp xếp để lấy Top N
-        self.popular_movies_df = movie_stats.sort_values(by='popularity_score', ascending=False)
-        self.popular_movies = self.popular_movies_df['movieId'].head(self.top_n).tolist()
+        self.popular_movies_df = movie_stats.sort_values(
+            by=['popularity_score', 'movieId'], ascending=[False, True])
+        self.popular_movies = self.popular_movies_df['movieId'].tolist()
         
         # Lưu dictionary điểm của từng phim để dự đoán
-        self.movie_scores = dict(zip(movie_stats['movieId'], movie_stats['rating_mean']))
+        self.movie_scores = dict(zip(movie_stats['movieId'], movie_stats['popularity_score']))
         
         print(f"[PopularityRecommender] Fitted. Top 3 popular movies: {self.popular_movies[:3]}")
         return self

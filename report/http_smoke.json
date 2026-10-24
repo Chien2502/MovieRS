@@ -1,0 +1,79 @@
+{
+  "created_at": "2026-10-16T04:15:03.787728+00:00",
+  "mode": "real_HTTP_uvicorn_localhost_single_process",
+  "auto_retrain": false,
+  "inputs_unchanged_by_sha256": true,
+  "input_sha256": {
+    "data\\processed\\ratings_processed.csv": "60b75d05aec82de5da56f4a2b2f4539980e7b532ac1ffd8abcf4c117401b86cb",
+    "data\\processed\\ratings_train.csv": "626ab9d3cc08a9ed98333a2ea64300b7a0350de279c9e6487737023c1df8230c",
+    "data\\processed\\ratings_val.csv": "5dbf0c0097a182abd06cfac1e5428a8f8f02f9d34ff81bd2e685699f777f528b",
+    "data\\processed\\ratings_test.csv": "3cd92033350203358f26b99d7ffdbcb069b05c13ad34f105e205873aacf86657",
+    "data\\processed\\movies_processed.csv": "a2fa0aa2538cb194e730aa5acd568718e3ade903c7b73072135c99de56ad082b",
+    "data\\processed\\users.json": "2dd5d62c3ebda579596d8635f074b09cd443e20dac759fa0c0e9b14fe89add6d",
+    "data\\processed\\user_favorites.csv": "a3a5a65b564067b09ba765f4cfc7590fda261dc70e81d42b13517dbbabd35c33",
+    "data\\processed\\watch_progress.csv": "4e66db1c495f11238e9e30c0fd4e0f3c587479361e48ff357a9a41bfd7738894",
+    "data\\processed\\interactions_log.csv": "04b342981bf944e6cd93b297a54220e526328b3a81b92fa4d3ec5be05b7b1671",
+    "models\\model_latest.pkl": "9bff4d038ee041b283974d5bc1906972f60f5ff7ca82143d297cf3f90d223b6a",
+    "models\\model_latest.json": "ad916c04e3531eacd5d09f087976dec817da6c44c2c7a2a864478a29a411d43c"
+  },
+  "checks": [
+    {
+      "route": "/health",
+      "status": 200,
+      "milliseconds": 2760.25,
+      "strategy": null
+    },
+    {
+      "route": "/health/database",
+      "status": 200,
+      "milliseconds": 741.04,
+      "strategy": null
+    },
+    {
+      "route": "/movies/popular?limit=10",
+      "status": 200,
+      "milliseconds": 39.05,
+      "strategy": null
+    },
+    {
+      "route": "/recommendations/1?limit=10",
+      "status": 200,
+      "milliseconds": 209.36,
+      "strategy": "MostPopular_onboarding_rerank"
+    },
+    {
+      "route": "/recommendations/1?limit=35",
+      "status": 200,
+      "milliseconds": 5.68,
+      "strategy": "MostPopular_onboarding_rerank"
+    },
+    {
+      "route": "/recommendations/1?explore=true",
+      "status": 200,
+      "milliseconds": 329.12,
+      "strategy": "MostPopular_onboarding_rerank"
+    },
+    {
+      "route": "/recommendations/199999?limit=10",
+      "status": 200,
+      "milliseconds": 195.19,
+      "strategy": "MostPopular_onboarding_rerank"
+    },
+    {
+      "route": "/movies/search?q=%5B",
+      "status": 200,
+      "milliseconds": 49.6,
+      "strategy": null
+    },
+    {
+      "route": "/users/200000/profile",
+      "status": 401,
+      "expected": 401
+    },
+    {
+      "route": "/recommendations/reload",
+      "status": 403,
+      "expected": 403
+    }
+  ]
+}

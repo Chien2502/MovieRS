@@ -1,0 +1,70 @@
+[
+  {
+    "candidate": "AdaptiveHybrid",
+    "baseline": "BiasedSVD",
+    "metric": "ndcg",
+    "users": 900,
+    "delta": 0.09154203481849736,
+    "relative_delta": 3.384583521567597,
+    "ci95": [
+      0.08212344021341511,
+      0.10067875553305436
+    ],
+    "improvement_supported": true,
+    "method": "paired_user_bootstrap_after_averaging_training_seeds",
+    "resamples": 2000,
+    "interpretation": "Có bằng chứng cải thiện",
+    "claim_type": "exploratory_no_multiple_testing_correction"
+  },
+  {
+    "candidate": "AdaptiveHybrid",
+    "baseline": "SVDSharedFallback",
+    "metric": "ndcg",
+    "users": 900,
+    "delta": -0.002431578332301357,
+    "relative_delta": -0.020092304877157924,
+    "ci95": [
+      -0.006067496844568558,
+      0.0009259948884116218
+    ],
+    "improvement_supported": false,
+    "method": "paired_user_bootstrap_after_averaging_training_seeds",
+    "resamples": 2000,
+    "interpretation": "Chưa đủ bằng chứng cải thiện",
+    "claim_type": "exploratory_no_multiple_testing_correction"
+  },
+  {
+    "candidate": "AdaptiveHybrid",
+    "baseline": "FixedHybrid",
+    "metric": "ndcg",
+    "users": 900,
+    "delta": 0.002419124513914643,
+    "relative_delta": 0.020824061955006135,
+    "ci95": [
+      0.0010750966404456089,
+      0.003876833757580271
+    ],
+    "improvement_supported": true,
+    "method": "paired_user_bootstrap_after_averaging_training_seeds",
+    "resamples": 2000,
+    "interpretation": "Có bằng chứng cải thiện",
+    "claim_type": "exploratory_no_multiple_testing_correction"
+  },
+  {
+    "candidate": "AdaptiveHybrid",
+    "baseline": "AdaptiveWithoutGenre",
+    "metric": "ndcg",
+    "users": 900,
+    "delta": -0.0016512146526568184,
+    "relative_delta": -0.013732655149669237,
+    "ci95": [
+      -0.005153651532335161,
+      0.0016421632568565752
+    ],
+    "improvement_supported": false,
+    "method": "paired_user_bootstrap_after_averaging_training_seeds",
+    "resamples": 2000,
+    "interpretation": "Chưa đủ bằng chứng cải thiện",
+    "claim_type": "exploratory_no_multiple_testing_correction"
+  }
+]

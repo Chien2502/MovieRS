@@ -1,0 +1,480 @@
+{
+  "sha256": "7ca70fec0c1044f50d0bdeca00dea56619d7b8eb3f9e1790088baadb778757ab",
+  "paragraphs": 665,
+  "tables": 20,
+  "sections": [
+    {
+      "page_width": "7560945",
+      "page_height": "10693400",
+      "top_margin": "720090",
+      "bottom_margin": "720090",
+      "left_margin": "1080135",
+      "right_margin": "720090",
+      "header_distance": "457200",
+      "footer_distance": "457200",
+      "start_type": "NEW_PAGE (2)"
+    },
+    {
+      "page_width": "7560945",
+      "page_height": "10693400",
+      "top_margin": "720090",
+      "bottom_margin": "720090",
+      "left_margin": "1080135",
+      "right_margin": "720090",
+      "header_distance": "457200",
+      "footer_distance": "457200",
+      "start_type": "NEW_PAGE (2)"
+    },
+    {
+      "page_width": "7560945",
+      "page_height": "10693400",
+      "top_margin": "720090",
+      "bottom_margin": "720090",
+      "left_margin": "1080135",
+      "right_margin": "720090",
+      "header_distance": "457200",
+      "footer_distance": "457200",
+      "start_type": "NEW_PAGE (2)"
+    }
+  ],
+  "styles": {
+    "Caption": {
+      "font": null,
+      "size": "114300",
+      "based_on": "Normal"
+    },
+    "Heading 1": {
+      "font": null,
+      "size": "203200",
+      "based_on": "Normal"
+    },
+    "Heading 2": {
+      "font": null,
+      "size": "177800",
+      "based_on": "Normal"
+    },
+    "Heading 3": {
+      "font": null,
+      "size": "None",
+      "based_on": "Normal"
+    },
+    "Heading 4": {
+      "font": null,
+      "size": "None",
+      "based_on": "Normal"
+    },
+    "List Paragraph": {
+      "font": null,
+      "size": "None",
+      "based_on": "Normal"
+    },
+    "Normal": {
+      "font": null,
+      "size": "None",
+      "based_on": null
+    },
+    "Normal (Web)": {
+      "font": null,
+      "size": "152400",
+      "based_on": "Normal"
+    },
+    "Title": {
+      "font": null,
+      "size": "203200",
+      "based_on": "Normal"
+    },
+    "table of figures": {
+      "font": null,
+      "size": "None",
+      "based_on": "Normal"
+    }
+  },
+  "parts": {
+    "[Content_Types].xml": {
+      "size": 2455,
+      "sha256": "a72bbd8fc5764eceb16dd43e27ff31c30abf0986d5881db4f32d0edc3e498f38"
+    },
+    "_rels/.rels": {
+      "size": 590,
+      "sha256": "e19238d7a71fa7a2490776252686f70e2de6238c87cd509b5e3a3cc07c2ea4df"
+    },
+    "word/document.xml": {
+      "size": 902661,
+      "sha256": "8bd2a7e071e80ec278fac6fb3b25a5857782a58a993073fc9afbca563af8e4f9"
+    },
+    "word/_rels/document.xml.rels": {
+      "size": 6424,
+      "sha256": "80f07cc069204730761ad5d42725605a55c6d443969eedc0cf1d5baa4aae0b60"
+    },
+    "word/footer1.xml": {
+      "size": 5091,
+      "sha256": "bbf0ed259910574c03a86ecc1a90c5ed376f8315691dfc86c93e64f76438107d"
+    },
+    "word/footer2.xml": {
+      "size": 4312,
+      "sha256": "eb87174d1d6d4d1666d666dedbef3a56482efea5f5a1fb38ac532515c7889f88"
+    },
+    "word/header1.xml": {
+      "size": 3955,
+      "sha256": "db5619a7b64ef3765afe54c51e660d776afe70a1baa2250acbd17d0fc2e906fc"
+    },
+    "word/footnotes.xml": {
+      "size": 2961,
+      "sha256": "f2908cc1299e6b61590eaab43c8e250888bddc8076a24fca155cd390120f499d"
+    },
+    "word/endnotes.xml": {
+      "size": 2955,
+      "sha256": "8466d2464837a7dda3708c097dce5099d05ef8543a245cb2a1e833d1cea74de6"
+    },
+    "word/header2.xml": {
+      "size": 4143,
+      "sha256": "974fbf9300b444bddc2df54dddc6da388b1ee6ddb7565076d06c39fe4566ec33"
+    },
+    "word/media/image25.jpeg": {
+      "size": 186325,
+      "sha256": "c74d1d81fb96fc054ddc4a93263dd01b8d43e7f3059f492f186ba9e56c68f87a"
+    },
+    "word/theme/theme1.xml": {
+      "size": 6795,
+      "sha256": "95e9db2278364c40d924d624dc9865105d277c22ddee7b3f459b069338b8c56a"
+    },
+    "word/media/image23.jpeg": {
+      "size": 220110,
+      "sha256": "bcacc32cb97f5060efac91e95e3dc381869da705a3841616a9c503a563be90bf"
+    },
+    "word/media/image1.png": {
+      "size": 56294,
+      "sha256": "d7f97ab250dec1a695896dec20d4907c48e0509181b0675f9ae49e244bf62e4b"
+    },
+    "word/media/image2.png": {
+      "size": 163038,
+      "sha256": "0f1882b3b08ca07c4a2224b7221f4ab2eb90c2dd3d76a5f550e5b99fa92d9b70"
+    },
+    "word/media/image3.png": {
+      "size": 203337,
+      "sha256": "18aab64dccbd0db958f555862ce2220e013c61c4c9a52c5abda937a6e1820e26"
+    },
+    "word/media/image4.png": {
+      "size": 225062,
+      "sha256": "2b49785c5b45128eb9576b5f62992238bc6966350556556a8782b9e05e9270d7"
+    },
+    "word/media/image5.png": {
+      "size": 101079,
+      "sha256": "94afa03a160147c0cb8f9a4eb608fb06ca877674c64eb76a04f298b982ceb828"
+    },
+    "word/media/image6.png": {
+      "size": 72079,
+      "sha256": "b78dc1ee58895e4541ab3d5f5c7f3fedafa54cf54d4ac11816f3fc6dac002dbf"
+    },
+    "word/media/image7.png": {
+      "size": 80616,
+      "sha256": "fb69f5c5bd7c4932b5a9ae280c1ce638a438768beb99d2fac45ba08c998c4b26"
+    },
+    "word/media/image8.png": {
+      "size": 69216,
+      "sha256": "eb87872120dc3bec477da621f8e495a438a7f064de6c42e679a6a4ea28dc166e"
+    },
+    "word/media/image9.png": {
+      "size": 90173,
+      "sha256": "12857d5894d6ca4f8501557eebeabd0baf80c794b54c9dea222dd6cb48517ff0"
+    },
+    "word/media/image10.png": {
+      "size": 102134,
+      "sha256": "e77abfc695ffde007eccba00465ed96ae3cd0c6d5ff5f7614783c47942b5baee"
+    },
+    "word/media/image11.png": {
+      "size": 94762,
+      "sha256": "4819208dac655091536fa3592a917820b336de6bf715d6e17402e83d0df2da41"
+    },
+    "word/media/image12.png": {
+      "size": 122687,
+      "sha256": "74d0fef5dde3acbb3aeb780621d291c84651cc6018a33be867213a3f2ea486ad"
+    },
+    "word/media/image13.png": {
+      "size": 82645,
+      "sha256": "c47b3cc31667febbf5958ed0b9a861b836fea3271a2378272c4f3036589f970a"
+    },
+    "word/media/image14.png": {
+      "size": 111806,
+      "sha256": "15a8706910a6349aef76ffdcd113733638eb789940bbb09abe160167f8a0c292"
+    },
+    "word/media/image15.png": {
+      "size": 143165,
+      "sha256": "814f49be321ada986902e0741ed7c7f4f5c775b2424970a8d50870a315f39c81"
+    },
+    "word/media/image16.png": {
+      "size": 175553,
+      "sha256": "8633cdc4ac4a6f23c1da8f278415807ef1ce9a1483c0d84002f4760b3194b8f1"
+    },
+    "word/media/image17.png": {
+      "size": 78318,
+      "sha256": "ac9fdb1c39fc88325cbf88868e05313da93e07cf0768ec6ad539a5d9f1139098"
+    },
+    "word/media/image18.jpeg": {
+      "size": 76920,
+      "sha256": "9e789ec14272f0e39ffdfd80816011cd68ae3f90065c146b41b19ba22d22b46e"
+    },
+    "word/media/image19.jpeg": {
+      "size": 45637,
+      "sha256": "ead985e737b3fe79eaa92803314bcc0b89c34b2117bb2d53e057381778e017d8"
+    },
+    "word/media/image20.jpeg": {
+      "size": 171417,
+      "sha256": "d561f2829dc73a765a1fc68c22636692fe98ee9315a6ebd7897d171c3448655b"
+    },
+    "word/media/image21.jpeg": {
+      "size": 147655,
+      "sha256": "f25cc0089c53a4d0d277a68639f02e7adb600f23b5c9b6f434d2899ba04eb448"
+    },
+    "word/media/image22.jpeg": {
+      "size": 140803,
+      "sha256": "536f7d05415d2dba8b3a927c2b7095ec290f03be3c6ea0d30c5bc400b23c7efd"
+    },
+    "word/media/image24.jpeg": {
+      "size": 87053,
+      "sha256": "c3c2cad0276e74da67faa7e353b118f565fa0d89da1737cf87477f91d595421a"
+    },
+    "word/settings.xml": {
+      "size": 8107,
+      "sha256": "a0a53e37158a4625a58e8a1881918810d157ff7ddb07e9f093208b4a9ee11b5c"
+    },
+    "customXml/item1.xml": {
+      "size": 252,
+      "sha256": "7cb0976471ac2f2fcfa20a71c8525916247bbf25f0a4570e6020c92fdefe4737"
+    },
+    "customXml/itemProps1.xml": {
+      "size": 341,
+      "sha256": "dc009e371ba98e76539888f47386b003acab9d8540c4172c01e5f2c1839db8b4"
+    },
+    "word/numbering.xml": {
+      "size": 106079,
+      "sha256": "04cc7a514f8f1546cd55056eb15fd8ed5662c49daae46431523bba695de89594"
+    },
+    "word/fontTable.xml": {
+      "size": 2729,
+      "sha256": "8c9a32aef06732e790adb6013f7db9e7b7172fdd47d05160aa77315a20a58d30"
+    },
+    "docProps/app.xml": {
+      "size": 996,
+      "sha256": "0af2124158e7f636b44f2d80c33973291720660531628f01c4d172f3e54f1557"
+    },
+    "word/webSettings.xml": {
+      "size": 11714,
+      "sha256": "d58b83efb43efe6213b61bc6f00b8437fc79c4ffb73e9f682261b15aea9af2e7"
+    },
+    "word/styles.xml": {
+      "size": 55706,
+      "sha256": "54723b4a7c6f17f9bbf9d5e332623ea654feab51dd07f19aff948537dbece931"
+    },
+    "customXml/_rels/item1.xml.rels": {
+      "size": 296,
+      "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0"
+    },
+    "docProps/core.xml": {
+      "size": 815,
+      "sha256": "fd8599a3036d10f47d2cfb9d5a53e7ec6eff221a813d9ca46d8af72280cb6277"
+    }
+  },
+  "field_codes": [
+    " TOC \\o \"1-4\" \\h \\z \\t \"Title,1,c1,2\" ",
+    " PAGEREF _Toc238283033 \\h ",
+    " PAGEREF _Toc238283034 \\h ",
+    " PAGEREF _Toc238283035 \\h ",
+    " PAGEREF _Toc238283036 \\h ",
+    " PAGEREF _Toc238283037 \\h ",
+    " PAGEREF _Toc238283038 \\h ",
+    " PAGEREF _Toc238283039 \\h ",
+    " PAGEREF _Toc238283040 \\h ",
+    " PAGEREF _Toc238283041 \\h ",
+    " PAGEREF _Toc238283042 \\h ",
+    " PAGEREF _Toc238283043 \\h ",
+    " PAGEREF _Toc238283044 \\h ",
+    " PAGEREF _Toc238283045 \\h ",
+    " PAGEREF _Toc238283046 \\h ",
+    " PAGEREF _Toc238283047 \\h ",
+    " PAGEREF _Toc238283048 \\h ",
+    " PAGEREF _Toc238283049 \\h ",
+    " PAGEREF _Toc238283050 \\h ",
+    " PAGEREF _Toc238283051 \\h ",
+    " PAGEREF _Toc238283052 \\h ",
+    " PAGEREF _Toc238283053 \\h ",
+    " PAGEREF _Toc238283054 \\h ",
+    " PAGEREF _Toc238283055 \\h ",
+    " PAGEREF _Toc238283056 \\h ",
+    " PAGEREF _Toc238283057 \\h ",
+    " PAGEREF _Toc238283058 \\h ",
+    " PAGEREF _Toc238283059 \\h ",
+    " PAGEREF _Toc238283060 \\h ",
+    " PAGEREF _Toc238283061 \\h ",
+    " PAGEREF _Toc238283062 \\h ",
+    " PAGEREF _Toc238283063 \\h ",
+    " PAGEREF _Toc238283064 \\h ",
+    " PAGEREF _Toc238283065 \\h ",
+    " PAGEREF _Toc238283066 \\h ",
+    " PAGEREF _Toc238283067 \\h ",
+    " PAGEREF _Toc238283068 \\h ",
+    " PAGEREF _Toc238283069 \\h ",
+    " PAGEREF _Toc238283070 \\h ",
+    " PAGEREF _Toc238283071 \\h ",
+    " PAGEREF _Toc238283072 \\h ",
+    " PAGEREF _Toc238283073 \\h ",
+    " PAGEREF _Toc238283074 \\h ",
+    " PAGEREF _Toc238283075 \\h ",
+    " PAGEREF _Toc238283076 \\h ",
+    " PAGEREF _Toc238283077 \\h ",
+    " PAGEREF _Toc238283078 \\h ",
+    " PAGEREF _Toc238283079 \\h ",
+    " PAGEREF _Toc238283080 \\h ",
+    " PAGEREF _Toc238283081 \\h ",
+    " PAGEREF _Toc238283082 \\h ",
+    " PAGEREF _Toc238283083 \\h ",
+    " PAGEREF _Toc238283084 \\h ",
+    " PAGEREF _Toc238283085 \\h ",
+    " PAGEREF _Toc238283086 \\h ",
+    " PAGEREF _Toc238283087 \\h ",
+    " PAGEREF _Toc238283088 \\h ",
+    " PAGEREF _Toc238283089 \\h ",
+    " PAGEREF _Toc238283090 \\h ",
+    " PAGEREF _Toc238283091 \\h ",
+    " PAGEREF _Toc238283092 \\h ",
+    " PAGEREF _Toc238283093 \\h ",
+    " PAGEREF _Toc238283094 \\h ",
+    " PAGEREF _Toc238283095 \\h ",
+    " PAGEREF _Toc238283096 \\h ",
+    " PAGEREF _Toc238283097 \\h ",
+    " PAGEREF _Toc238283098 \\h ",
+    " PAGEREF _Toc238283099 \\h ",
+    " PAGEREF _Toc238283100 \\h ",
+    " PAGEREF _Toc238283101 \\h ",
+    " PAGEREF _Toc238283102 \\h ",
+    " PAGEREF _Toc238283103 \\h ",
+    " PAGEREF _Toc238283104 \\h ",
+    " PAGEREF _Toc238283105 \\h ",
+    " PAGEREF _Toc238283106 \\h ",
+    " PAGEREF _Toc238283107 \\h ",
+    " PAGEREF _Toc238283108 \\h ",
+    " PAGEREF _Toc238283109 \\h ",
+    " PAGEREF _Toc238283110 \\h ",
+    " PAGEREF _Toc238283111 \\h ",
+    " PAGEREF _Toc238283112 \\h ",
+    " PAGEREF _Toc238283113 \\h ",
+    " PAGEREF _Toc238283114 \\h ",
+    " PAGEREF _Toc238283115 \\h ",
+    " PAGEREF _Toc238283116 \\h ",
+    " PAGEREF _Toc238283117 \\h ",
+    " PAGEREF _Toc238283118 \\h ",
+    " PAGEREF _Toc238283119 \\h ",
+    " PAGEREF _Toc238283120 \\h ",
+    " PAGEREF _Toc238283121 \\h ",
+    " PAGEREF _Toc238283122 \\h ",
+    " PAGEREF _Toc238283123 \\h ",
+    " PAGEREF _Toc238283124 \\h ",
+    " PAGEREF _Toc238283125 \\h ",
+    " PAGEREF _Toc238283126 \\h ",
+    " PAGEREF _Toc238283127 \\h ",
+    " PAGEREF _Toc238283128 \\h ",
+    " PAGEREF _Toc238283129 \\h ",
+    " PAGEREF _Toc238283130 \\h ",
+    " PAGEREF _Toc238283131 \\h ",
+    " PAGEREF _Toc238283132 \\h ",
+    " PAGEREF _Toc238283133 \\h ",
+    " PAGEREF _Toc238283134 \\h ",
+    " PAGEREF _Toc238283135 \\h ",
+    " PAGEREF _Toc238283136 \\h ",
+    " PAGEREF _Toc238283137 \\h ",
+    " PAGEREF _Toc238283138 \\h ",
+    " PAGEREF _Toc238283139 \\h ",
+    " PAGEREF _Toc238283140 \\h ",
+    " PAGEREF _Toc238283141 \\h ",
+    " PAGEREF _Toc238283142 \\h ",
+    " PAGEREF _Toc238283143 \\h ",
+    " PAGEREF _Toc238283144 \\h ",
+    " PAGEREF _Toc238283145 \\h ",
+    " PAGEREF _Toc238283146 \\h ",
+    " PAGEREF _Toc238283147 \\h ",
+    " PAGEREF _Toc238283148 \\h ",
+    " PAGEREF _Toc238283149 \\h ",
+    " PAGEREF _Toc238283150 \\h ",
+    " PAGEREF _Toc238283151 \\h ",
+    " PAGEREF _Toc238283152 \\h ",
+    " PAGEREF _Toc238283153 \\h ",
+    " PAGEREF _Toc238283154 \\h ",
+    " PAGEREF _Toc238283155 \\h ",
+    " PAGEREF _Toc238283156 \\h ",
+    " PAGEREF _Toc238283157 \\h ",
+    " TOC \\h \\z \\c \"Hình\" ",
+    " PAGEREF _Toc238282771 \\h ",
+    " PAGEREF _Toc238282772 \\h ",
+    " PAGEREF _Toc238282773 \\h ",
+    " PAGEREF _Toc238282774 \\h ",
+    " PAGEREF _Toc238282775 \\h ",
+    " PAGEREF _Toc238282776 \\h ",
+    " PAGEREF _Toc238282777 \\h ",
+    " PAGEREF _Toc238282778 \\h ",
+    " PAGEREF _Toc238282779 \\h ",
+    " PAGEREF _Toc238282780 \\h ",
+    " PAGEREF _Toc238282781 \\h ",
+    " PAGEREF _Toc238282782 \\h ",
+    " PAGEREF _Toc238282783 \\h ",
+    " PAGEREF _Toc238282784 \\h ",
+    " PAGEREF _Toc238282785 \\h ",
+    " PAGEREF _Toc238282786 \\h ",
+    " PAGEREF _Toc238282787 \\h ",
+    " PAGEREF _Toc238282788 \\h ",
+    " PAGEREF _Toc238282789 \\h ",
+    " PAGEREF _Toc238282790 \\h ",
+    " PAGEREF _Toc238282791 \\h ",
+    " PAGEREF _Toc238282792 \\h ",
+    " PAGEREF _Toc238282793 \\h ",
+    " PAGEREF _Toc238282794 \\h ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC ",
+    " SEQ Hình \\* ARABIC "
+  ],
+  "textbox_text": [
+    "Hình ",
+    "17",
+    " Đăng kí",
+    "Hình ",
+    "17",
+    " Đăng kí",
+    "Hình ",
+    "18",
+    " Đăng nhập",
+    "Hình ",
+    "18",
+    " Đăng nhập",
+    "Hình ",
+    "19",
+    " Trang chủ",
+    " ",
+    "Hình ",
+    "19",
+    " Trang chủ",
+    " "
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "dataset_id": "0bf8337c28f8baeb49a9",
+  "created_at": "2026-10-15T23:53:16.204744+00:00",
+  "status": "complete",
+  "definition": {
+    "source_sha256": "9c85525758597dca76e8d98cebb9c13e018c2317b09a0878b6d383179526e385",
+    "movies_sha256": "c50dea6973e619f9bc1decd4afa3e35358b83a5fb663dac0ec82252a011d023d",
+    "seed": 20261015,
+    "users": 8000,
+    "t1": "2016-07-25T17:31:14+00:00",
+    "t2": "2018-01-23T19:51:49+00:00",
+    "version": 2,
+    "builder_revision": 3
+  },
+  "profile": "research",
+  "selected_users_sha256": "f65d8312d0282d3570ba69369c82a5f42893582cf9ab82ead2b3e9538e18aa36",
+  "splits": {
+    "train": {
+      "rows": 990073,
+      "users": 6825,
+      "items": 19415,
+      "min_epoch": 822873600,
+      "max_epoch": 1469467873
+    },
+    "validation": {
+      "rows": 123759,
+      "users": 896,
+      "items": 12750,
+      "min_epoch": 1469467874,
+      "max_epoch": 1516737107
+    },
+    "test": {
+      "rows": 123760,
+      "users": 903,
+      "items": 15172,
+      "min_epoch": 1516737109,
+      "max_epoch": 1574323872
+    }
+  },
+  "files": {
+    "data_card.md": "5d1ccfbf384f26aa87c686379c7b31b3e7f86ff8033323c11524aac11ab354c8",
+    "movies.parquet": "1935f9974550a70f0979a2d7195ae1f26200800913d57f373ecb20a20664a4d2",
+    "quality.json": "a63ab838c3ea2649807d250f128858e52db6770ed199d5eecd7972e459ec8542",
+    "ratings.parquet": "618cccb0853ece6411d38a583af8f3106f69927b357f972fed455d8e67ca13d3",
+    "selected_users.json": "4acadee6371d35d37e560f726da7af78e876e8190f41251a5d3cf6a9da03b4c5",
+    "test.parquet": "63c6841d59ef24158595ee954d72c1ea698fa0f57d1c535ef55baada856ee80e",
+    "train.parquet": "c4a4d292eac2315c610ff5e41728aa53ce6e007196a37f863091320a1fe1b187",
+    "validation.parquet": "7949187955a53c96aaf691d6d601b49c7c22d2c51c34790ec10aa01d1aefb4ad"
+  }
+}

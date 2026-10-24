@@ -1,0 +1,1818 @@
+{
+  "families": {
+    "AdaptiveHybrid": {
+      "ndcg": 0.11858879972625148,
+      "precision": 0.1081851851851852,
+      "recall": 0.02025758877585559,
+      "hit_rate": 0.5207407407407407,
+      "coverage": 0.020244511634021297,
+      "diversity": 0.6677420634920636,
+      "novelty": 12.397358135420019,
+      "ndcg_std_across_seeds": 0.0009340864469062755,
+      "RMSE": null,
+      "MAE": null
+    },
+    "AdaptiveMMR": {
+      "ndcg": 0.11858879972625148,
+      "precision": 0.1081851851851852,
+      "recall": 0.02025758877585559,
+      "hit_rate": 0.5207407407407407,
+      "coverage": 0.020244511634021297,
+      "diversity": 0.6677420634920636,
+      "novelty": 12.397358135420019,
+      "ndcg_std_across_seeds": 0.0009340864469062755,
+      "RMSE": null,
+      "MAE": null
+    },
+    "AdaptiveWithoutGenre": {
+      "ndcg": 0.1202400143789083,
+      "precision": 0.10840740740740741,
+      "recall": 0.0195190879875372,
+      "hit_rate": 0.5062962962962962,
+      "coverage": 0.010428990841768548,
+      "diversity": 0.8126110882487426,
+      "novelty": 12.561481356701309,
+      "ndcg_std_across_seeds": 0.001525025758329021,
+      "RMSE": null,
+      "MAE": null
+    },
+    "BayesianItemMean": {
+      "ndcg": 0.1188472690448863,
+      "precision": 0.10755555555555556,
+      "recall": 0.019340427561829205,
+      "hit_rate": 0.5077777777777778,
+      "coverage": 0.0013145786775338505,
+      "diversity": 0.8394940329218108,
+      "novelty": 12.322359970070295,
+      "ndcg_std_across_seeds": null,
+      "RMSE": 0.9859626715656395,
+      "MAE": 0.7510153347873583
+    },
+    "BiasedSVD": {
+      "ndcg": 0.027046764907754126,
+      "precision": 0.021111111111111112,
+      "recall": 0.0045351486986010036,
+      "hit_rate": 0.1251851851851852,
+      "coverage": 0.015760337700655828,
+      "diversity": 0.7630224541119605,
+      "novelty": 14.310299038028704,
+      "ndcg_std_across_seeds": 0.0018050339124555633,
+      "RMSE": 0.9557511025770777,
+      "MAE": 0.7251977873640203
+    },
+    "FixedHybrid": {
+      "ndcg": 0.11616967521233686,
+      "precision": 0.10648148148148147,
+      "recall": 0.019296074027426807,
+      "hit_rate": 0.5103703703703704,
+      "coverage": 0.01841870791522428,
+      "diversity": 0.6470415237026348,
+      "novelty": 12.399834881107092,
+      "ndcg_std_across_seeds": 0.0012528477208242318,
+      "RMSE": null,
+      "MAE": null
+    },
+    "GenreContent": {
+      "ndcg": 0.1076835968720893,
+      "precision": 0.098,
+      "recall": 0.01658770487113171,
+      "hit_rate": 0.45,
+      "coverage": 0.02672976644318829,
+      "diversity": 0.5696302335524557,
+      "novelty": 13.067924390729075,
+      "ndcg_std_across_seeds": null,
+      "RMSE": null,
+      "MAE": null
+    },
+    "GlobalMean": {
+      "ndcg": 0.054245460971628585,
+      "precision": 0.032999999999999995,
+      "recall": 0.0040345297683819425,
+      "hit_rate": 0.23666666666666666,
+      "coverage": 0.0014022172560361071,
+      "diversity": 0.8218468547912993,
+      "novelty": 11.188413520619832,
+      "ndcg_std_across_seeds": null,
+      "RMSE": 1.0482551324039802,
+      "MAE": 0.8147950033102794
+    },
+    "MostPopular": {
+      "ndcg": 0.2803583024840828,
+      "precision": 0.255,
+      "recall": 0.043387689930082726,
+      "hit_rate": 0.6822222222222222,
+      "coverage": 0.007230182726436178,
+      "diversity": 0.809800575419094,
+      "novelty": 8.603235178813566,
+      "ndcg_std_across_seeds": null,
+      "RMSE": null,
+      "MAE": null
+    },
+    "RegularizedBias": {
+      "ndcg": 0.14635998123670418,
+      "precision": 0.11611111111111112,
+      "recall": 0.020068263097031764,
+      "hit_rate": 0.5177777777777778,
+      "coverage": 0.0037246395863459094,
+      "diversity": 0.8136920634920637,
+      "novelty": 11.456388315908443,
+      "ndcg_std_across_seeds": null,
+      "RMSE": 0.9636702947828012,
+      "MAE": 0.7286425277350251
+    },
+    "SVDSharedFallback": {
+      "ndcg": 0.12102037805855285,
+      "precision": 0.10892592592592594,
+      "recall": 0.01985922894121941,
+      "hit_rate": 0.5085185185185185,
+      "coverage": 0.015760337700655828,
+      "diversity": 0.8085027010255406,
+      "novelty": 12.543264860243125,
+      "ndcg_std_across_seeds": 0.0016200416829518225,
+      "RMSE": null,
+      "MAE": null
+    },
+    "SparseItemKNN": {
+      "ndcg": 0.15769965243912368,
+      "precision": 0.14255555555555557,
+      "recall": 0.028184459787900736,
+      "hit_rate": 0.6011111111111112,
+      "coverage": 0.011787388808553526,
+      "diversity": 0.8090778704149075,
+      "novelty": 11.028737462248985,
+      "ndcg_std_across_seeds": null,
+      "RMSE": null,
+      "MAE": null
+    }
+  },
+  "entries": {
+    "GlobalMean": {
+      "ndcg": 0.054245460971628585,
+      "precision": 0.032999999999999995,
+      "recall": 0.0040345297683819425,
+      "hit_rate": 0.23666666666666666,
+      "diversity": 0.8218468547912993,
+      "novelty": 11.188413520619832,
+      "coverage": 0.0014022172560361071,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.054548508239626516,
+      "latency_ms": {
+        "p50": 1.5713500033598393,
+        "p95": 1.9093200011411682
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.07745022732614276,
+          "precision": 0.047058823529411764,
+          "recall": 0.005026106971984894,
+          "hit_rate": 0.3333333333333333,
+          "diversity": 0.8273544973544975,
+          "novelty": 11.062118257074403
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.016227605270391673,
+          "precision": 0.009969788519637462,
+          "recall": 0.0024514525083390417,
+          "hit_rate": 0.07854984894259819,
+          "diversity": 0.812379034191723,
+          "novelty": 11.405519275777978
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.8273544973544974,
+          "novelty": 11.062118257074404
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.8273544973544975,
+          "novelty": 11.062118257074404
+        }
+      },
+      "rating": {
+        "RMSE": 1.0482551324039802,
+        "MAE": 0.8147950033102794,
+        "rows": 123760,
+        "cohorts": {
+          "cold_0": {
+            "RMSE": 1.0465466361494131,
+            "MAE": 0.8232872973709194,
+            "rows": 93173
+          },
+          "heavy_20_plus": {
+            "RMSE": 1.0460580628783605,
+            "MAE": 0.7830836866748,
+            "rows": 30009
+          },
+          "sparse_1_4": {
+            "RMSE": 0.9833020686589793,
+            "MAE": 0.8382762562144886,
+            "rows": 22
+          },
+          "warm_5_19": {
+            "RMSE": 1.3971978048642062,
+            "MAE": 1.1023054328753794,
+            "rows": 556
+          }
+        },
+        "item_groups": {
+          "known": {
+            "RMSE": 1.037405107218601,
+            "MAE": 0.8098571321785852,
+            "rows": 112827
+          },
+          "cold": {
+            "RMSE": 1.1542840569443251,
+            "MAE": 0.8657531288179771,
+            "rows": 10933
+          }
+        }
+      },
+      "model": "GlobalMean",
+      "seed": null,
+      "fit_seconds": 0.017567599992617033
+    },
+    "RegularizedBias": {
+      "ndcg": 0.14635998123670418,
+      "precision": 0.11611111111111112,
+      "recall": 0.020068263097031764,
+      "hit_rate": 0.5177777777777778,
+      "diversity": 0.8136920634920637,
+      "novelty": 11.456388315908443,
+      "coverage": 0.0037246395863459094,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.14736522033509183,
+      "latency_ms": {
+        "p50": 6.99690000328701,
+        "p95": 9.755649999715384
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.2100394905724208,
+          "precision": 0.16506238859180034,
+          "recall": 0.026614678444878234,
+          "hit_rate": 0.7005347593582888,
+          "diversity": 0.8092592592592595,
+          "novelty": 11.099662286943357
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.04035877233673933,
+          "precision": 0.03444108761329305,
+          "recall": 0.009155415871099519,
+          "hit_rate": 0.2084592145015106,
+          "diversity": 0.8210649147205039,
+          "novelty": 12.063272646567484
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.8092592592592593,
+          "novelty": 11.099662286943353
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.076153608349283,
+          "precision": 0.07142857142857142,
+          "recall": 0.014308503773994175,
+          "hit_rate": 0.5714285714285714,
+          "diversity": 0.820952380952381,
+          "novelty": 11.399433291656768
+        }
+      },
+      "rating": {
+        "RMSE": 0.9636702947828012,
+        "MAE": 0.7286425277350251,
+        "rows": 123760,
+        "cohorts": {
+          "cold_0": {
+            "RMSE": 0.9810336200347993,
+            "MAE": 0.747131418527542,
+            "rows": 93173
+          },
+          "heavy_20_plus": {
+            "RMSE": 0.9009633591537577,
+            "MAE": 0.6666266470363045,
+            "rows": 30009
+          },
+          "sparse_1_4": {
+            "RMSE": 0.6376536886017417,
+            "MAE": 0.5206458478953071,
+            "rows": 22
+          },
+          "warm_5_19": {
+            "RMSE": 1.2655565115947935,
+            "MAE": 0.9857379756365112,
+            "rows": 556
+          }
+        },
+        "item_groups": {
+          "known": {
+            "RMSE": 0.9523032888576193,
+            "MAE": 0.720698070979709,
+            "rows": 112827
+          },
+          "cold": {
+            "RMSE": 1.0739717886608788,
+            "MAE": 0.8106281878769862,
+            "rows": 10933
+          }
+        }
+      },
+      "model": "RegularizedBias",
+      "seed": null,
+      "fit_seconds": 0.8821846000064397
+    },
+    "MostPopular": {
+      "ndcg": 0.2803583024840828,
+      "precision": 0.255,
+      "recall": 0.043387689930082726,
+      "hit_rate": 0.6822222222222222,
+      "diversity": 0.809800575419094,
+      "novelty": 8.603235178813566,
+      "coverage": 0.007230182726436178,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.28201039778597403,
+      "latency_ms": {
+        "p50": 5.344249999325257,
+        "p95": 7.2567299990623715
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.4013517157464361,
+          "precision": 0.3673796791443851,
+          "recall": 0.0589327224739791,
+          "hit_rate": 0.9126559714795008,
+          "diversity": 0.8230952380952382,
+          "novelty": 8.456881495076534
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.07858232526083708,
+          "precision": 0.06737160120845921,
+          "recall": 0.01637232869802787,
+          "hit_rate": 0.29003021148036257,
+          "diversity": 0.7876055064625055,
+          "novelty": 8.853123654198836
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.07839826897867534,
+          "precision": 0.1,
+          "recall": 0.047619047619047616,
+          "hit_rate": 1.0,
+          "diversity": 0.8169576719576719,
+          "novelty": 8.486437291923462
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.1535731102297396,
+          "precision": 0.14285714285714285,
+          "recall": 0.07440054035798715,
+          "hit_rate": 0.7142857142857143,
+          "diversity": 0.7928155706727135,
+          "novelty": 8.532967908933951
+        }
+      },
+      "rating": null,
+      "model": "MostPopular",
+      "seed": null,
+      "fit_seconds": 0.023582999987411313
+    },
+    "BayesianItemMean": {
+      "ndcg": 0.1188472690448863,
+      "precision": 0.10755555555555556,
+      "recall": 0.019340427561829205,
+      "hit_rate": 0.5077777777777778,
+      "diversity": 0.8394940329218108,
+      "novelty": 12.322359970070295,
+      "coverage": 0.0013145786775338505,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.11968809931162247,
+      "latency_ms": {
+        "p50": 5.774750003183726,
+        "p95": 8.061420003650708
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.03567291618818655,
+          "precision": 0.030211480362537766,
+          "recall": 0.009001447576023216,
+          "hit_rate": 0.1933534743202417,
+          "diversity": 0.8685134832717913,
+          "novelty": 13.01994917037541
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.8222222222222222,
+          "novelty": 11.912342660231605
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.07747787292493537,
+          "precision": 0.07142857142857142,
+          "recall": 0.014308503773994175,
+          "hit_rate": 0.5714285714285714,
+          "diversity": 0.8539682539682539,
+          "novelty": 12.2548889455487
+        }
+      },
+      "rating": {
+        "RMSE": 0.9859626715656395,
+        "MAE": 0.7510153347873583,
+        "rows": 123760,
+        "cohorts": {
+          "cold_0": {
+            "RMSE": 0.976900209901348,
+            "MAE": 0.7489316892842259,
+            "rows": 93173
+          },
+          "heavy_20_plus": {
+            "RMSE": 1.0034678834847544,
+            "MAE": 0.7508739919051323,
+            "rows": 30009
+          },
+          "sparse_1_4": {
+            "RMSE": 0.7233916499777457,
+            "MAE": 0.6003643471827379,
+            "rows": 22
+          },
+          "warm_5_19": {
+            "RMSE": 1.4460902824253856,
+            "MAE": 1.1137768145415943,
+            "rows": 556
+          }
+        },
+        "item_groups": {
+          "known": {
+            "RMSE": 0.9680981508628187,
+            "MAE": 0.7398971777669928,
+            "rows": 112827
+          },
+          "cold": {
+            "RMSE": 1.1542840569443251,
+            "MAE": 0.8657531288179771,
+            "rows": 10933
+          }
+        }
+      },
+      "model": "BayesianItemMean",
+      "seed": null,
+      "fit_seconds": 0.02184599998872727
+    },
+    "GenreContent": {
+      "ndcg": 0.1076835968720893,
+      "precision": 0.098,
+      "recall": 0.01658770487113171,
+      "hit_rate": 0.45,
+      "diversity": 0.5696302335524557,
+      "novelty": 13.067924390729075,
+      "coverage": 0.02672976644318829,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.1083567888805014,
+      "latency_ms": {
+        "p50": 5.483300003106706,
+        "p95": 7.9479449916107106
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.006957025417664644,
+          "precision": 0.005740181268882176,
+          "recall": 0.0018192998563561955,
+          "hit_rate": 0.04833836858006042,
+          "diversity": 0.15269158278221723,
+          "novelty": 14.986550314038858
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.0,
+          "novelty": 14.356360816774203
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.12280423280423279,
+          "novelty": 14.7718863575141
+        }
+      },
+      "rating": null,
+      "model": "GenreContent",
+      "seed": null,
+      "fit_seconds": 1.3999961083754897e-06
+    },
+    "SparseItemKNN": {
+      "ndcg": 0.15769965243912368,
+      "precision": 0.14255555555555557,
+      "recall": 0.028184459787900736,
+      "hit_rate": 0.6011111111111112,
+      "diversity": 0.8090778704149075,
+      "novelty": 11.028737462248985,
+      "coverage": 0.011787388808553526,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.15898952357361976,
+      "latency_ms": {
+        "p50": 5.177949999051634,
+        "p95": 6.304110008204589
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.13741028057957735,
+          "precision": 0.12205438066465256,
+          "recall": 0.031987097016661574,
+          "hit_rate": 0.44410876132930516,
+          "diversity": 0.7876809213314752,
+          "novelty": 9.572739758219058
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.6159259259259259,
+          "novelty": 8.941830938901747
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.2620603645339788,
+          "precision": 0.2285714285714286,
+          "recall": 0.06450550929014862,
+          "hit_rate": 0.7142857142857143,
+          "diversity": 0.7950151171579743,
+          "novelty": 9.360113246392455
+        }
+      },
+      "rating": null,
+      "model": "SparseItemKNN",
+      "seed": null,
+      "fit_seconds": 6.556058199988911
+    },
+    "BiasedSVD/seed=42": {
+      "ndcg": 0.02766585659439024,
+      "precision": 0.021777777777777778,
+      "recall": 0.004382431356625388,
+      "hit_rate": 0.12666666666666668,
+      "diversity": 0.7500050754458163,
+      "novelty": 14.275932469445689,
+      "coverage": 0.015818763419657333,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.027933145463279293,
+      "latency_ms": {
+        "p50": 16.339749992766883,
+        "p95": 24.121639991790286
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.01817421788500656,
+          "precision": 0.013368983957219251,
+          "recall": 0.0009648840926373029,
+          "hit_rate": 0.08021390374331551,
+          "diversity": 0.7270370370370368,
+          "novelty": 14.697627576057982
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.04422139117223005,
+          "precision": 0.03625377643504532,
+          "recall": 0.010206942601483028,
+          "hit_rate": 0.2054380664652568,
+          "diversity": 0.7874845079578211,
+          "novelty": 13.57300259160242
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.764074074074074,
+          "novelty": 13.06647884738569
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.00946488906491272,
+          "precision": 0.014285714285714287,
+          "recall": 0.003484320557491289,
+          "hit_rate": 0.14285714285714285,
+          "diversity": 0.8164777021919879,
+          "novelty": 13.891402237829075
+        }
+      },
+      "rating": {
+        "RMSE": 0.9553519526922972,
+        "MAE": 0.7250546385540207,
+        "rows": 123760,
+        "cohorts": {
+          "cold_0": {
+            "RMSE": 0.9775890593780572,
+            "MAE": 0.747339769775068,
+            "rows": 93173
+          },
+          "heavy_20_plus": {
+            "RMSE": 0.876153176880708,
+            "MAE": 0.6513017191035836,
+            "rows": 30009
+          },
+          "sparse_1_4": {
+            "RMSE": 0.6273760498326181,
+            "MAE": 0.5111165538061251,
+            "rows": 22
+          },
+          "warm_5_19": {
+            "RMSE": 1.2486811406805678,
+            "MAE": 0.9797047579676933,
+            "rows": 556
+          }
+        },
+        "item_groups": {
+          "known": {
+            "RMSE": 0.9440894189550395,
+            "MAE": 0.7169463367997398,
+            "rows": 112827
+          },
+          "cold": {
+            "RMSE": 1.0646431954335904,
+            "MAE": 0.8087311557067012,
+            "rows": 10933
+          }
+        }
+      },
+      "model": "BiasedSVD",
+      "seed": 42,
+      "fit_seconds": 3.580432100003236
+    },
+    "SVDSharedFallback/seed=42": {
+      "ndcg": 0.1214622183034399,
+      "precision": 0.10933333333333334,
+      "recall": 0.019699593751731068,
+      "hit_rate": 0.5088888888888888,
+      "diversity": 0.8093371742112484,
+      "novelty": 12.53977153858058,
+      "coverage": 0.015818763419657333,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.12230557137626522,
+      "latency_ms": {
+        "p50": 5.781050007499289,
+        "p95": 26.152524998178706
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.04422139117223005,
+          "precision": 0.03625377643504532,
+          "recall": 0.010206942601483028,
+          "hit_rate": 0.2054380664652568,
+          "diversity": 0.7874845079578211,
+          "novelty": 13.57300259160242
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.764074074074074,
+          "novelty": 13.06647884738569
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.00946488906491272,
+          "precision": 0.014285714285714287,
+          "recall": 0.003484320557491289,
+          "hit_rate": 0.14285714285714285,
+          "diversity": 0.8164777021919879,
+          "novelty": 13.891402237829075
+        }
+      },
+      "rating": null,
+      "model": "SVDSharedFallback",
+      "seed": 42,
+      "fit_seconds": 1.4499993994832039e-05
+    },
+    "FixedHybrid/seed=42": {
+      "ndcg": 0.11576526311518204,
+      "precision": 0.10577777777777778,
+      "recall": 0.019215661049723817,
+      "hit_rate": 0.5077777777777778,
+      "diversity": 0.6491391071205885,
+      "novelty": 12.428128251374503,
+      "coverage": 0.018404101485473907,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.11652735197549838,
+      "latency_ms": {
+        "p50": 7.396449989755638,
+        "p95": 18.438024996430613
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.028931344507644924,
+          "precision": 0.02688821752265861,
+          "recall": 0.008964800039839278,
+          "hit_rate": 0.2054380664652568,
+          "diversity": 0.3609898994742902,
+          "novelty": 13.299168660623433
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.4203703703703704,
+          "novelty": 11.867893609345085
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.4357860922146637,
+          "novelty": 12.656924795917144
+        }
+      },
+      "rating": null,
+      "model": "FixedHybrid",
+      "seed": 42,
+      "fit_seconds": 1.2699994840659201e-05
+    },
+    "AdaptiveWithoutGenre/seed=42": {
+      "ndcg": 0.12070201537710613,
+      "precision": 0.10877777777777778,
+      "recall": 0.019679738511838248,
+      "hit_rate": 0.5055555555555555,
+      "diversity": 0.8133868900646679,
+      "novelty": 12.568036638256801,
+      "coverage": 0.010472810131019675,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.12154504147322594,
+      "latency_ms": {
+        "p50": 7.101950002834201,
+        "p95": 16.952144999231674
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.041923132700078615,
+          "precision": 0.03444108761329305,
+          "recall": 0.010079269006903042,
+          "hit_rate": 0.19637462235649547,
+          "diversity": 0.7978238143192826,
+          "novelty": 13.668608272336048
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.7977777777777777,
+          "novelty": 11.745759772934159
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.020399306290876766,
+          "precision": 0.028571428571428574,
+          "recall": 0.006968641114982578,
+          "hit_rate": 0.14285714285714285,
+          "diversity": 0.8434391534391532,
+          "novelty": 13.193377732146146
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveWithoutGenre",
+      "seed": 42,
+      "fit_seconds": 4.999994416721165e-06
+    },
+    "AdaptiveHybrid/seed=42": {
+      "ndcg": 0.11908947405583015,
+      "precision": 0.10866666666666668,
+      "recall": 0.020420283076016253,
+      "hit_rate": 0.5211111111111111,
+      "diversity": 0.6669452184989223,
+      "novelty": 12.420997481518025,
+      "coverage": 0.020551246658779193,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.11994262035133882,
+      "latency_ms": {
+        "p50": 7.025749997410458,
+        "p95": 16.995489988767076
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.037769820710451305,
+          "precision": 0.03444108761329306,
+          "recall": 0.01216652082461496,
+          "hit_rate": 0.23867069486404835,
+          "diversity": 0.41034737874113497,
+          "novelty": 13.276859407883784
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.38370370370370366,
+          "novelty": 11.452897049964562
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.00946488906491272,
+          "precision": 0.014285714285714287,
+          "recall": 0.003484320557491289,
+          "hit_rate": 0.14285714285714285,
+          "diversity": 0.3964777021919879,
+          "novelty": 12.854305702399193
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveHybrid",
+      "seed": 42,
+      "fit_seconds": 7.499998901039362e-06
+    },
+    "AdaptiveMMR/seed=42": {
+      "ndcg": 0.11908947405583015,
+      "precision": 0.10866666666666668,
+      "recall": 0.020420283076016253,
+      "hit_rate": 0.5211111111111111,
+      "diversity": 0.6669452184989223,
+      "novelty": 12.420997481518025,
+      "coverage": 0.020551246658779193,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.11994262035133882,
+      "latency_ms": {
+        "p50": 7.3336499990546145,
+        "p95": 18.883039995853323
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.037769820710451305,
+          "precision": 0.03444108761329306,
+          "recall": 0.01216652082461496,
+          "hit_rate": 0.23867069486404835,
+          "diversity": 0.41034737874113497,
+          "novelty": 13.276859407883784
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.38370370370370366,
+          "novelty": 11.452897049964562
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.00946488906491272,
+          "precision": 0.014285714285714287,
+          "recall": 0.003484320557491289,
+          "hit_rate": 0.14285714285714285,
+          "diversity": 0.3964777021919879,
+          "novelty": 12.854305702399193
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveMMR",
+      "seed": 42,
+      "fit_seconds": 9.199997293762863e-06
+    },
+    "BiasedSVD/seed=43": {
+      "ndcg": 0.02846078848217595,
+      "precision": 0.022000000000000002,
+      "recall": 0.005175763932511838,
+      "hit_rate": 0.13444444444444445,
+      "diversity": 0.7768925338036451,
+      "novelty": 14.256860494946833,
+      "coverage": 0.01665132991542877,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.02877588540506463,
+      "latency_ms": {
+        "p50": 15.638200005923864,
+        "p95": 22.76008000044385
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.01798730079021366,
+          "precision": 0.013012477718360073,
+          "recall": 0.0009599397751924287,
+          "hit_rate": 0.0784313725490196,
+          "diversity": 0.7714814814814818,
+          "novelty": 14.695998131312944
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.04598391044856329,
+          "precision": 0.0365558912386707,
+          "recall": 0.012169099924930107,
+          "hit_rate": 0.22658610271903323,
+          "diversity": 0.7866677856103838,
+          "novelty": 13.53953819541516
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.8262962962962962,
+          "novelty": 14.640661924305936
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.04330850459629221,
+          "precision": 0.05714285714285715,
+          "recall": 0.013098464317976512,
+          "hit_rate": 0.2857142857142857,
+          "diversity": 0.741262282690854,
+          "novelty": 12.927384168409464
+        }
+      },
+      "rating": {
+        "RMSE": 0.9557863888272439,
+        "MAE": 0.7252163609085075,
+        "rows": 123760,
+        "cohorts": {
+          "cold_0": {
+            "RMSE": 0.9776488506842698,
+            "MAE": 0.747486857641473,
+            "rows": 93173
+          },
+          "heavy_20_plus": {
+            "RMSE": 0.8768604554208314,
+            "MAE": 0.6512562423860953,
+            "rows": 30009
+          },
+          "sparse_1_4": {
+            "RMSE": 0.6356581350872147,
+            "MAE": 0.514174966723143,
+            "rows": 22
+          },
+          "warm_5_19": {
+            "RMSE": 1.2872799123175027,
+            "MAE": 0.9933874316109202,
+            "rows": 556
+          }
+        },
+        "item_groups": {
+          "known": {
+            "RMSE": 0.9445015983669,
+            "MAE": 0.7170500258176985,
+            "rows": 112827
+          },
+          "cold": {
+            "RMSE": 1.0652841270239342,
+            "MAE": 0.8094917738135392,
+            "rows": 10933
+          }
+        }
+      },
+      "model": "BiasedSVD",
+      "seed": 43,
+      "fit_seconds": 3.884051000000909
+    },
+    "SVDSharedFallback/seed=43": {
+      "ndcg": 0.12237366184697986,
+      "precision": 0.1097777777777778,
+      "recall": 0.020496008285491488,
+      "hit_rate": 0.5177777777777778,
+      "diversity": 0.8085209288653734,
+      "novelty": 12.521715251306135,
+      "coverage": 0.01665132991542877,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.12326547387690956,
+      "latency_ms": {
+        "p50": 5.8069500082638115,
+        "p95": 26.401520003855694
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.04598391044856329,
+          "precision": 0.0365558912386707,
+          "recall": 0.012169099924930107,
+          "hit_rate": 0.22658610271903323,
+          "diversity": 0.7866677856103838,
+          "novelty": 13.53953819541516
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.8262962962962962,
+          "novelty": 14.640661924305936
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.04330850459629221,
+          "precision": 0.05714285714285715,
+          "recall": 0.013098464317976512,
+          "hit_rate": 0.2857142857142857,
+          "diversity": 0.741262282690854,
+          "novelty": 12.927384168409464
+        }
+      },
+      "rating": null,
+      "model": "SVDSharedFallback",
+      "seed": 43,
+      "fit_seconds": 8.400005754083395e-06
+    },
+    "FixedHybrid/seed=43": {
+      "ndcg": 0.11757478007350433,
+      "precision": 0.10744444444444445,
+      "recall": 0.019678234328737734,
+      "hit_rate": 0.5122222222222222,
+      "diversity": 0.6457864829957423,
+      "novelty": 12.383765800130439,
+      "coverage": 0.018272643617720522,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.11834554433898938,
+      "latency_ms": {
+        "p50": 7.126699994842056,
+        "p95": 17.137909994198708
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.032671882019093906,
+          "precision": 0.030211480362537766,
+          "recall": 0.009833650988025527,
+          "hit_rate": 0.21148036253776434,
+          "diversity": 0.35128517225193967,
+          "novelty": 13.18709693579485
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.43444444444444447,
+          "novelty": 12.309447625967769
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.05577819231435087,
+          "precision": 0.05714285714285715,
+          "recall": 0.0183894696089818,
+          "hit_rate": 0.2857142857142857,
+          "diversity": 0.4616187956664148,
+          "novelty": 12.189493479057218
+        }
+      },
+      "rating": null,
+      "model": "FixedHybrid",
+      "seed": 43,
+      "fit_seconds": 4.699992132373154e-06
+    },
+    "AdaptiveWithoutGenre/seed=43": {
+      "ndcg": 0.12148061840270785,
+      "precision": 0.10922222222222223,
+      "recall": 0.020226947664039242,
+      "hit_rate": 0.5155555555555555,
+      "diversity": 0.8110144816774447,
+      "novelty": 12.533809825554965,
+      "coverage": 0.010691906577275317,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.12239288150527099,
+      "latency_ms": {
+        "p50": 7.1383000031346455,
+        "p95": 16.852454989566464
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.04286108620047952,
+          "precision": 0.03444108761329306,
+          "recall": 0.011338238657855836,
+          "hit_rate": 0.21450151057401812,
+          "diversity": 0.7927165289300234,
+          "novelty": 13.589859836820752
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.8407407407407407,
+          "novelty": 13.677991007450794
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.07615360834928299,
+          "precision": 0.08571428571428573,
+          "recall": 0.017792824331485463,
+          "hit_rate": 0.5714285714285714,
+          "diversity": 0.7737792894935751,
+          "novelty": 12.240430516345398
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveWithoutGenre",
+      "seed": 43,
+      "fit_seconds": 4.2000028770416975e-06
+    },
+    "AdaptiveHybrid/seed=43": {
+      "ndcg": 0.11916581460386595,
+      "precision": 0.108,
+      "recall": 0.020136144185237948,
+      "hit_rate": 0.52,
+      "diversity": 0.6675825298843817,
+      "novelty": 12.382341104264864,
+      "coverage": 0.020113053766267912,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.119968646910448,
+      "latency_ms": {
+        "p50": 7.086850004270673,
+        "p95": 17.395284998929128
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.037252556657369255,
+          "precision": 0.03172205438066465,
+          "recall": 0.011050092115408252,
+          "hit_rate": 0.22658610271903323,
+          "diversity": 0.4128306878306879,
+          "novelty": 13.183765875372362
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.06625422345438904,
+          "precision": 0.1,
+          "recall": 0.047619047619047616,
+          "hit_rate": 1.0,
+          "diversity": 0.36148148148148146,
+          "novelty": 11.619288434176159
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.03427441354319727,
+          "precision": 0.042857142857142864,
+          "recall": 0.012940585332905001,
+          "hit_rate": 0.42857142857142855,
+          "diversity": 0.36416729654824903,
+          "novelty": 12.262424038002722
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveHybrid",
+      "seed": 43,
+      "fit_seconds": 8.000002708286047e-06
+    },
+    "AdaptiveMMR/seed=43": {
+      "ndcg": 0.11916581460386595,
+      "precision": 0.108,
+      "recall": 0.020136144185237948,
+      "hit_rate": 0.52,
+      "diversity": 0.6675825298843817,
+      "novelty": 12.382341104264864,
+      "coverage": 0.020113053766267912,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.119968646910448,
+      "latency_ms": {
+        "p50": 7.324900005187374,
+        "p95": 18.287760003295258
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.037252556657369255,
+          "precision": 0.03172205438066465,
+          "recall": 0.011050092115408252,
+          "hit_rate": 0.22658610271903323,
+          "diversity": 0.4128306878306879,
+          "novelty": 13.183765875372362
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.06625422345438904,
+          "precision": 0.1,
+          "recall": 0.047619047619047616,
+          "hit_rate": 1.0,
+          "diversity": 0.36148148148148146,
+          "novelty": 11.619288434176159
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.03427441354319727,
+          "precision": 0.042857142857142864,
+          "recall": 0.012940585332905001,
+          "hit_rate": 0.42857142857142855,
+          "diversity": 0.36416729654824903,
+          "novelty": 12.262424038002722
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveMMR",
+      "seed": 43,
+      "fit_seconds": 1.0800009476952255e-05
+    },
+    "BiasedSVD/seed=44": {
+      "ndcg": 0.025013649646696196,
+      "precision": 0.01955555555555556,
+      "recall": 0.004047250806665783,
+      "hit_rate": 0.11444444444444445,
+      "diversity": 0.76216975308642,
+      "novelty": 14.398104149693593,
+      "coverage": 0.014810919766881382,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.02529858622623247,
+      "latency_ms": {
+        "p50": 15.304950000427198,
+        "p95": 22.207335003622575
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.017508053174589987,
+          "precision": 0.012477718360071301,
+          "recall": 0.0009365339568123565,
+          "hit_rate": 0.0766488413547237,
+          "diversity": 0.7492592592592593,
+          "novelty": 14.847844840206363
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.03800670987290801,
+          "precision": 0.03172205438066465,
+          "recall": 0.009343625173187414,
+          "hit_rate": 0.1782477341389728,
+          "diversity": 0.7833428443549291,
+          "novelty": 13.648678744488697
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.7925925925925925,
+          "novelty": 14.888374596834032
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.015720840449862872,
+          "precision": 0.014285714285714287,
+          "recall": 0.003484320557491289,
+          "hit_rate": 0.14285714285714285,
+          "diversity": 0.7913227513227513,
+          "novelty": 13.721677192267139
+        }
+      },
+      "rating": {
+        "RMSE": 0.9561149662116919,
+        "MAE": 0.7253223626295328,
+        "rows": 123760,
+        "cohorts": {
+          "cold_0": {
+            "RMSE": 0.977818018947698,
+            "MAE": 0.7473321255756253,
+            "rows": 93173
+          },
+          "heavy_20_plus": {
+            "RMSE": 0.8782420112391722,
+            "MAE": 0.6521635817541218,
+            "rows": 30009
+          },
+          "sparse_1_4": {
+            "RMSE": 0.6240386997969195,
+            "MAE": 0.5057106200951069,
+            "rows": 22
+          },
+          "warm_5_19": {
+            "RMSE": 1.2693281915011723,
+            "MAE": 0.9942750076828989,
+            "rows": 556
+          }
+        },
+        "item_groups": {
+          "known": {
+            "RMSE": 0.9448361357884373,
+            "MAE": 0.7171465376164877,
+            "rows": 112827
+          },
+          "cold": {
+            "RMSE": 1.065560313726741,
+            "MAE": 0.8096957101779503,
+            "rows": 10933
+          }
+        }
+      },
+      "model": "BiasedSVD",
+      "seed": 44,
+      "fit_seconds": 4.521159199997783
+    },
+    "SVDSharedFallback/seed=44": {
+      "ndcg": 0.11922525402523884,
+      "precision": 0.10766666666666667,
+      "recall": 0.01938208478643568,
+      "hit_rate": 0.4988888888888889,
+      "diversity": 0.80765,
+      "novelty": 12.56830779084266,
+      "coverage": 0.014810919766881382,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.12008857460016106,
+      "latency_ms": {
+        "p50": 5.580400000326335,
+        "p95": 21.26630999191547
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.03800670987290801,
+          "precision": 0.03172205438066465,
+          "recall": 0.009343625173187414,
+          "hit_rate": 0.1782477341389728,
+          "diversity": 0.7833428443549291,
+          "novelty": 13.648678744488697
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.7925925925925925,
+          "novelty": 14.888374596834032
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.015720840449862872,
+          "precision": 0.014285714285714287,
+          "recall": 0.003484320557491289,
+          "hit_rate": 0.14285714285714285,
+          "diversity": 0.7913227513227513,
+          "novelty": 13.721677192267139
+        }
+      },
+      "rating": null,
+      "model": "SVDSharedFallback",
+      "seed": 44,
+      "fit_seconds": 4.1000021155923605e-06
+    },
+    "FixedHybrid/seed=44": {
+      "ndcg": 0.11516898244832419,
+      "precision": 0.10622222222222222,
+      "recall": 0.018994326703818874,
+      "hit_rate": 0.5111111111111111,
+      "diversity": 0.6461989809915736,
+      "novelty": 12.387610591816332,
+      "coverage": 0.018579378642478418,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.11592699125681484,
+      "latency_ms": {
+        "p50": 7.447550000506453,
+        "p95": 18.760430003749203
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.026977572654711082,
+          "precision": 0.027794561933534745,
+          "recall": 0.00828929806033206,
+          "hit_rate": 0.21148036253776434,
+          "diversity": 0.3524087128417441,
+          "novelty": 13.194556160877411
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.45772486772486787,
+          "novelty": 11.540776713116415
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.015720840449862872,
+          "precision": 0.014285714285714287,
+          "recall": 0.003484320557491289,
+          "hit_rate": 0.14285714285714285,
+          "diversity": 0.4582010582010582,
+          "novelty": 12.440919183032493
+        }
+      },
+      "rating": null,
+      "model": "FixedHybrid",
+      "seed": 44,
+      "fit_seconds": 6.100002792663872e-06
+    },
+    "AdaptiveWithoutGenre/seed=44": {
+      "ndcg": 0.11853740935691096,
+      "precision": 0.10722222222222222,
+      "recall": 0.018650577786734103,
+      "hit_rate": 0.49777777777777776,
+      "diversity": 0.8134318930041153,
+      "novelty": 12.582597606292163,
+      "coverage": 0.010122255817010649,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.1193840015266718,
+      "latency_ms": {
+        "p50": 7.731349993264303,
+        "p95": 20.62815999743179
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.035649903862880715,
+          "precision": 0.02990936555891239,
+          "recall": 0.007224999607772384,
+          "hit_rate": 0.17220543806646527,
+          "diversity": 0.7979741524001345,
+          "novelty": 13.700586500354706
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "hit_rate": 0.0,
+          "diversity": 0.9055555555555556,
+          "novelty": 13.683885052005682
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.03872692442471142,
+          "precision": 0.042857142857142864,
+          "recall": 0.009614143760485224,
+          "hit_rate": 0.2857142857142857,
+          "diversity": 0.8267195767195767,
+          "novelty": 13.276513800514378
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveWithoutGenre",
+      "seed": 44,
+      "fit_seconds": 8.100003469735384e-06
+    },
+    "AdaptiveHybrid/seed=44": {
+      "ndcg": 0.11751111051905838,
+      "precision": 0.1078888888888889,
+      "recall": 0.02021633906631257,
+      "hit_rate": 0.5211111111111111,
+      "diversity": 0.6686984420928865,
+      "novelty": 12.388735820477168,
+      "coverage": 0.020069234477016782,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.11833561602104678,
+      "latency_ms": {
+        "p50": 7.077449998178054,
+        "p95": 17.641049995290807
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.03277230412030723,
+          "precision": 0.03141993957703928,
+          "recall": 0.011268144662136825,
+          "hit_rate": 0.229607250755287,
+          "diversity": 0.4154942534247671,
+          "novelty": 13.19711428343338
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.06625422345438904,
+          "precision": 0.1,
+          "recall": 0.047619047619047616,
+          "hit_rate": 1.0,
+          "diversity": 0.352962962962963,
+          "novelty": 11.464998590060699
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.03337868689187219,
+          "precision": 0.042857142857142864,
+          "recall": 0.012940585332905001,
+          "hit_rate": 0.42857142857142855,
+          "diversity": 0.382910052910053,
+          "novelty": 12.475454233286953
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveHybrid",
+      "seed": 44,
+      "fit_seconds": 4.1000021155923605e-06
+    },
+    "AdaptiveMMR/seed=44": {
+      "ndcg": 0.11751111051905838,
+      "precision": 0.1078888888888889,
+      "recall": 0.02021633906631257,
+      "hit_rate": 0.5211111111111111,
+      "diversity": 0.6686984420928865,
+      "novelty": 12.388735820477168,
+      "coverage": 0.020069234477016782,
+      "users": 900,
+      "eligible_users": 900,
+      "users_without_positive": 3,
+      "unavailable_positive_fraction": 0.07300857307105901,
+      "conditional_ndcg": 0.11833561602104678,
+      "latency_ms": {
+        "p50": 7.08245000714669,
+        "p95": 16.545039994525723
+      },
+      "cohorts": {
+        "cold_0": {
+          "users": 561,
+          "ndcg": 0.1686496644770648,
+          "precision": 0.15383244206773622,
+          "recall": 0.025537871892272083,
+          "hit_rate": 0.6934046345811051,
+          "diversity": 0.822222222222222,
+          "novelty": 11.912342660231603
+        },
+        "heavy_20_plus": {
+          "users": 331,
+          "ndcg": 0.03277230412030723,
+          "precision": 0.03141993957703928,
+          "recall": 0.011268144662136825,
+          "hit_rate": 0.229607250755287,
+          "diversity": 0.4154942534247671,
+          "novelty": 13.19711428343338
+        },
+        "sparse_1_4": {
+          "users": 1,
+          "ndcg": 0.06625422345438904,
+          "precision": 0.1,
+          "recall": 0.047619047619047616,
+          "hit_rate": 1.0,
+          "diversity": 0.352962962962963,
+          "novelty": 11.464998590060699
+        },
+        "warm_5_19": {
+          "users": 7,
+          "ndcg": 0.03337868689187219,
+          "precision": 0.042857142857142864,
+          "recall": 0.012940585332905001,
+          "hit_rate": 0.42857142857142855,
+          "diversity": 0.382910052910053,
+          "novelty": 12.475454233286953
+        }
+      },
+      "rating": null,
+      "model": "AdaptiveMMR",
+      "seed": 44,
+      "fit_seconds": 1.2799995602108538e-05
+    }
+  }
+}

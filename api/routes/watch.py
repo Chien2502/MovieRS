@@ -1,27 +1,27 @@
 """
 watch.py — Endpoints tiến độ xem phim (Watch Progress / Continue Watching)
 
-Phục vụ tính năng "Tiếp tục xem" chuẩn các app streaming (FPT Play, Netflix):
+Phục vụ tính năng tiếp tục xem của trình phát mô phỏng:
   1. PUT /api/watch/progress          — Heartbeat tiến độ từ player (mỗi ~5 giây).
   2. GET  /api/watch/progress/{uid}   — Danh sách phim đang xem dở (hàng tiếp tục xem).
   3. GET  /api/watch/progress/{uid}/{mid} — Vị trí resume của 1 phim.
   4. DELETE /api/watch/progress/{uid}/{mid} — Người dùng xoá phim khỏi danh sách.
 
 Khi heartbeat đạt ratio >= 95% → đánh dấu "finished", đồng thời quy đổi thành
-tín hiệu watch hoàn thành (rating = 5.0 theo quy tắc interactions) và kích hoạt
-online update để khuyến nghị cá nhân hóa ngay lập tức.
+tín hiệu proxy watch_complete (4.0), có ưu tiên thấp hơn sao chủ động.
 """
 
 from pathlib import Path
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query,Request
 from pydantic import BaseModel, Field
 import pandas as pd
+from api.repositories import postgres_enabled
+from api.services.recommender import RecommenderService
 
 from api.logging_config import get_logger
 from api.services import watch_store
 from api.services.user_store import get_user
-from api.services.recommender import RecommenderService
-from api.routes.interactions import _write_interaction, _invalidate_recommendation_cache
+from api.routes.interactions import record_feedback, require_movie
 
 logger = get_logger(__name__)
 
@@ -30,7 +30,7 @@ router = APIRouter()
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 MOVIES_CSV = PROJECT_ROOT / "data" / "processed" / "movies_processed.csv"
 
-WATCH_FINISH_RATING = 5.0  # Quy đổi "xem xong" thành rating (theo mapping watch >= 80%)
+WATCH_FINISH_RATING = 4.0  # Proxy demo, ưu tiên thấp hơn sao chủ động và yêu thích
 
 
 class WatchProgressRequest(BaseModel):
@@ -74,27 +74,45 @@ def _enrich(rows: list[dict]) -> list[dict]:
 
 
 @router.put("/watch/progress")
-async def save_watch_progress(req: WatchProgressRequest):
+def save_watch_progress(req: WatchProgressRequest,request:Request):
     """Ghi nhận tiến độ xem (heartbeat từ player).
 
-    - ratio >= 95% → đánh dấu finished + quy đổi thành rating 5.0 vào vòng
-      feedback + online update tức thời.
+    - ratio >= 95% → đánh dấu finished + proxy watch_complete có nguồn riêng.
     - ratio < 95% → chỉ cập nhật vị trí để hiển thị trong "Tiếp tục xem".
     """
     _require_user(req.user_id)
+    require_movie(req.movie_id)
+    if req.position_seconds > req.duration_seconds:
+        raise HTTPException(status_code=422, detail='Vị trí xem vượt quá thời lượng')
 
+    key=request.headers.get('Idempotency-Key')
+    if not postgres_enabled():
+        from api.idempotency import file_operation
+        with file_operation(req.user_id,key,['progress',req.movie_id,req.position_seconds,req.duration_seconds]) as replayed:
+            if replayed:
+                old=watch_store.get_progress_for_movie(req.user_id,req.movie_id)
+                return {'status':'success','ratio':float(old['ratio']) if old else 0,'finished':bool(old and old['status']=='finished')}
+            return _save_progress(req,None)
+    return _save_progress(req,key)
+
+
+def _save_progress(req,key):
     result = watch_store.upsert_progress(
-        req.user_id, req.movie_id, req.position_seconds, req.duration_seconds
+        req.user_id, req.movie_id, req.position_seconds, req.duration_seconds,key
     )
 
+    if postgres_enabled():
+        service=RecommenderService()
+        service.invalidate_user(req.user_id)
+        if result.get('feedback_changed'):
+            try:service.apply_online_update(req.user_id,req.movie_id,WATCH_FINISH_RATING)
+            except Exception:logger.exception('Đã commit tiến độ và feedback; chưa cập nhật được mô hình online')
+        return {'status':'success','ratio':round(result['ratio'],4),'finished':result['finished']}
+
     if result["finished"]:
-        # Xem xong → chuyển thành tín hiệu huấn luyện (như interactions/watch >= 80%)
+        # Store khử trùng; heartbeat lặp không tạo thêm bước SGD hoặc đổi sao chủ động.
         try:
-            _write_interaction(req.user_id, req.movie_id, WATCH_FINISH_RATING)
-            _invalidate_recommendation_cache(req.user_id)
-            RecommenderService().apply_online_update(
-                req.user_id, req.movie_id, WATCH_FINISH_RATING
-            )
+            record_feedback(req.user_id, req.movie_id, WATCH_FINISH_RATING, 'watch_complete')
             logger.info(
                 f"[✅ Watch Finished] user {req.user_id} — movie {req.movie_id} "
                 f"(ratio={result['ratio']:.2f}) → rating {WATCH_FINISH_RATING} + online update"
@@ -110,7 +128,7 @@ async def save_watch_progress(req: WatchProgressRequest):
 
 
 @router.get("/watch/progress/{user_id}")
-async def get_continue_watching(user_id: int, limit: int = 20):
+async def get_continue_watching(user_id: int, limit: int = Query(20, ge=1, le=100)):
     """Danh sách phim đang xem dở của user (hàng "Tiếp tục xem").
 
     Chỉ gồm phim có 5% <= ratio < 95% (đang dở), sắp xếp theo thời gian

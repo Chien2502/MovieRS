@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "output": "D:\\Users\\BT\\N3_K1\\ThucTapThucTe\\sản phẩm\\MovieRS_ThuyetTrinh_NguyenThanhChien_24ITE020.pptx",
+  "sha256": "d71423dcdba339170255439309cf3f9b89c16b314ee05ef8cc64f82e845d6594",
+  "slides": 22,
+  "native_charts": 1,
+  "native_tables": 2,
+  "chart_values_verified": 12,
+  "speaker_notes_with_sources": 22,
+  "powerpoint_export_inspected_all_slides": true,
+  "latest_changed_slide_reinspected": 14,
+  "runtime_or_database_changes": false
+}

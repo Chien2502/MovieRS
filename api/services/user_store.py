@@ -1,8 +1,8 @@
 """
 user_store.py — Lưu trữ người dùng đăng ký (data/processed/users.json)
 
-Prototype-level: file JSON đơn giản + khóa threading.Lock cho ghi đồng thời.
-Mật khẩu được băm SHA-256 kèm salt (không lưu plaintext).
+Adapter file cho demo và PostgreSQL cho vận hành; mật khẩu mới dùng Argon2id.
+Hash SHA-256 cũ được nâng sau lần đăng nhập hợp lệ.
 User ID tự tăng bắt đầu từ 200000 — cao hơn hẳn user ID của MovieLens ml-25m
 (1-162.541) để tránh trùng khi gộp interactions_log vào tập huấn luyện.
 """
@@ -11,6 +11,8 @@ import hashlib
 import json
 import secrets
 import threading
+from api.repositories import postgres_enabled, repository
+from api.security import hash_password, verify_password, PASSWORDS
 from datetime import datetime
 from pathlib import Path
 
@@ -34,13 +36,15 @@ def _load_users() -> dict:
         return {}
     try:
         return json.loads(USERS_FILE.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return {}
+    except (json.JSONDecodeError, OSError) as error:
+        raise ValueError('Tệp tài khoản không đọc được; dừng để tránh ghi đè dữ liệu') from error
 
 
 def _save_users(users: dict):
     USERS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    USERS_FILE.write_text(json.dumps(users, ensure_ascii=False, indent=2), encoding="utf-8")
+    temporary = USERS_FILE.with_suffix('.json.tmp')
+    temporary.write_text(json.dumps(users, ensure_ascii=False, indent=2), encoding="utf-8")
+    temporary.replace(USERS_FILE)
 
 
 def register_user(username: str, password: str, genres: list[str] | None = None) -> dict:
@@ -48,16 +52,20 @@ def register_user(username: str, password: str, genres: list[str] | None = None)
     username = username.strip()
     if not username or len(username) < 3:
         raise ValueError("Tên người dùng phải có ít nhất 3 ký tự")
-    if not password or len(password) < 4:
-        raise ValueError("Mật khẩu phải có ít nhất 4 ký tự")
+    if not password or len(password) < 8:
+        raise ValueError("Mật khẩu phải có ít nhất 8 ký tự")
+
+    if postgres_enabled():
+        digest,salt=hash_password(password)
+        return repository().register(username,digest,salt,genres or [])
 
     with _lock:
         users = _load_users()
         if any(u["username"].lower() == username.lower() for u in users.values()):
             raise ValueError("Tên người dùng đã tồn tại")
 
-        next_id = max((int(uid) for uid in users), default=USER_ID_START - 1) + 1
-        digest, salt = _hash_password(password)
+        next_id = max([USER_ID_START - 1, *(int(uid) for uid in users)]) + 1
+        digest, salt = hash_password(password)
         user = {
             "user_id": next_id,
             "username": username,
@@ -74,23 +82,30 @@ def register_user(username: str, password: str, genres: list[str] | None = None)
 def authenticate(username: str, password: str) -> dict | None:
     """Kiểm tra đăng nhập; trả về user nếu hợp lệ, ngược lại None."""
     username = username.strip()
-    users = _load_users()
-    for user in users.values():
-        if user["username"].lower() == username.lower():
-            digest, _ = _hash_password(password, user["salt"])
-            if digest == user["password_hash"]:
-                return user
+    with _lock:
+        users = None if postgres_enabled() else _load_users()
+        user = repository().find_user(username) if postgres_enabled() else next(
+            (u for u in users.values() if u['username'].lower()==username.lower()),None)
+        if user is None or not verify_password(user,password):
             return None
-    return None
+        if not user['password_hash'].startswith('$argon2') or PASSWORDS.check_needs_rehash(user['password_hash']):
+            digest,salt=hash_password(password)
+            if postgres_enabled():repository().update_hash(user['user_id'],digest,salt)
+            else:
+                user.update(password_hash=digest,salt=salt)
+                _save_users(users)
+        return user
 
 
 def get_user(user_id: int) -> dict | None:
     """Lấy user theo id (None nếu chưa đăng ký)."""
-    return _load_users().get(str(user_id))
+    if user_id<USER_ID_START:return None
+    return repository().get_user(user_id) if postgres_enabled() else _load_users().get(str(user_id))
 
 
 def update_user_genres(user_id: int, genres: list[str]) -> dict | None:
     """Cập nhật thể loại yêu thích của user; trả về user mới hoặc None."""
+    if postgres_enabled():return repository().preferences(user_id,genres)
     with _lock:
         users = _load_users()
         user = users.get(str(user_id))
